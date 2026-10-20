@@ -13,7 +13,7 @@
   --faint: #8c887f; /* decorative only (icons, rules), never body text */
   --line: #dedad1;
   --line-strong: #c9c4b9;
-  --accent: #c2370f;
+  --accent: #b3320d;
   --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
   --on-accent: #ffffff;
   --code-bg: #1a1916;

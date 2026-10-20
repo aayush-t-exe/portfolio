@@ -17,7 +17,7 @@ export function renderOgImage() {
   const ink = "#161512";
   const muted = "#5b5850";
   const line = "#dedad1";
-  const accent = "#c2370f";
+  const accent = "#b3320d";
 
   return new ImageResponse(
     (

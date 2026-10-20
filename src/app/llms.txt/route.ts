@@ -1,6 +1,7 @@
 import { site } from "@/lib/site";
 
 /** llms.txt (https://llmstxt.org): a plain-text brief for AI search and answer engines. */
+export const dynamic = "force-static";
 const body = `# Aayush Thakur
 
 > Aayush Thakur is a founder-engineer from Jaipur, India, who ships real products fast with AI. Aayush is the Founder & CTO of Zen-Z (zen-z.site), a live campus social app built solo, and a third-year B.Tech Computer Science student at Jaipur National University (graduating May 2028).

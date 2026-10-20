@@ -106,7 +106,7 @@ export function ZenZ() {
               and pay in the app, and get matched into a group.
             </p>
             <p>
-              Demand came first: <strong>65+ students joined the waitlist</strong> before launch, and
+              Demand came first: <strong>65+ students joined the waitlist</strong> before launch, and{" "}
               <span className="whitespace-nowrap">Zen-Z&rsquo;s</span> Instagram has grown to <strong>550 followers and 140K+ views</strong>.
             </p>
           </Body>

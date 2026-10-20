@@ -2,7 +2,7 @@
   <style>
     rect { fill: #161512 }
     text { fill: #f4f2ed }
-    circle { fill: #c2370f }
+    circle { fill: #b3320d }
     @media (prefers-color-scheme: dark) {
       rect { fill: #eeece6 }
       text { fill: #0e0e0c }
