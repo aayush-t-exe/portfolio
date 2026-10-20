@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { openGraph } from "@/lib/metadata";
 import { projects, site } from "@/lib/site";
-import { resolveSlot } from "@/lib/image-slots";
+import portrait from "@/assets/about/portrait.jpg";
 import { About } from "@/sections/about";
 import { Contact } from "@/sections/contact";
 import { Hero } from "@/sections/hero";
@@ -30,7 +30,6 @@ export default function Home() {
 
 function JsonLd() {
   const person = `${site.url}/#person`;
-  const portrait = resolveSlot("about/portrait");
   const data = {
     "@context": "https://schema.org",
     "@graph": [
@@ -42,7 +41,7 @@ function JsonLd() {
         familyName: "Thakur",
         url: site.url,
         email: `mailto:${site.email}`,
-        image: portrait ? `${site.url}${portrait}` : `${site.url}/opengraph-image`,
+        image: `${site.url}${portrait.src}`,
         jobTitle: "Founder & CTO",
         description: site.description,
         worksFor: { "@type": "Organization", name: projects.zenz.name, url: projects.zenz.url },

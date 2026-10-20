@@ -1,13 +1,66 @@
 import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
-import { BrowserFrame, Caption, PhoneFrame } from "@/components/frames";
+import { BrowserFrame, Caption, PhoneFrame, PhoneRail } from "@/components/frames";
 import { ArrowUpRight } from "@/components/icons";
-import { hasMissing } from "@/lib/image-slots";
 import { projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import { ZenZArchitecture } from "@/sections/zenz-architecture";
+import admin from "@/assets/zenz/admin.png";
+import home from "@/assets/zenz/home.jpg";
+import game from "@/assets/zenz/flow-1-game.jpg";
+import slot from "@/assets/zenz/flow-2-slot.jpg";
+import budget from "@/assets/zenz/flow-3-budget.jpg";
+import group from "@/assets/zenz/flow-4-group.jpg";
+import plan from "@/assets/zenz/flow-5-plan.jpg";
+import pay from "@/assets/zenz/flow-6-pay.jpg";
 
 const zenz = projects.zenz;
+
+/** The booking flow as it ships: five choices, then payment. */
+const flow = [
+  {
+    step: "01",
+    image: game,
+    title: "Pick a game",
+    caption: "Choose what you're in the mood for.",
+    alt: "Zen-Z booking, pick a game: Box Cricket, Football, 8-Ball Pool and Pickleball with prices and durations",
+  },
+  {
+    step: "02",
+    image: slot,
+    title: "Pick a slot",
+    caption: "One fixed weekly time, so groups can form.",
+    alt: "Zen-Z booking, pick a slot: a fixed weekly slot, Sunday 11th at 5:00 pm, selected",
+  },
+  {
+    step: "03",
+    image: budget,
+    title: "Set a budget",
+    caption: "Used to match people with similar budgets.",
+    alt: "Zen-Z booking, budget range: under ₹200 selected, with ₹200–400 and ₹400+ options",
+  },
+  {
+    step: "04",
+    image: group,
+    title: "Choose the group",
+    caption: "Mixed, women only or men only.",
+    alt: "Zen-Z booking, group dynamic: Surprise me (mixed) selected, with Women only and Men only options",
+  },
+  {
+    step: "05",
+    image: plan,
+    title: "Confirm the plan",
+    caption: "Every choice on one screen.",
+    alt: "Zen-Z booking summary: Cafés, Sunday 11th at 5:00 pm, group of 4–5 mixed, under ₹200, with a Save my seat button",
+  },
+  {
+    step: "Pay",
+    image: pay,
+    title: "Pay to hold the seat",
+    caption: "The venue is revealed before the event.",
+    alt: "Zen-Z payment screen: 8-Ball Pool, Saturday 10th at 6:00 pm, group of 4, ₹70, with a Pay ₹70 button",
+  },
+];
 
 const VERIFY_SKETCH = `
 // supabase/functions/payu-webhook: simplified sketch, not the production file
@@ -65,7 +118,7 @@ export function ZenZ() {
         }
       />
 
-      {/* Hero composition: admin board with the app overlapping it */}
+      {/* Hero composition: the admin dashboard with the student app overlapping it */}
       <figure data-reveal className="mt-14 md:mt-20">
         <div
           className="relative overflow-hidden rounded-[22px] border border-line bg-surface-2 px-4 pt-6 pb-10 sm:px-10 sm:pt-12 sm:pb-16 lg:px-14"
@@ -75,21 +128,26 @@ export function ZenZ() {
           }}
         >
           <BrowserFrame
-            title="Zen-Z admin · matching board"
-            source={{ slot: "zenz/admin-board", alt: "Zen-Z admin panel: the drag-and-drop board used to hand-match students into groups" }}
+            title="admin.zen-z.site"
+            shot={{
+              image: admin,
+              alt: "Zen-Z admin dashboard: bookings this week by category, groups formed, unmatched students needing action, pending reports and payments to check",
+            }}
             className="w-[88%] sm:w-[80%]"
           />
           <PhoneFrame
-            source={{ slot: "zenz/app-home", alt: "Zen-Z app home screen showing upcoming group plans" }}
+            tone="dark"
+            shot={{
+              image: home,
+              alt: "Zen-Z app home screen: Welcome Aayush, with Cafés, Dinners, Movies and Sports to pick from",
+            }}
             sizes="(min-width: 1024px) 260px, 30vw"
             className="absolute right-[4%] bottom-[6%] w-[30%] sm:w-[23%] lg:right-[6%] lg:w-[21%]"
           />
         </div>
         <Caption>
-          The admin matching board the team uses to hand-match every group, and the student app.
-          {hasMissing("zenz/admin-board", "zenz/app-home", "zenz/app-booking", "zenz/app-chat")
-            ? " Shown as schematics; screenshots coming soon."
-            : null}
+          The live admin dashboard (bookings, groups, the matching queue, payments to check) and the
+          student app&rsquo;s home screen.
         </Caption>
       </figure>
 
@@ -116,6 +174,13 @@ export function ZenZ() {
           number="02"
           title="What I built"
           wide={
+            <div className="space-y-16 md:space-y-20">
+            <figure>
+              <PhoneRail label="The Zen-Z booking flow, step by step" items={flow} tone="dark" numbered />
+              <div className="mt-6 md:mt-8">
+                <Caption>The booking flow as it ships: five choices, then payment.</Caption>
+              </div>
+            </figure>
             <div className="grid gap-4 sm:grid-cols-[1fr_1fr] lg:grid-cols-[1.15fr_1fr_1fr]">
               <Surface
                 n="A"
@@ -149,32 +214,17 @@ export function ZenZ() {
                 className="sm:col-span-2 lg:col-span-1"
               />
             </div>
+            </div>
           }
         >
-          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-12">
-            <div>
-              <Lead>Three products, one engineer. I built every surface and I run them in production.</Lead>
-              <Body>
-                <p>
-                  As the only engineer, I owned the whole system: product decisions, data model, mobile
-                  app, internal tools, payments, CI and releases. Shipped to Google Play and the web
-                  across <strong>179 commits</strong>, with <strong>37 test suites</strong> running in CI.
-                </p>
-              </Body>
-            </div>
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:flex lg:gap-4">
-              <PhoneFrame
-                source={{ slot: "zenz/app-booking", alt: "Zen-Z booking flow" }}
-                sizes="(min-width: 1024px) 150px, 45vw"
-                className="lg:w-[150px] lg:translate-y-6"
-              />
-              <PhoneFrame
-                source={{ slot: "zenz/app-chat", alt: "Zen-Z realtime group chat" }}
-                sizes="(min-width: 1024px) 150px, 45vw"
-                className="lg:w-[150px]"
-              />
-            </div>
-          </div>
+          <Lead>Three products, one engineer. I built every surface and I run them in production.</Lead>
+          <Body>
+            <p>
+              As the only engineer, I owned the whole system: product decisions, data model, mobile
+              app, internal tools, payments, CI and releases. Shipped to Google Play and the web
+              across <strong>179 commits</strong>, with <strong>37 test suites</strong> running in CI.
+            </p>
+          </Body>
         </Chapter>
 
         <Chapter number="03" title="Architecture" wide={<ZenZArchitecture />}>
@@ -306,7 +356,9 @@ function Incident() {
         <span className="font-medium">The guarantee now:</span>{" "}
         <span className="text-muted">
           no booking is confirmed without a verified payment, and every payment question can be
-          answered from the logs.
+          answered from the logs. The admin dashboard also has a{" "}
+          <span className="text-fg">Payments to check</span> queue for anything still unpaid 10+
+          minutes after a payment attempt.
         </span>
       </p>
     </div>

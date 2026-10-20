@@ -141,3 +141,8 @@ Site URL: `NEXT_PUBLIC_SITE_URL`, defaulting to `https://aayushthakur.vercel.app
   passes 4.5:1.
 - 2026-10-21: Pronoun-free third-person copy in metadata and llms.txt (Aayush's pronouns weren't
   specified).
+- 2026-10-21: Real Zen-Z screenshots and portrait added. The image-slot and schematic system was
+  removed (no longer needed). There's no group-chat screenshot, so "What I built" shows the
+  booking flow as a six-screen strip (five choices, then payment) instead. The admin crop drops
+  the browser chrome; phone crops drop the status bar. The profile screenshot was not used
+  because it shows a phone number and personal email.

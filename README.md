@@ -39,35 +39,29 @@ src/
   app/            layout (fonts, metadata, theme script), page, OG/Twitter images,
                   icons, sitemap, robots, manifest, llms.txt, 404
   sections/       one file per page section (hero, zenz, prelims, process, about, contact…)
-  components/     shared UI: frames (phone/browser), case-study layout, code block, icons…
-  lib/            site.ts (all facts and links), image-slots.ts, highlight.ts
-  assets/         PrelimsDaily screenshots, fonts (web subsets + TTFs for the OG image)
+  components/     shared UI: frames (phone, browser, phone rail), case-study layout, code block…
+  lib/            site.ts (all facts and links), metadata.ts, highlight.ts
+  assets/         screenshots (zenz, prelims), portrait, fonts (web subsets + TTFs for OG)
 public/
-  images/         drop your own screenshots here (see below)
-  schematics/     placeholder art shown until real screenshots exist
   Aayush_Thakur_Resume.pdf
 ```
 
 All facts, links and the site URL live in [`src/lib/site.ts`](src/lib/site.ts).
 
-## Adding the missing images
+## Images
 
-Zen-Z screenshots and the portrait use **image slots**. Drop a file with the right name into
-`public/images/` (`.png`, `.jpg`, `.webp` or `.avif`) and it replaces the schematic on the
-next build, with no code changes. Frames keep a fixed aspect ratio, so swapping images never
-shifts the layout.
+All screenshots are imported statically from `src/assets/`, so Next.js knows their size
+(no layout shift) and serves AVIF/WebP at the right width.
 
-| File | What | Size |
-| --- | --- | --- |
-| `public/images/zenz/app-home.png` | Zen-Z app home or plans screen | 1080 × 2284 (portrait phone) |
-| `public/images/zenz/app-booking.png` | A step of the booking flow | 1080 × 2284 |
-| `public/images/zenz/app-chat.png` | Group chat | 1080 × 2284 |
-| `public/images/zenz/admin-board.png` | Admin matching board | 2400 × 1500 (16:10) |
-| `public/images/about/portrait.jpg` | Your photo (face in the upper third) | 1200 × 1500 (4:5) |
+- `src/assets/zenz/`: the admin dashboard, the app home screen and the six booking-flow
+  screens.
+- `src/assets/prelims/`: PrelimsDaily screens.
+- `src/assets/about/portrait.jpg`: 4:5 portrait.
 
-Phone screenshots are cropped from the top, so any modern phone screenshot (around 9:19) works.
-Include the status bar. Run `npm run dev` and the dev build labels each missing slot with its
-exact path.
+Phone screenshots are stored **with the device status bar cropped off** (about the top 5%).
+The frame draws a clean one in the app's colours, which keeps notification icons and data
+counters off the site. To swap a screen, replace the file with the same name and keep the same
+crop.
 
 ## Run it
 

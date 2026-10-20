@@ -1,5 +1,5 @@
 import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
-import { PhoneFrame } from "@/components/frames";
+import { PhoneRail } from "@/components/frames";
 import { ArrowUpRight, GitHub } from "@/components/icons";
 import { projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
@@ -93,33 +93,7 @@ export function PrelimsDaily() {
 
       {/* Gallery: a staggered row on desktop, a swipeable rail on touch */}
       <div className="mt-14 md:mt-20">
-        <ul
-          tabIndex={0}
-          aria-label="PrelimsDaily screenshots"
-          className="scroller -mx-[clamp(1.25rem,4vw,2.5rem)] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,2.5rem)] pt-2 pb-6 md:mx-0 md:grid md:grid-cols-5 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:gap-7"
-        >
-          {screens.map((s, i) => (
-            <li
-              key={s.title}
-              data-reveal
-              style={stagger(i)}
-              className={`w-[62vw] max-w-[260px] shrink-0 snap-center md:w-auto md:max-w-none ${
-                i % 2 === 1 ? "md:translate-y-10" : ""
-              }`}
-            >
-              <figure>
-                <PhoneFrame
-                  source={{ image: s.image, alt: s.alt }}
-                  sizes="(min-width: 768px) 20vw, 62vw"
-                />
-                <figcaption className="mt-4">
-                  <span className="block text-sm font-medium">{s.title}</span>
-                  <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{s.caption}</span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+        <PhoneRail label="PrelimsDaily screenshots" items={screens} tone="light" />
       </div>
 
       <div className="mt-16 space-y-16 md:mt-28 md:space-y-24">

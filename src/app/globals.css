@@ -358,25 +358,13 @@
   display: none;
 }
 
-.schematic {
-  background: var(--schematic-light) top / cover no-repeat;
-}
-:root[data-theme="dark"] /* Without JS the toggle can't work, so don't offer it. */
-:root:not(.js) .theme-toggle {
-  display: none;
-}
-
-.schematic {
-  background-image: var(--schematic-dark);
+/* Light-UI screenshots are dimmed a touch in dark mode so they don't glare. */
+:root[data-theme="dark"] .dim-in-dark {
+  filter: brightness(0.86);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) /* Without JS the toggle can't work, so don't offer it. */
-:root:not(.js) .theme-toggle {
-  display: none;
-}
-
-.schematic {
-    background-image: var(--schematic-dark);
+  :root:not([data-theme="light"]) .dim-in-dark {
+    filter: brightness(0.86);
   }
 }
 

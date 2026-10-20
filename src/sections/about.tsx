@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/section-heading";
-import { Schematic } from "@/components/schematics";
-import { imageSlots, resolveSlot } from "@/lib/image-slots";
 import { site } from "@/lib/site";
 import { nb } from "@/lib/nobreak";
 import { stagger } from "@/lib/stagger";
+import portrait from "@/assets/about/portrait.jpg";
 
 const facts = [
   { term: "Based in", value: "Jaipur, India (IST, UTC+5:30)" },
@@ -14,7 +13,6 @@ const facts = [
 ];
 
 export function About() {
-  const portrait = resolveSlot("about/portrait");
   return (
     <section id="about" aria-labelledby="about-title" className="cv-auto border-t border-line py-20 [--cv-h:1600px] md:py-32">
       <div className="container-page">
@@ -32,26 +30,13 @@ export function About() {
         <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-8">
           <figure data-reveal className="md:col-span-4 md:col-start-4 lg:col-span-3 lg:col-start-4">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[16px] border border-line bg-surface-2">
-              {portrait ? (
-                <Image
-                  src={portrait}
-                  alt="Portrait of Aayush Thakur"
-                  fill
-                  sizes="(min-width: 1024px) 280px, (min-width: 768px) 30vw, 90vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div role="img" aria-label="Portrait coming soon" className="absolute inset-0">
-                  <Schematic kind="portrait" />
-                  {process.env.NODE_ENV === "development" ? (
-                    <div className="absolute inset-x-3 bottom-3 rounded-md border border-dashed border-accent bg-bg/95 p-2 font-mono text-[10px] leading-snug">
-                      <span className="block font-semibold text-accent">IMAGE NEEDED</span>
-                      public/images/about/portrait.jpg
-                      <span className="block text-muted">{imageSlots["about/portrait"].size}</span>
-                    </div>
-                  ) : null}
-                </div>
-              )}
+              <Image
+                src={portrait}
+                alt="Aayush Thakur smiling, arms crossed, in a blue shirt against green hills"
+                fill
+                sizes="(min-width: 1024px) 280px, (min-width: 768px) 30vw, 90vw"
+                className="object-cover"
+              />
             </div>
             <figcaption className="mt-3 font-mono text-xs text-muted">{site.name}, Jaipur</figcaption>
           </figure>
