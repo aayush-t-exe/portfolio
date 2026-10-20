@@ -1,0 +1,349 @@
+@import "tailwindcss";
+
+/* ───────────────────────────── Tokens ─────────────────────────────
+   Paper & ink, one signal colour. Contrast of every text token is checked
+   against --bg and --surface (≥ 4.5:1) in both themes. */
+
+:root {
+  --bg: #f4f2ed;
+  --surface: #fbfaf7;
+  --surface-2: #ebe8e1;
+  --fg: #161512;
+  --muted: #5b5850;
+  --faint: #8c887f; /* decorative only (icons, rules), never body text */
+  --line: #dedad1;
+  --line-strong: #c9c4b9;
+  --accent: #c2370f;
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --on-accent: #ffffff;
+  --code-bg: #1a1916;
+  --code-fg: #e9e6df;
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(22 21 18 / 0.04),
+    0 8px 24px -12px rgb(22 21 18 / 0.12);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0e0c;
+    --surface: #161613;
+    --surface-2: #1e1e1b;
+    --fg: #eeece6;
+    --muted: #a39f96;
+    --faint: #6d6a63;
+    --line: #2a2926;
+    --line-strong: #3b3a36;
+    --accent: #ff6a3d;
+    --on-accent: #160a05;
+    --code-bg: #121210;
+    --code-fg: #e9e6df;
+    --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0e0e0c;
+  --surface: #161613;
+  --surface-2: #1e1e1b;
+  --fg: #eeece6;
+  --muted: #a39f96;
+  --faint: #6d6a63;
+  --line: #2a2926;
+  --line-strong: #3b3a36;
+  --accent: #ff6a3d;
+  --on-accent: #160a05;
+  --code-bg: #121210;
+  --code-fg: #e9e6df;
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-code-bg: var(--code-bg);
+  --color-code-fg: var(--code-fg);
+
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --shadow-card: var(--shadow);
+}
+
+/* ───────────────────────────── Base ───────────────────────────── */
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ───────────────────────────── Components ───────────────────────────── */
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  /* Mono metadata label: "01 / Selected work" */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Pressable feedback (Emil: buttons must feel responsive) */
+  .press {
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding-inline: 1.125rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .btn-primary {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .btn-ghost {
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      background: color-mix(in oklab, var(--fg) 86%, var(--accent));
+    }
+    .btn-ghost:hover {
+      background: var(--surface);
+      border-color: var(--fg);
+    }
+  }
+
+  /* Underline that draws in on hover, for inline text links */
+  .link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    transition:
+      background-size 240ms var(--ease-out),
+      color 200ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link {
+      background-size: 0% 1px;
+    }
+    .link:hover {
+      background-size: 100% 1px;
+    }
+  }
+
+  .serif-em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ───────────────────────────── Motion ─────────────────────────────
+   Reveal on scroll: only opacity + a short translate, strong ease-out.
+   Only armed when JS has run (html.js), so no-JS visitors see everything. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 900ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .js [data-reveal][data-shown] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hero entrance: plays once on load, CSS-only so it never waits for hydration. */
+  .enter {
+    animation: enter 800ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+  }
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+  }
+
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: pulse 2.4s var(--ease-out) infinite;
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+}
+
+/* Reduced motion: keep gentle fades that aid comprehension, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+  .js [data-reveal][data-shown] {
+    opacity: 1;
+  }
+}
+
+/* ───────────────────────────── Header ─────────────────────────────
+   Transparent at the top; gains a translucent surface + hairline once the page
+   scrolls. Uses a scroll-driven animation where supported, so it costs no JS. */
+
+.site-header {
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: header-solidify linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 96px;
+  }
+  @keyframes header-solidify {
+    from {
+      background: color-mix(in oklab, var(--bg) 0%, transparent);
+      border-bottom-color: transparent;
+      backdrop-filter: none;
+    }
+  }
+}
+
+/* Theme icon swap, pure CSS so SSR markup is identical for everyone. */
+.theme-icon-sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+:root[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .theme-icon-moon {
+    display: none;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: ease;
+}
+
+/* Horizontal scroller without a visible scrollbar (gallery on touch). */
+.scroller {
+  scrollbar-width: none;
+}
+.scroller::-webkit-scrollbar {
+  display: none;
+}
