@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 /**
  * Zen-Z system diagram, built in HTML so it reflows (columns on desktop, a vertical
@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
  */
 export function ZenZArchitecture() {
   return (
-    <figure data-reveal aria-labelledby="arch-caption">
+    <figure data-reveal="clip" style={{ "--clip-r": "16px" } as CSSProperties} aria-labelledby="arch-caption">
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-[1fr_6.5rem_1.3fr_6.5rem_0.9fr] lg:gap-0">
           <Column title="Clients">
@@ -113,6 +113,16 @@ function Connector({ labels, accent }: { labels: string[]; accent?: boolean }) {
       {/* mobile: vertical line; desktop: horizontal line */}
       <span className={`absolute inset-y-0 left-1/2 w-px -translate-x-1/2 lg:hidden ${line}`} />
       <span className={`absolute inset-x-0 top-1/2 hidden h-px -translate-y-1/2 lg:block ${line}`} />
+      {accent ? (
+        // The payment loop: Motion sends a dot out along "create order →" and back along
+        // "← signed webhook". Vertical on mobile, horizontal on desktop.
+        <span
+          data-pulse
+          className="absolute inset-y-0 left-1/2 -ml-[2.5px] w-[5px] lg:inset-x-0 lg:inset-y-auto lg:top-1/2 lg:-mt-[2.5px] lg:ml-0 lg:h-[5px] lg:w-auto"
+        >
+          <span className="absolute top-0 left-0 size-[5px] rounded-full bg-accent opacity-0 shadow-[0_0_0_3px_var(--accent-soft)]" />
+        </span>
+      ) : null}
       <div className="relative flex flex-wrap justify-center gap-1 lg:flex-col lg:items-center">
         {labels.map((l) => (
           <span

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
 import { BrowserFrame, Caption, PhoneFrame, PhoneRail } from "@/components/frames";
@@ -131,7 +132,7 @@ export function ZenZ() {
       />
 
       {/* Hero composition: the admin dashboard with the student app overlapping it */}
-      <figure data-reveal className="mt-14 md:mt-20">
+      <figure data-reveal="clip" style={{ "--clip-r": "22px" } as CSSProperties} className="mt-14 md:mt-20">
         <div
           className="relative overflow-hidden rounded-[22px] border border-line bg-surface-2 px-4 pt-6 pb-10 sm:px-10 sm:pt-12 sm:pb-16 lg:px-14"
           style={{
@@ -147,15 +148,17 @@ export function ZenZ() {
             }}
             className="w-[88%] sm:w-[80%]"
           />
-          <PhoneFrame
-            tone="dark"
-            shot={{
-              image: home,
-              alt: "Zen-Z app home screen: Welcome Aayush, with Cafés, Dinners, Movies and Sports to pick from",
-            }}
-            sizes="(min-width: 1024px) 260px, 30vw"
-            className="absolute right-[4%] bottom-[6%] w-[30%] sm:w-[23%] lg:right-[6%] lg:w-[21%]"
-          />
+          {/* The phone settles in just after the dashboard (data-follow). */}
+          <div data-follow className="absolute right-[4%] bottom-[6%] w-[30%] sm:w-[23%] lg:right-[6%] lg:w-[21%]">
+            <PhoneFrame
+              tone="dark"
+              shot={{
+                image: home,
+                alt: "Zen-Z app home screen: Welcome Aayush, with Cafés, Dinners, Movies and Sports to pick from",
+              }}
+              sizes="(min-width: 1024px) 260px, 30vw"
+            />
+          </div>
         </div>
         <Caption>
           The live admin dashboard (bookings, groups, the matching queue, payments to check) and the
@@ -164,7 +167,7 @@ export function ZenZ() {
       </figure>
 
       <div className="mt-16 space-y-16 md:mt-24 md:space-y-24">
-        <Chapter number="01" title="The problem">
+        <Chapter title="The problem">
           <Lead>
             Meeting new people at college shouldn&rsquo;t depend on luck, or on someone volunteering to
             organise.
@@ -188,9 +191,7 @@ export function ZenZ() {
           </Body>
         </Chapter>
 
-        <Chapter
-          number="02"
-          title="What I built"
+        <Chapter title="What I built"
           wide={
             <div className="space-y-16 md:space-y-20">
             <figure>
@@ -246,7 +247,7 @@ export function ZenZ() {
           </Body>
         </Chapter>
 
-        <Chapter number="03" title="Architecture" wide={<ZenZArchitecture />}>
+        <Chapter title="Architecture" wide={<ZenZArchitecture />}>
           <Lead>Boring, proven parts, wired so that the database enforces the rules.</Lead>
           <Body>
             <p>
@@ -259,11 +260,11 @@ export function ZenZ() {
           </Body>
         </Chapter>
 
-        <Chapter number="04" title="Incident">
+        <Chapter title="Incident">
           <Incident />
         </Chapter>
 
-        <Chapter number="05" title="Results" wide={<Results />}>
+        <Chapter title="Results" wide={<Results />}>
           <Lead>Real students, real money.</Lead>
           <Body>
             <p>

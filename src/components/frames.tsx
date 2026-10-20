@@ -106,12 +106,12 @@ export function PhoneRail({
     <ul
       tabIndex={0}
       aria-label={label}
-      className={`scroller -mx-[clamp(1.25rem,4vw,2.5rem)] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,2.5rem)] pt-2 pb-6 md:mx-0 md:grid ${cols} md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:gap-6`}
+      className={`rail scroller -mx-[clamp(1.25rem,4vw,2.5rem)] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,2.5rem)] pt-2 pb-6 md:mx-0 md:grid ${cols} md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:gap-6`}
     >
       {items.map((s, i) => (
         <li
           key={s.title}
-          data-reveal
+          data-reveal="clip"
           style={stagger(i)}
           className={`w-[62vw] max-w-[260px] shrink-0 snap-center md:w-auto md:max-w-none ${
             !numbered && i % 2 === 1 ? "md:translate-y-10" : ""
@@ -121,7 +121,7 @@ export function PhoneRail({
             {numbered ? (
               <p className="mb-3 flex items-center gap-2 font-mono text-xs text-muted">
                 <span className={s.step === "Pay" ? "text-accent" : "text-fg"}>{s.step}</span>
-                <span aria-hidden className="h-px flex-1 bg-line-strong" />
+                <span aria-hidden className="rule-draw h-px flex-1 bg-line-strong" />
               </p>
             ) : null}
             <PhoneFrame shot={s} tone={tone} sizes={`(min-width: 768px) ${numbered ? "16vw" : "20vw"}, 62vw`} />

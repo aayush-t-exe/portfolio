@@ -54,12 +54,12 @@ export function ShipLog() {
         <p className="font-mono text-xs text-muted">newest first</p>
       </div>
       {/* before: draws the timeline spine behind the dots */}
-      <ol className="relative px-5 py-2 before:absolute before:top-6 before:bottom-6 before:left-6 before:w-px before:bg-line">
+      <ol className="ship-spine relative px-5 py-2 before:absolute before:top-6 before:bottom-6 before:left-6 before:w-px before:bg-line">
         {entries.map((e, i) => (
           <li key={e.title} className="enter relative flex gap-4 py-3.5" style={stagger(i + 4)}>
             <span
               aria-hidden
-              className={`relative z-10 mt-1.5 size-[9px] shrink-0 rounded-full ring-4 ring-surface ${
+              className={`ship-dot relative z-10 mt-1.5 size-[9px] shrink-0 rounded-full ring-4 ring-surface ${
                 e.tag === "live" ? "pulse-dot bg-accent" : "bg-line-strong"
               }`}
             />

@@ -97,7 +97,7 @@ export function PrelimsDaily() {
       </div>
 
       <div className="mt-16 space-y-16 md:mt-28 md:space-y-24">
-        <Chapter number="01" title="The brief">
+        <Chapter title="The brief">
           <Lead>
             &ldquo;Most aspirants don&rsquo;t fail for lack of material. They fail for lack of
             consistency.&rdquo;
@@ -117,9 +117,7 @@ export function PrelimsDaily() {
           </Body>
         </Chapter>
 
-        <Chapter
-          number="02"
-          title="Decisions"
+        <Chapter title="Decisions"
           wide={
             <ol className="grid gap-4 sm:grid-cols-2">
               {decisions.map((d, i) => (
@@ -139,7 +137,7 @@ export function PrelimsDaily() {
           <Lead>Small app, real engineering. Every trade-off is written down in the README.</Lead>
         </Chapter>
 
-        <Chapter number="03" title="Quality">
+        <Chapter title="Quality">
           <div data-reveal className="grid gap-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-12">
             <p className="text-[clamp(4rem,10vw,7.5rem)] leading-[0.85] font-medium tracking-[-0.06em] tabular-nums">
               {facts.prelims.tests}

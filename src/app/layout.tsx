@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { AnchorFix } from "@/components/anchor-fix";
-import { RevealObserver } from "@/components/reveal-observer";
+import { Motion } from "@/components/motion";
 import { openGraph } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -116,8 +115,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
-        <RevealObserver />
-        <AnchorFix />
+        <Motion />
       </body>
     </html>
   );

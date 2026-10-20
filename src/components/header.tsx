@@ -8,6 +8,8 @@ import avatar from "@/assets/about/avatar.jpg";
 export function Header() {
   return (
     <header className="site-header sticky top-0 z-50">
+      {/* Reading progress: scroll-driven, CSS only (hidden where unsupported or reduced motion). */}
+      <span aria-hidden className="reading-progress absolute inset-x-0 top-0 h-0.5 origin-left bg-accent" />
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <div className="flex items-center">
           <Link href="/" className="press group flex items-center gap-2.5 rounded-md">

@@ -121,7 +121,7 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
-  /* Sections focused programmatically after an anchor jump (AnchorFix) aren't controls. */
+  /* Sections focused programmatically after an anchor jump (Motion) aren't controls. */
   [tabindex="-1"]:focus {
     outline: none;
   }
@@ -233,7 +233,7 @@
     content-visibility: auto;
     contain-intrinsic-size: auto var(--cv-h, 1500px);
   }
-  /* Set before anchor jumps (see AnchorFix) so scroll targets use the real layout. */
+  /* Set before anchor jumps (see Motion) so scroll targets use the real layout. */
   .cv-off .cv-auto {
     content-visibility: visible;
   }
@@ -247,21 +247,85 @@
 }
 
 /* ───────────────────────────── Motion ─────────────────────────────
-   Reveal on scroll: only opacity + a short translate, strong ease-out.
-   Only armed when JS has run (html.reveal-armed), so no-JS visitors see everything. */
+   Reveal on scroll, armed only once JS has run (html.reveal-armed), so no-JS visitors
+   and print see everything. Variants via the attribute value:
+     data-reveal / ="up"  opacity + 10px rise   (headings, leads, cards)
+     ="fade"              opacity only           (long body copy)
+     ="clip"              figure "develops" from the top, image settles from 1.015
+     ="scale"             opacity + scale .98
+   Stagger with style={stagger(n)}; capped at 5 steps (300ms) so long lists never wait. */
+
+/* Scroll-linked indicators stay hidden unless motion is allowed and the browser supports
+   scroll timelines (enabled further down). */
+.reading-progress,
+.chapter-fill {
+  display: none;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .reveal-armed [data-reveal] {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 10px, 0);
     transition:
-      opacity 700ms var(--ease-out),
-      transform 900ms var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 70ms);
+      opacity 450ms var(--ease-out),
+      transform 600ms var(--ease-out),
+      clip-path 700ms var(--ease-out);
+    transition-delay: calc(min(var(--i, 0), 5) * 60ms);
+  }
+  .reveal-armed [data-reveal="fade"] {
+    transform: none;
+    transition: opacity 400ms var(--ease-out);
+    transition-delay: calc(min(var(--i, 0), 5) * 60ms);
+  }
+  .reveal-armed [data-reveal="scale"] {
+    transform: scale(0.98);
+  }
+  /* Develop: clip from the top (negative insets so shadows are never cut once shown). */
+  .reveal-armed [data-reveal="clip"] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(6% -12% -12% -12% round var(--clip-r, 0px));
+  }
+  .reveal-armed [data-reveal="clip"] img {
+    transform: scale(1.015);
+    transition: transform 900ms var(--ease-out);
   }
   .reveal-armed [data-reveal][data-shown] {
     opacity: 1;
     transform: none;
+  }
+  .reveal-armed [data-reveal="clip"][data-shown] {
+    clip-path: inset(-12% -12% -12% -12% round var(--clip-r, 0px));
+  }
+  .reveal-armed [data-reveal="clip"][data-shown] img {
+    transform: none;
+  }
+  /* A child that follows its revealed parent (the phone over the admin dashboard). */
+  .reveal-armed [data-reveal] [data-follow] {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition:
+      opacity 450ms var(--ease-out) 120ms,
+      transform 600ms var(--ease-out) 120ms;
+  }
+  .reveal-armed [data-reveal][data-shown] [data-follow] {
+    opacity: 1;
+    transform: none;
+  }
+  /* Hairlines draw left to right once their block is revealed. */
+  .reveal-armed [data-reveal] .rule-draw {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 400ms var(--ease-out) 150ms;
+  }
+  .reveal-armed [data-reveal][data-shown] .rule-draw {
+    transform: none;
+  }
+  /* Swipe rails reveal each item as it arrives, with no stagger wait. */
+  @media (max-width: 767px) {
+    .reveal-armed .rail > [data-reveal] {
+      transition-delay: 0ms;
+    }
   }
 
   /* Hero entrance: plays once on load, CSS-only so it never waits for hydration. */
@@ -273,6 +337,27 @@
     from {
       opacity: 0;
       transform: translate3d(0, 12px, 0);
+    }
+  }
+
+  /* Ship log: the spine draws down, then each dot pops in with its entry. Plays once. */
+  .ship-spine::before {
+    transform-origin: top;
+    animation: spine 700ms var(--ease-out) 240ms both;
+  }
+  @keyframes spine {
+    from {
+      transform: scaleY(0);
+    }
+  }
+  .ship-dot {
+    animation: dot 250ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 160ms);
+  }
+  @keyframes dot {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
     }
   }
 
@@ -295,16 +380,64 @@
       opacity: 0;
     }
   }
+
+  /* Scroll-linked progress, where supported: no JS. */
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      display: block;
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes progress {
+      from {
+        transform: scaleX(0);
+      }
+    }
+  }
+  @supports (animation-timeline: view()) {
+    .chapter-track {
+      view-timeline-name: --chapter;
+    }
+    .chapter-fill {
+      display: block;
+      animation: chapter-fill linear both;
+      animation-timeline: --chapter;
+      animation-range: entry 20% exit 20%;
+    }
+    @keyframes chapter-fill {
+      from {
+        transform: scaleX(0);
+        background: var(--line-strong);
+      }
+      99% {
+        background: var(--line-strong);
+      }
+      to {
+        transform: scaleX(1);
+        background: var(--accent);
+      }
+    }
+  }
 }
 
-/* Reduced motion: keep gentle fades that aid comprehension, drop movement. */
+/* Reduced motion: 200ms fades only. No transforms, clips, travelling dots or scroll
+   timelines; the spine and rules render fully drawn. */
 @media (prefers-reduced-motion: reduce) {
   .reveal-armed [data-reveal] {
     opacity: 0;
-    transition: opacity 400ms ease;
+    transition: opacity 200ms ease;
   }
   .reveal-armed [data-reveal][data-shown] {
     opacity: 1;
+  }
+}
+
+@media print {
+  .reveal-armed [data-reveal],
+  .reveal-armed [data-reveal] [data-follow] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
   }
 }
 

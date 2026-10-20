@@ -22,7 +22,7 @@ export function SectionHeading({
     <div className="grid gap-6 md:grid-cols-12 md:gap-8">
       <p data-reveal className="label flex items-center gap-3 self-start md:col-span-3 md:pt-4">
         <span className="text-fg">{index}</span>
-        <span aria-hidden className="h-px w-6 bg-line-strong" />
+        <span aria-hidden className="rule-draw h-px w-6 bg-line-strong" />
         {label}
       </p>
       <div className="md:col-span-9">

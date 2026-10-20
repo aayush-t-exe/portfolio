@@ -15,7 +15,7 @@ export function Contact() {
       <div className="container-page">
         <p data-reveal className="label flex items-center gap-3">
           <span className="text-fg">04</span>
-          <span aria-hidden className="h-px w-6 bg-line-strong" />
+          <span aria-hidden className="rule-draw h-px w-6 bg-line-strong" />
           Contact
         </p>
         <h2

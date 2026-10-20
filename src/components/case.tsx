@@ -63,24 +63,28 @@ export function CaseHeader({
   );
 }
 
-/** A numbered chapter of a case study: sticky mono label on the left, story on the right. */
+/**
+ * A chapter of a case study: sticky mono label on the left, story on the right. The short
+ * line beside the label fills as the chapter scrolls past (scroll-driven, CSS only).
+ */
 export function Chapter({
-  number,
   title,
   children,
   wide,
 }: {
-  number: string;
   title: string;
   children: ReactNode;
   /** Full-width content under the chapter (diagrams, galleries). */
   wide?: ReactNode;
 }) {
   return (
-    <div className="grid gap-6 border-t border-line pt-10 md:grid-cols-12 md:gap-8 md:pt-14">
+    <div className="chapter-track grid gap-6 border-t border-line pt-10 md:grid-cols-12 md:gap-8 md:pt-14">
       <div className="md:col-span-3">
-        <h4 className="label md:sticky md:top-24">
-          <span className="text-fg">{number}</span> · {title}
+        <h4 className="label flex items-center gap-3 md:sticky md:top-24">
+          <span className="text-fg">{title}</span>
+          <span aria-hidden className="relative hidden h-px w-14 bg-line md:block">
+            <span className="chapter-fill absolute inset-0 origin-left" />
+          </span>
         </h4>
       </div>
       <div className="min-w-0 md:col-span-9">{children}</div>
@@ -103,7 +107,7 @@ export function Lead({ children }: { children: ReactNode }) {
 export function Body({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
-      data-reveal
+      data-reveal="fade"
       className={`mt-5 max-w-[62ch] space-y-4 text-[1.0625rem] leading-relaxed text-muted [&_strong]:font-medium [&_strong]:text-fg ${className}`}
     >
       {children}
