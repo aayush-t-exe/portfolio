@@ -1,6 +1,6 @@
 /**
  * Single source of truth for identity, links and SEO.
- * Every fact on the site comes from Aayush's brief or his resume. Do not add numbers that aren't real.
+ * Every fact on the site comes from Aayush's brief or resume. Do not add numbers that aren't real.
  */
 
 const rawUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aayushthakur.vercel.app";
@@ -12,7 +12,7 @@ export const site = {
   role: "Founder-engineer",
   title: "Aayush Thakur: Founder-engineer who ships real products fast",
   description:
-    "Aayush Thakur is a founder-engineer from Jaipur, India. He built Zen-Z, a live campus social app with 150+ users in 2 days and ₹33K+ revenue, solo (React Native, Next.js, Supabase, PayU), and works AI-native with Claude Code and Cursor.",
+    "Founder-engineer from Jaipur, India. Aayush Thakur built Zen-Z solo, a live campus social app with 150+ users in its first 2 days and ₹33K+ revenue (React Native, Next.js, Supabase, PayU), and works AI-native with Claude Code and Cursor.",
   location: "Jaipur, India",
   email: "aayushthakur8002@gmail.com",
   github: "https://github.com/aayush-t-exe",
