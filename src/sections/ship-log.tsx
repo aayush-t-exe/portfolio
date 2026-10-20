@@ -1,3 +1,4 @@
+import { nb } from "@/lib/nobreak";
 import { stagger } from "@/lib/stagger";
 
 type Entry = {
@@ -80,7 +81,7 @@ export function ShipLog() {
                   <span className="shrink-0 font-mono text-xs font-medium text-accent">{e.when}</span>
                 )}
               </div>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{e.detail}</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted">{nb(e.detail)}</p>
             </div>
           </li>
         ))}

@@ -2,6 +2,7 @@ import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
 import { BrowserFrame, Caption, PhoneFrame } from "@/components/frames";
 import { ArrowUpRight } from "@/components/icons";
+import { hasMissing } from "@/lib/image-slots";
 import { projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import { ZenZArchitecture } from "@/sections/zenz-architecture";
@@ -84,7 +85,12 @@ export function ZenZ() {
             className="absolute right-[4%] bottom-[6%] w-[30%] sm:w-[23%] lg:right-[6%] lg:w-[21%]"
           />
         </div>
-        <Caption>The admin matching board the team uses to hand-match every group, and the student app.</Caption>
+        <Caption>
+          The admin matching board the team uses to hand-match every group, and the student app.
+          {hasMissing("zenz/admin-board", "zenz/app-home", "zenz/app-booking", "zenz/app-chat")
+            ? " Shown as schematics; screenshots coming soon."
+            : null}
+        </Caption>
       </figure>
 
       <div className="mt-16 space-y-16 md:mt-24 md:space-y-24">
@@ -95,13 +101,13 @@ export function ZenZ() {
           </Lead>
           <Body>
             <p>
-              Zen-Z matches college students into <strong>small groups of 4–5 strangers</strong> and
+              <span className="whitespace-nowrap">Zen-Z</span> matches college students into <strong>small groups of 4–5 strangers</strong> and
               gives each group a plan: a café, a dinner, a movie or a game. Students pick a plan, book
               and pay in the app, and get matched into a group.
             </p>
             <p>
               Demand came first: <strong>65+ students joined the waitlist</strong> before launch, and
-              Zen-Z&rsquo;s Instagram has grown to <strong>550 followers and 140K+ views</strong>.
+              <span className="whitespace-nowrap">Zen-Z&rsquo;s</span> Instagram has grown to <strong>550 followers and 140K+ views</strong>.
             </p>
           </Body>
         </Chapter>
@@ -196,7 +202,7 @@ export function ZenZ() {
           <Lead>Real students, real money.</Lead>
           <Body>
             <p>
-              Zen-Z is live on the Play Store. It reached <strong>150+ users in its first two days</strong>,
+              <span className="whitespace-nowrap">Zen-Z</span> is live on the Play Store. It reached <strong>150+ users in its first two days</strong>,
               has taken <strong>₹33K+</strong> in revenue so far, and I pitched it to the judging panel at
               JNU&rsquo;s Shark Tank in September 2026.
             </p>

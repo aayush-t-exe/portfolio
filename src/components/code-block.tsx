@@ -22,7 +22,7 @@ export function CodeBlock({
 }) {
   const tokens = highlight(code.trim());
   return (
-    <figure className="overflow-hidden rounded-[14px] border border-black/40 bg-code-bg shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
+    <figure className="overflow-hidden rounded-[14px] border border-code-border bg-code-bg shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
       <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
         <span className="font-mono text-xs text-[#cfcac0]">{filename}</span>
         {badge ? (

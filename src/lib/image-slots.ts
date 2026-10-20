@@ -38,6 +38,11 @@ export type Schematic = (typeof imageSlots)[ImageSlot]["schematic"];
 
 const EXTENSIONS = [".avif", ".webp", ".png", ".jpg", ".jpeg"];
 
+/** True if any of these slots still renders a schematic. */
+export function hasMissing(...slots: ImageSlot[]) {
+  return slots.some((s) => resolveSlot(s) === null);
+}
+
 /** Resolved at build time (the page is statically prerendered). */
 export function resolveSlot(slot: ImageSlot): string | null {
   for (const ext of EXTENSIONS) {

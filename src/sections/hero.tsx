@@ -12,7 +12,7 @@ export function Hero() {
         <div className="lg:col-span-7">
           <p className="enter label inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/70 py-1.5 pr-3.5 pl-3 normal-case">
             <span className="pulse-dot relative size-1.5 rounded-full bg-accent" aria-hidden />
-            <span className="text-fg">Founder &amp; CTO, Zen-Z</span>
+            <span className="text-fg">Founder &amp; CTO, <span className="whitespace-nowrap">Zen-Z</span></span>
             <span aria-hidden className="text-faint">
               /
             </span>
@@ -34,7 +34,7 @@ export function Hero() {
             style={stagger(1)}
           >
             I&rsquo;m Aayush, a founder-engineer. I built{" "}
-            <a href="#zen-z" className="link text-fg">
+            <a href="#zen-z" className="link whitespace-nowrap text-fg">
               Zen-Z
             </a>{" "}
             on my own (the app, admin panel, backend and payments), and it reached{" "}

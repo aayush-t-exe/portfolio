@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { Schematic } from "@/components/schematics";
 import { imageSlots, resolveSlot } from "@/lib/image-slots";
 import { site } from "@/lib/site";
+import { nb } from "@/lib/nobreak";
 import { stagger } from "@/lib/stagger";
 
 const facts = [
@@ -63,7 +64,7 @@ export function About() {
             >
               <p>
                 I&rsquo;m <strong>Aayush Thakur</strong>, a third-year Computer Science student at Jaipur
-                National University. Most of what I know I learned by shipping. Zen-Z taught me
+                National University. Most of what I know I learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me
                 payments, row-level security, and what real users do to an app in its first 48 hours.
               </p>
               <p>
@@ -80,7 +81,7 @@ export function About() {
               {facts.map((f) => (
                 <div key={f.term} className="grid grid-cols-[7.5rem_1fr] gap-4 py-3.5 text-[0.9375rem]">
                   <dt className="label pt-0.5">{f.term}</dt>
-                  <dd>{f.value}</dd>
+                  <dd>{nb(f.value)}</dd>
                 </div>
               ))}
             </dl>

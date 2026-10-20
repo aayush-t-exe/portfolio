@@ -1,3 +1,4 @@
+import { nb } from "@/lib/nobreak";
 import { stagger } from "@/lib/stagger";
 
 const stats = [
@@ -20,7 +21,7 @@ export function Proof() {
               i % 2 === 1 ? "border-l border-line pl-5 sm:pl-8" : ""
             } ${i === 2 ? "lg:border-l lg:pl-8" : ""} ${i >= 2 ? "border-t border-line lg:border-t-0" : ""}`}
           >
-            <dt className="text-sm leading-snug text-muted">{s.label}</dt>
+            <dt className="text-sm leading-snug text-muted">{nb(s.label)}</dt>
             <dd className="text-[clamp(1.875rem,4vw,2.75rem)] leading-none font-medium tracking-[-0.04em] tabular-nums">
               {s.value}
             </dd>

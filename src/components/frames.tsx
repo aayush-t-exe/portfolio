@@ -57,17 +57,14 @@ function Screen({
       className="absolute inset-0"
     >
       <Schematic kind={spec.schematic} />
+      {/* Loud in development so it can't be missed; in production the figure caption says it. */}
       {isDev ? (
         <div className="absolute inset-x-2 bottom-2 rounded-md border border-dashed border-accent bg-bg/95 p-2 font-mono text-[10px] leading-snug text-fg">
           <span className="block font-semibold text-accent">IMAGE NEEDED</span>
           public/images/{source.slot}.png
           <span className="block text-muted">{spec.size}</span>
         </div>
-      ) : (
-        <span className="absolute top-2.5 right-2.5 rounded-full border border-line bg-surface/90 px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted uppercase">
-          schematic
-        </span>
-      )}
+      ) : null}
     </div>
   );
 }

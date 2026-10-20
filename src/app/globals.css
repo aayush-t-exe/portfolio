@@ -18,6 +18,7 @@
   --on-accent: #ffffff;
   --code-bg: #1a1916;
   --code-fg: #e9e6df;
+  --code-border: rgb(0 0 0 / 0.4);
   --shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(22 21 18 / 0.04),
     0 8px 24px -12px rgb(22 21 18 / 0.12);
   color-scheme: light;
@@ -37,6 +38,7 @@
     --on-accent: #160a05;
     --code-bg: #121210;
     --code-fg: #e9e6df;
+    --code-border: rgb(255 255 255 / 0.1);
     --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
     color-scheme: dark;
   }
@@ -55,6 +57,7 @@
   --on-accent: #160a05;
   --code-bg: #121210;
   --code-fg: #e9e6df;
+  --code-border: rgb(255 255 255 / 0.1);
   --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
@@ -73,6 +76,7 @@
   --color-on-accent: var(--on-accent);
   --color-code-bg: var(--code-bg);
   --color-code-fg: var(--code-fg);
+  --color-code-border: var(--code-border);
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
