@@ -8,7 +8,7 @@ import portrait from "@/assets/about/portrait.jpg";
 const facts = [
   { term: "Based in", value: "Jaipur, India (IST, UTC+5:30)" },
   { term: "Now", value: "Founder & CTO, Zen-Z" },
-  { term: "Studying", value: "B.Tech CSE, Jaipur National University. Graduating May 2028" },
+  { term: "Studying", value: site.education.line },
   { term: "Recognition", value: "SIH internal round: 5th of ~75 teams. Pitched at JNU Shark Tank" },
 ];
 
@@ -48,8 +48,8 @@ export function About() {
               className="space-y-5 text-[1.125rem] leading-relaxed text-muted [&_strong]:font-medium [&_strong]:text-fg"
             >
               <p>
-                I&rsquo;m <strong>Aayush Thakur</strong>, a third-year Computer Science student at Jaipur
-                National University. Most of what I know I learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me
+                I&rsquo;m <strong>Aayush Thakur</strong>, a third-year B.Tech Computer Science student at
+                Jaipur National University, graduating in May 2028. Most of what I know I learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me
                 payments, row-level security, and what real users do to an app in its first 48 hours.
               </p>
               <p>

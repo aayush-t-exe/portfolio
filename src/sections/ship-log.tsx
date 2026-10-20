@@ -23,7 +23,7 @@ const entries: Entry[] = [
     when: "Oct 2026",
     dateTime: "2026-10",
     title: "Shipped PrelimsDaily",
-    detail: "A UPSC practice app, built in one day, with 66 unit tests.",
+    detail: "A UPSC practice app, built in one day, with 72 unit tests.",
     tag: "shipped",
     href: "#prelimsdaily",
   },

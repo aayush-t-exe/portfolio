@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { openGraph } from "@/lib/metadata";
-import { projects, site } from "@/lib/site";
+import { facts, projects, site } from "@/lib/site";
 import portrait from "@/assets/about/portrait.jpg";
 import { About } from "@/sections/about";
 import { Contact } from "@/sections/contact";
@@ -91,7 +91,7 @@ function JsonLd() {
         applicationCategory: "SocialNetworkingApplication",
         operatingSystem: "Android, Web",
         description:
-          "A campus social app that matches college students into small groups of 4–5 strangers for cafés, dinners, movies and sports. Built with React Native (Expo), Next.js and Supabase, with PayU payments verified server-side.",
+          "A campus social app that matches college students into small groups of strangers for cafés, dinners, movies and sports. Built with React Native (Expo), Next.js and Supabase, with PayU payments verified server-side.",
         creator: { "@id": person },
         author: { "@id": person },
       },
@@ -105,7 +105,7 @@ function JsonLd() {
         programmingLanguage: "TypeScript",
         runtimePlatform: "React Native (Expo)",
         description:
-          "A React Native + TypeScript UPSC Prelims daily-practice app with streaks, reminders, Reanimated animations and 66 unit tests, built in a single day.",
+          `A React Native + TypeScript UPSC Prelims daily-practice app with streaks, reminders, Reanimated animations and ${facts.prelims.tests} unit tests, built in a single day.`,
         creator: { "@id": person },
         author: { "@id": person },
       },

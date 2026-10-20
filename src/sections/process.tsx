@@ -1,4 +1,5 @@
 import { SectionHeading } from "@/components/section-heading";
+import { facts, projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 
 const steps = [
@@ -21,7 +22,7 @@ const steps = [
 ];
 
 const stack = [
-  { group: "Languages", items: ["TypeScript", "JavaScript", "SQL", "Python", "Java"] },
+  { group: "Languages", items: ["TypeScript", "JavaScript", "SQL"] },
   {
     group: "Frontend & mobile",
     items: ["React Native (Expo)", "React", "Next.js", "Tailwind CSS", "TanStack Query", "Zustand", "Reanimated"],
@@ -74,7 +75,8 @@ export function Process() {
 
           <div className="space-y-4 md:col-span-12 lg:col-span-4">
             <div className="space-y-4 lg:sticky lg:top-24">
-              <EvidenceClaudeMd />
+              <EvidenceCoAuthored />
+              <EvidencePlan />
               <EvidenceCommit />
             </div>
           </div>
@@ -102,6 +104,9 @@ export function Process() {
                 </div>
               ))}
             </dl>
+            <p className="text-sm text-muted md:col-span-9 md:col-start-4">
+              Also (coursework): Python, Java
+            </p>
           </div>
         </div>
       </div>
@@ -109,37 +114,53 @@ export function Process() {
   );
 }
 
-/** A lightly trimmed excerpt of the real CLAUDE.md from the PrelimsDaily repo. */
-function EvidenceClaudeMd() {
+/** Checkable in the public Zen-Z repo: count the Co-Authored-By trailers. */
+function EvidenceCoAuthored() {
+  const z = facts.zenz;
   return (
-    <figure data-reveal className="overflow-hidden rounded-[14px] border border-line bg-surface">
+    <figure data-reveal className="rounded-[14px] border border-line bg-surface p-4">
+      <p className="text-[clamp(2rem,4vw,2.5rem)] leading-none font-medium tracking-[-0.04em] tabular-nums">
+        {z.claudeCommits}
+        <span className="text-muted">/{z.commits}</span>
+      </p>
+      <figcaption className="mt-2 text-sm leading-snug text-muted">
+        <span className="whitespace-nowrap">Zen-Z</span> commits co-authored with Claude, across{" "}
+        {z.commitDays} days of work.{" "}
+        <a href={projects.zenz.sourceUrl} target="_blank" rel="noopener" className="link text-fg">
+          Check the log<span className="sr-only"> (opens in new tab)</span>
+        </a>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Real lines from this repo's own PLAN.md decision log (public with the site). */
+function EvidencePlan() {
+  return (
+    <figure data-reveal style={stagger(1)} className="overflow-hidden rounded-[14px] border border-line bg-surface">
       <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-        <span className="font-mono text-xs">prelims-daily / CLAUDE.md</span>
-        <span className="font-mono text-[10px] text-muted uppercase">excerpt</span>
+        <span className="font-mono text-xs">portfolio / PLAN.md</span>
+        <span className="font-mono text-xs text-muted">decision log</span>
       </div>
-      <div className="space-y-3 p-4 font-mono text-[12px] leading-[1.65] text-muted">
-        <p className="text-fg">## Locked rules</p>
-        <p>
-          - Logic lives in <span className="text-fg">src/logic/</span> as pure functions with tests. UI
-          components stay dumb.
-          <br />- Dates use the <span className="text-fg">local</span> calendar date, never UTC.
-          <br />- Animate transform and opacity, not layout, in hot paths.
-        </p>
-        <p className="text-fg">## How we work</p>
-        <p>
-          - Follow BUILD_PLAN.md milestone by milestone. Test, then commit.
-          <br />- After each milestone, explain what was built and the one concept worth knowing.{" "}
-          <mark className="bg-accent-soft text-fg">Aayush must be able to explain this code.</mark>
-        </p>
-      </div>
-      <figcaption className="sr-only">Excerpt from the CLAUDE.md agent instructions in the PrelimsDaily repository</figcaption>
+      <ul className="space-y-2.5 p-4 font-mono text-[12px] leading-[1.6] text-muted">
+        <li>
+          - <span className="text-fg">inlineCss</span> tried and reverted: no gain, and it doubled the
+          CSS bytes.
+        </li>
+        <li>- Hero H1 and intro never fade in (they are the LCP candidates).</li>
+        <li>
+          - Light accent darkened to <span className="text-fg">#B3320D</span> so small accent text on
+          tinted pills passes 4.5:1.
+        </li>
+      </ul>
+      <figcaption className="sr-only">Excerpt from the decision log in this site&rsquo;s PLAN.md</figcaption>
     </figure>
   );
 }
 
 function EvidenceCommit() {
   return (
-    <figure data-reveal style={stagger(1)} className="rounded-[14px] border border-line bg-surface p-4">
+    <figure data-reveal style={stagger(2)} className="rounded-[14px] border border-line bg-surface p-4">
       <p className="flex items-center gap-2 font-mono text-xs text-muted">
         <span aria-hidden className="size-1.5 rounded-full bg-accent" />
         commit <span className="text-fg">98611bf</span>

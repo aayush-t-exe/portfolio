@@ -1,7 +1,7 @@
 import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
 import { PhoneRail } from "@/components/frames";
 import { ArrowUpRight, GitHub } from "@/components/icons";
-import { projects } from "@/lib/site";
+import { facts, projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import today from "@/assets/prelims/today.jpg";
 import quiz from "@/assets/prelims/quiz.jpg";
@@ -142,13 +142,14 @@ export function PrelimsDaily() {
         <Chapter number="03" title="Quality">
           <div data-reveal className="grid gap-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-12">
             <p className="text-[clamp(4rem,10vw,7.5rem)] leading-[0.85] font-medium tracking-[-0.06em] tabular-nums">
-              66
+              {facts.prelims.tests}
               <span className="serif-em ml-2 text-[0.42em] tracking-normal text-muted">tests</span>
             </p>
             <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
-              Unit tests covering local-date maths, streak transitions (continue, freeze, reset, earning
-              freezes), XP and level curves, and the daily set&rsquo;s determinism, weak-subject
-              weighting and recency rules. Strict TypeScript and lint on top.
+              Unit tests in {facts.prelims.suites} suites, covering local-date maths, streak
+              transitions (continue, freeze, reset, earning freezes), XP and level curves, the daily
+              set&rsquo;s determinism, weak-subject weighting and recency rules, and loading saved
+              state safely. Strict TypeScript and lint on top.
             </p>
           </div>
         </Chapter>

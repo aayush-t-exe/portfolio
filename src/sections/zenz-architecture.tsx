@@ -10,7 +10,7 @@ export function ZenZArchitecture() {
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-[1fr_6.5rem_1.3fr_6.5rem_0.9fr] lg:gap-0">
           <Column title="Clients">
-            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="~25 screens · booking flow · push" />
+            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="20 app screens · booking flow · push" />
             <Node name="Admin panel" detail="Next.js" foot="Matching board · moderation · analytics" />
           </Column>
 
@@ -40,7 +40,7 @@ export function ZenZArchitecture() {
           GitHub Actions CI (37 test suites: Vitest, Jest, pgTAP)
           <span aria-hidden>→</span>
           Google Play + web (Vercel)
-          <span className="sm:ml-auto">179 commits</span>
+          <span className="sm:ml-auto">183 commits</span>
         </div>
       </div>
       <p className="sr-only">

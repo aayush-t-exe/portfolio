@@ -2,7 +2,7 @@ import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
 import { BrowserFrame, Caption, PhoneFrame, PhoneRail } from "@/components/frames";
 import { ArrowUpRight } from "@/components/icons";
-import { projects } from "@/lib/site";
+import { facts, projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import { ZenZArchitecture } from "@/sections/zenz-architecture";
 import admin from "@/assets/zenz/admin.png";
@@ -63,28 +63,36 @@ const flow = [
 ];
 
 const VERIFY_SKETCH = `
-// supabase/functions/payu-webhook: simplified sketch, not the production file
+// supabase/functions/payu-webhook: a simplified sketch of the real handler
 Deno.serve(async (req) => {
   const p = Object.fromEntries(await req.formData());
 
-  // 1. Log every call first, before trusting any of it.
-  await db.from("payment_webhooks").insert({ txnid: p.txnid, payload: p });
-
-  // 2. Recompute PayU's reverse hash with our secret salt (SHA-512).
+  // PayU's docs show a 5-udf formula. Payment Links really use all ten,
+  // confirmed byte for byte against a live ₹1 transaction.
   const expected = await sha512([
-    SALT, p.status, "", "", "", "", "",
+    SALT, p.status,
+    p.udf10, p.udf9, p.udf8, p.udf7, p.udf6,
     p.udf5, p.udf4, p.udf3, p.udf2, p.udf1,
     p.email, p.firstname, p.productinfo, p.amount, p.txnid, KEY,
   ].join("|"));
 
-  // 3. A bad signature confirms nothing.
-  if (expected !== p.hash) return new Response("invalid signature", { status: 401 });
+  // Constant-time compare: a bad signature confirms nothing.
+  if (!timingSafeEqual(expected, p.hash)) return reject(p, "invalid_signature");
 
-  // 4. Only a verified success marks the booking as paid.
-  if (p.status === "success") await confirmBooking(p.txnid);
+  // Cancelled, then paid on a stale tab? Not confirmed:
+  // logged as "payment_race_manual_refund_needed".
+  const outcome = await settleBooking(p);
 
-  return new Response("ok");
+  await logEvent(p, outcome);
+  return ok();
 });
+
+// Every call is logged with its outcome. Best-effort: never changes the response.
+async function logEvent(p, outcome) {
+  try {
+    await db.from("payment_webhook_events").insert({ txnid: p.txnid, outcome });
+  } catch {}
+}
 `;
 
 export function ZenZ() {
@@ -108,12 +116,16 @@ export function ZenZ() {
               Visit {zenz.urlLabel}
               <ArrowUpRight size={16} />
             </a>
-            {zenz.playStoreUrl ? (
-              <a href={zenz.playStoreUrl} target="_blank" rel="noopener" className="btn btn-ghost press">
-                Google Play
-                <ArrowUpRight size={16} />
-              </a>
-            ) : null}
+            <a href={zenz.playStoreUrl} target="_blank" rel="noopener" className="btn btn-ghost press">
+              Google Play
+              <ArrowUpRight size={16} />
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
+            <a href={zenz.sourceUrl} target="_blank" rel="noopener" className="btn btn-ghost press">
+              Source
+              <ArrowUpRight size={16} />
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
           </>
         }
       />
@@ -159,13 +171,19 @@ export function ZenZ() {
           </Lead>
           <Body>
             <p>
-              <span className="whitespace-nowrap">Zen-Z</span> matches college students into <strong>small groups of 4–5 strangers</strong> and
-              gives each group a plan: a café, a dinner, a movie or a game. Students pick a plan, book
-              and pay in the app, and get matched into a group.
+              <span className="whitespace-nowrap">Zen-Z</span> matches college students into{" "}
+              <strong>small groups of strangers</strong> (4–5 people; sports up to 14) and gives each
+              group a plan: a café, a dinner, a movie or a game. Students book in the app and get
+              matched into a group. Cafés and dinners are free to book (venues pay a commission);
+              movies and sports are paid.
             </p>
             <p>
               Demand came first: <strong>65+ students joined the waitlist</strong> before launch, and{" "}
-              <span className="whitespace-nowrap">Zen-Z&rsquo;s</span> Instagram has grown to <strong>550 followers and 140K+ views</strong>.
+              <span className="whitespace-nowrap">Zen-Z&rsquo;s</span>{" "}
+              <a href={zenz.instagram} target="_blank" rel="noopener" className="link text-fg">
+                Instagram<span className="sr-only"> (opens in new tab)</span>
+              </a>{" "}
+              has grown to <strong>550+ followers and 140K+ views</strong>.
             </p>
           </Body>
         </Chapter>
@@ -187,8 +205,8 @@ export function ZenZ() {
                 name="The student app"
                 stack="React Native (Expo) · TypeScript"
                 points={[
-                  "Android and web from one codebase, ~25 screens",
-                  "5-step booking flow, from picking a plan to payment",
+                  `Android, iOS (PWA) and web from one codebase, ${facts.zenz.appScreens} app screens`,
+                  "A booking flow of five choices, then payment",
                   "Realtime group chat and push notifications",
                 ]}
               />
@@ -222,7 +240,8 @@ export function ZenZ() {
             <p>
               As the only engineer, I owned the whole system: product decisions, data model, mobile
               app, internal tools, payments, CI and releases. Shipped to Google Play and the web
-              across <strong>179 commits</strong>, with <strong>37 test suites</strong> running in CI.
+              across <strong>{facts.zenz.commits} commits</strong>, with{" "}
+              <strong>{facts.zenz.testSuites} test suites</strong> running in CI.
             </p>
           </Body>
         </Chapter>
@@ -328,7 +347,7 @@ function Incident() {
           },
           {
             t: "Log everything",
-            d: "Every webhook call is written to the database before anything else runs, so any payment can be traced end to end.",
+            d: "Every webhook call is recorded with its outcome in payment_webhook_events. Best-effort, so logging can never change PayU's response.",
           },
           {
             t: "Client stays dumb",
@@ -370,9 +389,16 @@ function Results() {
     { v: "150+", l: "users in the first 2 days after launch" },
     { v: "₹33K+", l: "total revenue so far" },
     { v: "65+", l: "students on the waitlist before launch" },
-    { v: "140K+", l: "Instagram views · 550 followers" },
+    { v: "140K+", l: "Instagram views · 550+ followers" },
   ];
-  const build = ["~25 screens", "28 tables · RLS on all", "7 Edge Functions", "37 test suites in CI", "179 commits"];
+  const z = facts.zenz;
+  const build = [
+    `${z.appScreens} app screens`,
+    `${z.tables} tables · RLS on all`,
+    `${z.edgeFunctions} Edge Functions`,
+    `${z.testSuites} test suites in CI`,
+    `${z.commits} commits`,
+  ];
   return (
     <div className="space-y-4">
       <dl className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
