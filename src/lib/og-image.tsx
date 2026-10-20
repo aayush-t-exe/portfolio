@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 
 /** Shared renderer for opengraph-image and twitter-image (1200 × 630). */
 
-// Sync reads keep the route prerenderable under Cache Components (async I/O counts as uncached data).
+// Read once, at build time, when the image route is prerendered.
 const font = (file: string) => readFileSync(join(process.cwd(), "src/assets/fonts", file));
 
 export function renderOgImage() {

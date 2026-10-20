@@ -16,7 +16,7 @@ const facts = [
 export function About() {
   const portrait = resolveSlot("about/portrait");
   return (
-    <section id="about" aria-labelledby="about-title" className="cv-auto scroll-mt-16 border-t border-line py-20 [--cv-h:1600px] md:py-32">
+    <section id="about" aria-labelledby="about-title" className="cv-auto border-t border-line py-20 [--cv-h:1600px] md:py-32">
       <div className="container-page">
         <SectionHeading
           index="03"

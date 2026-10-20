@@ -31,30 +31,34 @@ export function CopyEmail({
   }
 
   return (
-    <button
-      type="button"
-      onClick={copy}
-      className={`press group inline-flex items-center gap-2 ${className}`}
-      aria-label={`Copy email address ${email}`}
-    >
-      {children ?? <span>{email}</span>}
-      <span className="relative grid size-4 place-items-center" aria-hidden>
-        <Copy
-          size={15}
-          className={`absolute transition-[opacity,filter,transform] duration-200 ease-out ${
-            copied ? "scale-75 opacity-0 blur-[2px]" : "opacity-100"
-          }`}
-        />
-        <Check
-          size={15}
-          className={`absolute text-accent transition-[opacity,filter,transform] duration-200 ease-out ${
-            copied ? "opacity-100" : "scale-75 opacity-0 blur-[2px]"
-          }`}
-        />
-      </span>
+    <>
+      <button
+        type="button"
+        onClick={copy}
+        className={`press group inline-flex items-center gap-2 ${className}`}
+        aria-label={`Copy email address ${email}`}
+      >
+        {children ?? <span>{email}</span>}
+        <span className="relative grid size-4 place-items-center" aria-hidden>
+          <Copy
+            size={15}
+            className={`absolute transition-[opacity,filter,transform] duration-200 ease-out ${
+              copied ? "scale-75 opacity-0 blur-[2px]" : "opacity-100"
+            }`}
+          />
+          <Check
+            size={15}
+            className={`absolute text-accent transition-[opacity,filter,transform] duration-200 ease-out ${
+              copied ? "opacity-100" : "scale-75 opacity-0 blur-[2px]"
+            }`}
+          />
+        </span>
+      </button>
+      {/* Outside the button: a button's children are presentational, so a live region inside
+          it isn't reliably announced. */}
       <span role="status" aria-live="polite" className="sr-only">
         {copied ? "Email address copied to clipboard" : ""}
       </span>
-    </button>
+    </>
   );
 }

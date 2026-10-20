@@ -1,6 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
+
 type Theme = "light" | "dark";
+
+const THEME_COLOR: Record<Theme, string> = { light: "#f4f2ed", dark: "#0e0e0c" };
+
+/** Keep the mobile browser chrome in sync with a manually chosen theme. */
+function syncThemeColor(theme: Theme) {
+  document
+    .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+    .forEach((m) => m.setAttribute("content", THEME_COLOR[theme]));
+}
 
 function currentTheme(): Theme {
   const set = document.documentElement.dataset.theme;
@@ -13,10 +24,16 @@ function currentTheme(): Theme {
  * correct for every visitor and there is no hydration flash.
  */
 export function ThemeToggle() {
+  useEffect(() => {
+    const saved = document.documentElement.dataset.theme;
+    if (saved === "light" || saved === "dark") syncThemeColor(saved);
+  }, []);
+
   function toggle() {
     const next: Theme = currentTheme() === "dark" ? "light" : "dark";
     const apply = () => {
       document.documentElement.dataset.theme = next;
+      syncThemeColor(next);
       try {
         localStorage.setItem("theme", next);
       } catch {}
@@ -33,10 +50,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Toggle dark theme"
       title="Toggle theme"
-      className="press grid size-9 place-items-center rounded-full text-muted hover:text-fg"
+      className="theme-toggle press grid size-9 place-items-center rounded-full text-muted hover:text-fg"
     >
+      {/* The label names the action and swaps with the icons (pure CSS, like them). */}
+      <span className="theme-icon-moon sr-only">Switch to dark theme</span>
+      <span className="theme-icon-sun sr-only">Switch to light theme</span>
       <svg
         className="theme-icon-moon"
         width="18"

@@ -14,12 +14,10 @@ type Source = { image: StaticImageData; alt: string } | { slot: ImageSlot; alt: 
 function Screen({
   source,
   sizes,
-  priority,
   className = "",
 }: {
   source: Source;
   sizes: string;
-  priority?: boolean;
   className?: string;
 }) {
   if ("image" in source) {
@@ -28,7 +26,6 @@ function Screen({
         src={source.image}
         alt={source.alt}
         sizes={sizes}
-        priority={priority}
         className={`size-full object-cover object-top ${className}`}
       />
     );
@@ -42,7 +39,6 @@ function Screen({
         alt={source.alt}
         fill
         sizes={sizes}
-        priority={priority}
         className={`object-cover object-top ${className}`}
       />
     );
@@ -72,12 +68,10 @@ function Screen({
 export function PhoneFrame({
   source,
   sizes = "(min-width: 1024px) 240px, 60vw",
-  priority,
   className = "",
 }: {
   source: Source;
   sizes?: string;
-  priority?: boolean;
   className?: string;
 }) {
   // Real screenshots have no status bar, so we draw one (in the app's own background colour)
@@ -94,7 +88,7 @@ export function PhoneFrame({
       >
         {withStatusBar ? <StatusBar /> : null}
         <div className="relative min-h-0 flex-1">
-          <Screen source={source} sizes={sizes} priority={priority} />
+          <Screen source={source} sizes={sizes} />
         </div>
       </div>
     </div>

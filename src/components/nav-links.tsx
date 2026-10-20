@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const links = [
@@ -9,35 +10,33 @@ const links = [
   { id: "contact", label: "Contact", className: "" },
 ] as const;
 
-/** Anchor nav with a quiet scroll-spy: the section in view gets aria-current. */
+/** Anchor nav with a quiet scroll-spy: the section crossing the reading band gets aria-current. */
 export function NavLinks() {
+  const pathname = usePathname();
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const sections = links
       .map((l) => document.getElementById(l.id))
       .filter((el): el is HTMLElement => el !== null);
+    // Track every section's state so scrolling back into the hero or proof strip clears it.
+    const inBand = new Set<string>();
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
+          if (entry.isIntersecting) inBand.add(entry.target.id);
+          else inBand.delete(entry.target.id);
         }
+        // Sections don't overlap, so at most one is in the band; take the last in page order.
+        setActive(links.map((l) => l.id).findLast((id) => inBand.has(id)) ?? null);
       },
       // A thin band across the upper-middle of the viewport decides "current".
       { rootMargin: "-35% 0px -60% 0px" },
     );
     sections.forEach((s) => observer.observe(s));
-
-    const onTop = () => {
-      if (window.scrollY < 200) setActive(null);
-    };
-    window.addEventListener("scroll", onTop, { passive: true });
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onTop);
-    };
-  }, []);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   return (
     <nav aria-label="Primary">
@@ -46,8 +45,9 @@ export function NavLinks() {
           const isActive = active === l.id;
           return (
             <li key={l.id} className={l.className}>
+              {/* "/#id" (not "#id") so the links also work from other routes, like the 404. */}
               <a
-                href={`#${l.id}`}
+                href={`/#${l.id}`}
                 aria-current={isActive ? "location" : undefined}
                 className="press relative inline-flex h-9 items-center rounded-full px-3 text-sm text-muted transition-colors hover:text-fg aria-[current]:text-fg"
               >

@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
 
 export function ZenZ() {
   return (
-    <article id="zen-z" aria-labelledby="zenz-title" className="cv-auto scroll-mt-20 [--cv-h:6000px]">
+    <article id="zen-z" aria-labelledby="zenz-title" className="cv-auto [--cv-h:6000px]">
       <CaseHeader
         index="01"
         eyebrow="Founder & CTO"

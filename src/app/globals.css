@@ -121,6 +121,10 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
+  /* Sections focused programmatically after an anchor jump (AnchorFix) aren't controls. */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
 
   h1,
   h2,
@@ -228,6 +232,10 @@
   .cv-auto {
     content-visibility: auto;
     contain-intrinsic-size: auto var(--cv-h, 1500px);
+  }
+  /* Set before anchor jumps (see AnchorFix) so scroll targets use the real layout. */
+  .cv-off .cv-auto {
+    content-visibility: visible;
   }
 
   .serif-em {
@@ -345,14 +353,29 @@
   }
 }
 
+/* Without JS the toggle can't work, so don't offer it. */
+:root:not(.js) .theme-toggle {
+  display: none;
+}
+
 .schematic {
   background: var(--schematic-light) top / cover no-repeat;
 }
-:root[data-theme="dark"] .schematic {
+:root[data-theme="dark"] /* Without JS the toggle can't work, so don't offer it. */
+:root:not(.js) .theme-toggle {
+  display: none;
+}
+
+.schematic {
   background-image: var(--schematic-dark);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .schematic {
+  :root:not([data-theme="light"]) /* Without JS the toggle can't work, so don't offer it. */
+:root:not(.js) .theme-toggle {
+  display: none;
+}
+
+.schematic {
     background-image: var(--schematic-dark);
   }
 }

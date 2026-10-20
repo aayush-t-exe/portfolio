@@ -3,7 +3,15 @@
  * Every fact on the site comes from Aayush's brief or resume. Do not add numbers that aren't real.
  */
 
-const rawUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aayushthakur.vercel.app";
+/**
+ * Canonical origin. Set NEXT_PUBLIC_SITE_URL once you have a custom domain; on Vercel it
+ * otherwise falls back to the project's production domain, then to the expected default.
+ */
+const rawUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://aayushthakur.vercel.app");
 
 export const site = {
   url: rawUrl.replace(/\/$/, ""),

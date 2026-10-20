@@ -37,6 +37,7 @@ export function CodeBlock({
       {/* tabIndex: scrollable regions must be keyboard reachable */}
       <pre
         tabIndex={0}
+        role="region"
         aria-label={label}
         className="tk-plain overflow-x-auto p-4 font-mono text-[12.5px] leading-[1.7] sm:p-5 sm:text-[13px]"
       >

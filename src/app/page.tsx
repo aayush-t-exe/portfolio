@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { openGraph } from "@/lib/metadata";
 import { projects, site } from "@/lib/site";
 import { resolveSlot } from "@/lib/image-slots";
 import { About } from "@/sections/about";
@@ -6,6 +8,11 @@ import { Hero } from "@/sections/hero";
 import { Process } from "@/sections/process";
 import { Proof } from "@/sections/proof";
 import { Work } from "@/sections/work";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: { ...openGraph, url: "/" },
+};
 
 export default function Home() {
   return (
@@ -90,15 +97,14 @@ function JsonLd() {
         author: { "@id": person },
       },
       {
-        "@type": ["SoftwareApplication", "SoftwareSourceCode"],
+        // SoftwareSourceCode (not SoftwareApplication): the public artifact is the repo.
+        "@type": "SoftwareSourceCode",
         "@id": `${site.url}/#prelimsdaily`,
         name: projects.prelims.name,
         url: projects.prelims.url,
         codeRepository: projects.prelims.url,
         programmingLanguage: "TypeScript",
         runtimePlatform: "React Native (Expo)",
-        applicationCategory: "EducationalApplication",
-        operatingSystem: "Android, iOS, Web",
         description:
           "A React Native + TypeScript UPSC Prelims daily-practice app with streaks, reminders, Reanimated animations and 66 unit tests, built in a single day.",
         creator: { "@id": person },

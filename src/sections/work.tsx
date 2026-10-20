@@ -4,7 +4,7 @@ import { ZenZ } from "@/sections/zenz";
 
 export function Work() {
   return (
-    <section id="work" aria-labelledby="work-title" className="scroll-mt-16 py-20 md:py-32">
+    <section id="work" aria-labelledby="work-title" className="py-20 md:py-32">
       <div className="container-page">
         <SectionHeading
           index="01"

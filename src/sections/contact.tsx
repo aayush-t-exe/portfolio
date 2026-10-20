@@ -11,7 +11,7 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="cv-auto scroll-mt-16 border-t border-line bg-surface/50 py-20 [--cv-h:900px] md:py-32">
+    <section id="contact" aria-labelledby="contact-title" className="cv-auto border-t border-line bg-surface/50 py-20 [--cv-h:900px] md:py-32">
       <div className="container-page">
         <p data-reveal className="label flex items-center gap-3">
           <span className="text-fg">04</span>
