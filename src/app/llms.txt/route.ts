@@ -7,20 +7,25 @@ const body = `# Aayush Thakur
 
 Everything below is factual and matches the portfolio at ${site.url} and the resume linked below.
 
+## Links
+
+- [Portfolio](${site.url}): case studies for Zen-Z and PrelimsDaily, how Aayush works with AI, stack and contact
+- [Resume (PDF)](${site.url}/Aayush_Thakur_Resume.pdf): one-page full-stack resume
+- [GitHub](https://github.com/aayush-t-exe): source code, including PrelimsDaily
+- [LinkedIn](https://www.linkedin.com/in/aayushthakurdev): professional profile
+- [Zen-Z](https://zen-z.site): the live product
+
 ## Summary
 
 - Role: Founder & CTO of Zen-Z (Jul 2026 – present). Sole engineer.
 - Location: Jaipur, Rajasthan, India (IST, UTC+5:30).
 - Education: B.Tech, Computer Science & Engineering, Jaipur National University, expected May 2028.
 - Way of working: AI-native. Builds with Claude Code and Cursor, plans before coding, ships fast, and reviews and understands everything that ships.
-- Contact: aayushthakur8002@gmail.com
-- GitHub: https://github.com/aayush-t-exe
-- LinkedIn: https://www.linkedin.com/in/aayushthakurdev
-- Resume (PDF): ${site.url}/Aayush_Thakur_Resume.pdf
+- Contact: [aayushthakur8002@gmail.com](mailto:aayushthakur8002@gmail.com)
 
 ## Zen-Z (case study 1)
 
-Zen-Z (https://zen-z.site) is a campus social app that matches college students into small groups of 4–5 strangers for cafés, dinners, movies and sports. It is live on the Google Play Store.
+[Zen-Z](https://zen-z.site) is a campus social app that matches college students into small groups of 4–5 strangers for cafés, dinners, movies and sports. It is live on the Google Play Store.
 
 - Results: 150+ users within 2 days of launch; ₹33K+ total revenue; 65+ student waitlist before launch; Instagram @zen_z.app with 550 followers and 140K+ views. Pitched at Jaipur National University's Shark Tank event (Sept 2026).
 - Built solo by Aayush:
@@ -33,7 +38,7 @@ Zen-Z (https://zen-z.site) is a campus social app that matches college students 
 
 ## PrelimsDaily (case study 2)
 
-PrelimsDaily (https://github.com/aayush-t-exe/prelims-daily) is a React Native + TypeScript daily-practice app for UPSC Prelims aspirants, built in a single day for a startup application.
+[PrelimsDaily](https://github.com/aayush-t-exe/prelims-daily) is a React Native + TypeScript daily-practice app for UPSC Prelims aspirants, built in a single day for a startup application.
 
 - Features: a daily question set, streaks with freezes, a daily target ring, XP and levels, review of mistakes and bookmarks, and smart local reminders that skip days already completed. Works fully offline.
 - Engineering: Expo + Expo Router, Zustand with versioned persistence, Reanimated 4 animations on the UI thread, 66 unit tests.

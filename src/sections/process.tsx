@@ -39,7 +39,7 @@ export function Process() {
     <section
       id="process"
       aria-labelledby="process-title"
-      className="scroll-mt-16 border-t border-line bg-surface/50 py-20 md:py-32"
+      className="cv-auto scroll-mt-16 border-t border-line bg-surface/50 py-20 [--cv-h:2600px] md:py-32"
     >
       <div className="container-page">
         <SectionHeading

@@ -69,7 +69,7 @@ const decisions = [
 
 export function PrelimsDaily() {
   return (
-    <article id="prelimsdaily" aria-labelledby="prelims-title" className="scroll-mt-20">
+    <article id="prelimsdaily" aria-labelledby="prelims-title" className="cv-auto scroll-mt-20 [--cv-h:4200px]">
       <CaseHeader
         index="02"
         eyebrow="Built in one day"

@@ -19,7 +19,7 @@ export function Hero() {
             {site.location}
           </p>
 
-          {/* The H1 is the LCP element: it paints immediately and is never faded in. */}
+          {/* The H1 and intro are LCP candidates: they paint immediately and are never faded in. */}
           <h1
             id="hero-title"
             className="mt-7 text-[clamp(3rem,9vw,6.25rem)] leading-[0.92] font-medium tracking-[-0.045em]"
@@ -29,10 +29,8 @@ export function Hero() {
             products, fast.
           </h1>
 
-          <p
-            className="enter mt-7 max-w-[34rem] text-lg leading-relaxed text-muted sm:text-xl sm:leading-relaxed"
-            style={stagger(1)}
-          >
+          {/* Like the H1, the intro paints immediately: it's the LCP element on mobile. */}
+          <p className="mt-7 max-w-[34rem] text-lg leading-relaxed text-muted sm:text-xl sm:leading-relaxed">
             I&rsquo;m Aayush, a founder-engineer. I built{" "}
             <a href="#zen-z" className="link whitespace-nowrap text-fg">
               Zen-Z
@@ -66,23 +64,11 @@ export function Hero() {
   );
 }
 
-/** Faint 12-column guides behind the hero, fading out downward. Pure CSS, no image. */
+/** Faint column guides behind the hero, fading out downward. One element, drawn in CSS. */
 function GridBackdrop() {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]"
-    >
-      <div className="container-page grid h-full grid-cols-4 lg:grid-cols-12">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className={`border-l border-line/50 ${i >= 4 ? "hidden lg:block" : ""} ${
-              i === 11 || i === 3 ? "border-r lg:border-r-0" : ""
-            } ${i === 11 ? "lg:border-r" : ""}`}
-          />
-        ))}
-      </div>
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div className="hero-guides container-page h-full" />
     </div>
   );
 }

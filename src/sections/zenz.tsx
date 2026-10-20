@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
 
 export function ZenZ() {
   return (
-    <article id="zen-z" aria-labelledby="zenz-title" className="scroll-mt-20">
+    <article id="zen-z" aria-labelledby="zenz-title" className="cv-auto scroll-mt-20 [--cv-h:6000px]">
       <CaseHeader
         index="01"
         eyebrow="Founder & CTO"
@@ -148,10 +148,6 @@ export function ZenZ() {
                 ]}
                 className="sm:col-span-2 lg:col-span-1"
               />
-              <figure className="col-span-full grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
-                <PhoneFrame source={{ slot: "zenz/app-booking", alt: "Zen-Z booking flow" }} sizes="45vw" />
-                <PhoneFrame source={{ slot: "zenz/app-chat", alt: "Zen-Z realtime group chat" }} sizes="45vw" />
-              </figure>
             </div>
           }
         >
@@ -166,16 +162,16 @@ export function ZenZ() {
                 </p>
               </Body>
             </div>
-            <div className="hidden gap-4 lg:flex">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:flex lg:gap-4">
               <PhoneFrame
                 source={{ slot: "zenz/app-booking", alt: "Zen-Z booking flow" }}
-                sizes="170px"
-                className="w-[150px] translate-y-6"
+                sizes="(min-width: 1024px) 150px, 45vw"
+                className="lg:w-[150px] lg:translate-y-6"
               />
               <PhoneFrame
                 source={{ slot: "zenz/app-chat", alt: "Zen-Z realtime group chat" }}
-                sizes="170px"
-                className="w-[150px]"
+                sizes="(min-width: 1024px) 150px, 45vw"
+                className="lg:w-[150px]"
               />
             </div>
           </div>

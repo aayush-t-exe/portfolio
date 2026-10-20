@@ -223,6 +223,13 @@
     }
   }
 
+  /* Skip layout/paint of off-screen sections until they approach the viewport.
+     `auto` makes the browser remember the real size once rendered. */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto var(--cv-h, 1500px);
+  }
+
   .serif-em {
     font-family: var(--font-serif);
     font-style: italic;
@@ -319,7 +326,7 @@
   }
 }
 
-/* Theme icon swap, pure CSS so SSR markup is identical for everyone. */
+/* Theme-specific content, swapped purely in CSS so the SSR markup is identical for everyone. */
 .theme-icon-sun {
   display: none;
 }
@@ -338,10 +345,53 @@
   }
 }
 
+.schematic {
+  background: var(--schematic-light) top / cover no-repeat;
+}
+:root[data-theme="dark"] .schematic {
+  background-image: var(--schematic-dark);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .schematic {
+    background-image: var(--schematic-dark);
+  }
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 260ms;
   animation-timing-function: ease;
+}
+
+/* Syntax colours for the build-time highlighter (short class names keep the HTML small). */
+.tk-comment { color: #958f84; }
+.tk-string { color: #c8d48c; }
+.tk-keyword { color: #ff8d66; }
+.tk-number { color: #e9b46a; }
+.tk-fn { color: #f3f0e9; }
+.tk-plain { color: #cfcac0; }
+
+/* Hero column guides: 4 columns on mobile, 12 on desktop, drawn inside the content box. */
+.hero-guides {
+  --cols: 4;
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklab, var(--line) 55%, transparent), color-mix(in oklab, var(--line) 55%, transparent));
+  background-size:
+    calc(100% / var(--cols)) 100%,
+    1px 100%;
+  background-position:
+    0 0,
+    100% 0;
+  background-repeat: repeat-x, no-repeat;
+  background-origin: content-box;
+  background-clip: content-box;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+@media (min-width: 1024px) {
+  .hero-guides {
+    --cols: 12;
+  }
 }
 
 /* Horizontal scroller without a visible scrollbar (gallery on touch). */

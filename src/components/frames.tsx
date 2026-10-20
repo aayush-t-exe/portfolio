@@ -29,7 +29,6 @@ function Screen({
         alt={source.alt}
         sizes={sizes}
         priority={priority}
-        placeholder="blur"
         className={`size-full object-cover object-top ${className}`}
       />
     );

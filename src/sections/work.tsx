@@ -24,7 +24,9 @@ export function Work() {
 
         <div aria-hidden className="my-20 flex items-center gap-4 md:my-32">
           <span className="h-px flex-1 bg-line" />
-          <span className="font-mono text-xs text-muted">✦</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" className="text-muted">
+            <path d="M5 0 6 4 10 5 6 6 5 10 4 6 0 5 4 4Z" fill="currentColor" />
+          </svg>
           <span className="h-px flex-1 bg-line" />
         </div>
 

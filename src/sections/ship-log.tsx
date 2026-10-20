@@ -47,9 +47,10 @@ export function ShipLog() {
   return (
     <div className="card relative overflow-hidden">
       <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
-        <p className="font-mono text-xs text-fg">
+        <h2 className="font-mono text-xs font-normal text-fg">
           ship-log<span className="text-muted">.md</span>
-        </p>
+          <span className="sr-only">: recent milestones</span>
+        </h2>
         <p className="font-mono text-xs text-muted">newest first</p>
       </div>
       {/* before: draws the timeline spine behind the dots */}

@@ -1,23 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { RevealObserver } from "@/components/reveal-observer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
+/*
+ * Self-hosted, subset fonts (src/assets/fonts/web): only the characters this site uses
+ * (Latin, Latin-1, punctuation, ₹ and arrows). Geist and Geist Mono are variable, so one
+ * file each covers every weight. Three preloaded files, ~60 kB total, versus four files and
+ * ~86 kB with the Google Fonts subsets (one of them discovered late, which delayed paint).
+ */
+const geist = localFont({
+  src: "../assets/fonts/web/geist.woff2",
+  weight: "100 900",
+  variable: "--font-geist",
+  display: "swap",
+  adjustFontFallback: "Arial",
+});
+const geistMono = localFont({
+  src: "../assets/fonts/web/geist-mono.woff2",
+  weight: "100 900",
   variable: "--font-geist-mono",
   display: "swap",
+  adjustFontFallback: false,
 });
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
+// The serif is only ever used in italic for accent words.
+const instrument = localFont({
+  src: "../assets/fonts/web/instrument-serif-italic.woff2",
   weight: "400",
-  style: ["normal", "italic"],
+  style: "italic",
   variable: "--font-instrument",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
 export const metadata: Metadata = {

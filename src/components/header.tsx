@@ -10,7 +10,6 @@ export function Header() {
         <Link
           href="/"
           className="press group flex items-center gap-2.5 rounded-md"
-          aria-label={`${site.name}, home`}
         >
           <Monogram />
           <span className="text-[0.9375rem] font-medium tracking-[-0.01em]">{site.name}</span>
