@@ -46,12 +46,12 @@ confident, but cold, and it fights the main asset (app screenshots and a story-d
 
 | Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `--bg` | warm paper `#F5F3EE` | ink `#0D0D0C` | page |
-| `--surface` | `#FBFAF7` | `#151513` | cards |
-| `--fg` | `#151513` | `#EDEBE6` | text |
-| `--muted` | `#5E5B54` | `#9C9890` | secondary text (≥ 4.5:1 checked) |
-| `--line` | `#E0DCD3` | `#262522` | hairlines |
-| `--accent` | vermilion `#D7401C` | `#FF6A3D` | live dot, key numbers, focus ring |
+| `--bg` | warm paper `#F4F2ED` | ink `#0E0E0C` | page |
+| `--surface` | `#FBFAF7` | `#161613` | cards |
+| `--fg` | `#161512` | `#EEECE6` | text |
+| `--muted` | `#5B5850` | `#A39F96` | secondary text (≥ 5.8:1 on every surface) |
+| `--line` | `#DEDAD1` | `#2A2926` | hairlines |
+| `--accent` | vermilion `#B3320D` | `#FF6A3D` | live dot, key words, focus ring (≥ 4.6:1, incl. tinted pills) |
 
 - Type scale: fluid `clamp()`; display at -0.035em tracking, body 16–17px / 1.6.
 - Radius: 14px cards, 999px pills. Shadows: almost none (hairlines plus a 1px inner highlight).
@@ -101,7 +101,7 @@ confident, but cold, and it fights the main asset (app screenshots and a story-d
 | --- | --- |
 | Next.js 16 App Router, fully static | Every route pre-renders; best TTFB and LCP on Vercel. |
 | Tailwind v4 (CSS-first `@theme`) | Tokens in CSS variables, no config file. |
-| `next/font` (Geist, Geist Mono, Instrument Serif) | Self-hosted, `size-adjust` fallbacks, so no CLS and no third-party requests. |
+| `next/font/local` with subset fonts | Geist + Geist Mono (variable) and Instrument Serif Italic, subset to the site's characters: ~60 kB, all preloaded, metric-matched fallbacks. |
 | No animation library | IntersectionObserver plus CSS transitions covers every effect; saves ~30–50 kB of JS. |
 | Own theme toggle (inline pre-paint script) | Avoids `next-themes`; no flash and a ~20-line script. |
 | `next/og` for OG/Twitter images | Generated at build; no design tool needed. |
@@ -125,3 +125,19 @@ Site URL: `NEXT_PUBLIC_SITE_URL`, defaulting to `https://aayushthakur.vercel.app
   is Aayush's own rather than a project's.
 - 2026-10-21: Single long page plus anchors (not per-project routes): founders skim; one URL is
   easier to share. Each case study has its own `id` for deep-linking (`/#zen-z`).
+- 2026-10-21: Facts from the downloadable resume are used too (28 tables, 7 Edge Functions,
+  37 test suites, 179 commits, ~25 screens), since that PDF is published on the site anyway.
+- 2026-10-21: Missing Zen-Z screenshots render as on-brand schematics (pre-rendered WebP, CSS
+  backgrounds); dev builds label each slot with its file path and size, production says
+  "shown as schematics" once in the caption.
+- 2026-10-21: Performance decisions after Lighthouse:
+  - Subset, self-hosted fonts instead of Google subsets (the ₹ sign pulled in latin-ext late).
+  - `content-visibility: auto` on below-the-fold sections.
+  - Hero H1 and intro never fade in (they are the LCP candidates).
+  - Code sample rendered as one HTML string, which keeps the DOM and RSC payload small.
+  - `inlineCss` tried and reverted: no gain, and it doubled the CSS bytes (style tag + RSC payload).
+  - `cacheComponents` and `partialPrefetching` off: one static page, no internal navigation.
+- 2026-10-21: Light accent darkened from `#C2370F` to `#B3320D` so small accent text on tinted pills
+  passes 4.5:1.
+- 2026-10-21: Pronoun-free third-person copy in metadata and llms.txt (Aayush's pronouns weren't
+  specified).

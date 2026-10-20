@@ -32,16 +32,8 @@ export function renderOgImage() {
           color: ink,
           fontFamily: "Geist",
           padding: "64px 72px",
-          position: "relative",
         }}
       >
-        {/* column guides */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", padding: "0 72px" }}>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} style={{ flex: 1, borderLeft: `1px solid ${line}`, borderRight: i === 5 ? `1px solid ${line}` : "none" }} />
-          ))}
-        </div>
-
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <div
