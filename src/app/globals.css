@@ -248,10 +248,10 @@
 
 /* ───────────────────────────── Motion ─────────────────────────────
    Reveal on scroll: only opacity + a short translate, strong ease-out.
-   Only armed when JS has run (html.js), so no-JS visitors see everything. */
+   Only armed when JS has run (html.reveal-armed), so no-JS visitors see everything. */
 
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
+  .reveal-armed [data-reveal] {
     opacity: 0;
     transform: translate3d(0, 14px, 0);
     transition:
@@ -259,7 +259,7 @@
       transform 900ms var(--ease-out);
     transition-delay: calc(var(--i, 0) * 70ms);
   }
-  .js [data-reveal][data-shown] {
+  .reveal-armed [data-reveal][data-shown] {
     opacity: 1;
     transform: none;
   }
@@ -299,11 +299,11 @@
 
 /* Reduced motion: keep gentle fades that aid comprehension, drop movement. */
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] {
+  .reveal-armed [data-reveal] {
     opacity: 0;
     transition: opacity 400ms ease;
   }
-  .js [data-reveal][data-shown] {
+  .reveal-armed [data-reveal][data-shown] {
     opacity: 1;
   }
 }
