@@ -28,17 +28,17 @@ export function About() {
         />
 
         <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-8">
-          <figure data-reveal className="md:col-span-4 md:col-start-4 lg:col-span-3 lg:col-start-4">
+          <figure data-reveal className="md:col-span-4 md:col-start-4 lg:col-span-4 lg:col-start-4">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[16px] border border-line bg-surface-2">
               <Image
                 src={portrait}
                 alt="Aayush Thakur smiling, arms crossed, in a blue shirt against green hills"
                 fill
-                sizes="(min-width: 1024px) 280px, (min-width: 768px) 30vw, 90vw"
+                sizes="(min-width: 1024px) 360px, (min-width: 768px) 30vw, 90vw"
                 className="object-cover"
               />
             </div>
-            <figcaption className="mt-3 font-mono text-xs text-muted">{site.name}, Jaipur</figcaption>
+            <figcaption className="mt-3 font-mono text-xs text-muted">Fig. 2: Jaipur, 2026</figcaption>
           </figure>
 
           <div className="md:col-span-5 lg:col-span-5 lg:col-start-8">
@@ -49,7 +49,7 @@ export function About() {
             >
               <p>
                 I&rsquo;m <strong>Aayush Thakur</strong>, a third-year B.Tech Computer Science student at
-                Jaipur National University, graduating in May 2028. Most of what I know I learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me
+                Jaipur National University. Most of what I know I learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me
                 payments, row-level security, and what real users do to an app in its first 48 hours.
               </p>
               <p>

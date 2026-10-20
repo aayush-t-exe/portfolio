@@ -1,19 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
 import { NavLinks } from "@/components/nav-links";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { site } from "@/lib/site";
+import avatar from "@/assets/about/avatar.jpg";
 
 export function Header() {
   return (
     <header className="site-header sticky top-0 z-50">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link
-          href="/"
-          className="press group flex items-center gap-2.5 rounded-md"
-        >
-          <Monogram />
-          <span className="text-[0.9375rem] font-medium tracking-[-0.01em]">{site.name}</span>
-        </Link>
+        <div className="flex items-center">
+          <Link href="/" className="press group flex items-center gap-2.5 rounded-md">
+            <Avatar />
+            <span className="text-[0.9375rem] font-medium tracking-[-0.01em]">{site.name}</span>
+          </Link>
+          <span className="sr-only">, {site.status}</span>
+        </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
           <NavLinks />
@@ -34,13 +36,25 @@ export function Header() {
   );
 }
 
-function Monogram() {
+/**
+ * The face before the name (the full portrait is the second sighting, in About). `alt` is
+ * empty because the name beside it labels the link. The status dot is static: the hero
+ * pill already pulses.
+ */
+function Avatar() {
   return (
-    <span
-      aria-hidden
-      className="grid size-7 place-items-center rounded-[8px] bg-fg font-mono text-[0.6875rem] font-semibold tracking-tight text-bg"
-    >
-      AT
+    <span className="avatar relative size-[30px] shrink-0 sm:size-8" title={site.status}>
+      <Image
+        src={avatar}
+        alt=""
+        sizes="32px"
+        loading="eager"
+        className="size-full rounded-full object-cover shadow-[0_0_0_1px_var(--line-strong)]"
+      />
+      <span
+        aria-hidden
+        className="absolute -right-px -bottom-px size-2 rounded-full bg-accent shadow-[0_0_0_2px_var(--bg)]"
+      />
     </span>
   );
 }
