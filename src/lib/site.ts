@@ -138,7 +138,7 @@ export const stack: Tool[] = [
   { name: "Vitest", layer: "Quality", icon: "vitest", note: "admin + Edge Function tests", usedIn: ["Z"] },
   { name: "Jest", layer: "Quality", icon: "jest", note: "mobile app tests", usedIn: ["Z", "P"] },
   { name: "pgTAP", layer: "Quality", mono: "pg", note: `${facts.zenz.pgtapAssertions} DB assertions in CI`, usedIn: ["Z"] },
-  { name: "Claude Code", layer: "AI workflow", icon: "claude", note: `co-author on ${facts.zenz.claudeCommits} of ${facts.zenz.commits} Zen-Z commits`, usedIn: ["Z", "P", "S"] },
+  { name: "Claude Code", layer: "AI workflow", icon: "claude", note: `co-author on ${facts.zenz.claudeCommits}/${facts.zenz.commits} commits`, usedIn: ["Z", "P", "S"] },
   { name: "Cursor", layer: "AI workflow", icon: "cursor", note: "editor for day-to-day builds", usedIn: ["Z", "P"] },
 ];
 

@@ -181,3 +181,8 @@ Site URL: `NEXT_PUBLIC_SITE_URL`, else Vercel's production domain, else
 - 2026-10-21: Jest is tagged for Zen-Z and PrelimsDaily (PrelimsDaily's tests run on jest-expo),
   correcting the brief's "Zen-Z only".
 - 2026-10-21: NavLinks, ThemeToggle and CopyEmail became server components; one client island.
+- 2026-10-21: Final Lighthouse (local, Edge, simulated mobile): Performance 91–93 on idle runs
+  (LCP 3.0–3.2s simulated, observed ~0.4s; TBT 110–190ms), Accessibility/Best Practices/SEO 100;
+  desktop 100/100/100/100. The remaining mobile gap is Next's own framework JS (~186 kB gz across
+  9 chunks) and the large static HTML + RSC payload of one long page; runs on a loaded laptop
+  swing widely (55–93). Verify on PageSpeed Insights after deploy.

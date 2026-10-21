@@ -33,7 +33,7 @@ export function Proof() {
             key={s.value}
             data-reveal
             style={stagger(i)}
-            className={`flex flex-col-reverse gap-1.5 py-7 pr-4 sm:py-9 ${
+            className={`flex flex-col-reverse justify-end gap-1.5 py-7 pr-4 sm:py-9 ${
               i % 2 === 1 ? "border-l border-line pl-5 sm:pl-8" : ""
             } ${i === 2 ? "lg:border-l lg:pl-8" : ""} ${i >= 2 ? "border-t border-line lg:border-t-0" : ""}`}
           >
