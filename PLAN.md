@@ -44,6 +44,51 @@ themes (white text, 5.9:1), so it doesn't glare in dark mode.
 the hero: at 640px a column can't show the face, the ask and a large product visual in the first
 desktop screen. Taken from them instead: uniform dark stages, quiet type, short copy.
 
+**Results (2026-10-22, local production build)**
+
+| | v2 | v3 |
+| --- | --- | --- |
+| Home height, desktop 1440 | 16,957px (18.8 screens) | 4,256px (4.7 screens) |
+| Home height, mobile 390 | 24,297px (28.8 screens) | 6,400px (7.6 screens) |
+| Home words (main / page) | 2,794 / 2,839 | 504 / 558 |
+| Zen-Z case words | 1,329 (on the home page) | 1,037 on `/work/zen-z` (−22%, evidence kept) |
+| Lighthouse mobile perf, same session, interleaved runs | 67–71 | 81–83 |
+
+Lighthouse on this laptop swings widely with load (the same build scored 35–84 on back-to-back
+runs). A11y, Best Practices and SEO are 100 on every route, desktop performance medians are 99
+on `/` and `/work/zen-z`, and mobile performance lands at 75–89 on clean runs. The remaining
+mobile gap is Next/React's own JS (hydration ~300ms at 4× CPU) plus first layout; v3 cut every
+other critical-path cost it could (see the decision log). Verify on PageSpeed Insights after
+deploy.
+
+### v3 decision log
+- 2026-10-21: H1 is "I built Zen-Z solo: a live campus app with paying users." The brief's
+  draft said "built and run … solo"; the admin board is used by "the team", so "run it solo"
+  isn't claimed. Proof receipts keep "₹33K+ revenue" exactly (with an `abbr` for ₹), not "in
+  paid bookings" (cafés and dinners earn venue commission, so revenue isn't only bookings).
+- 2026-10-21: Every home number appears once. The brief listed 150+ and 152/183 in both the hero
+  and later sections; they stay in the hero receipts, and the AI section shows the real
+  `Co-Authored-By` trailer (verbatim from Zen-Z's log, on 102 of the 152) instead of the number.
+- 2026-10-21: Stack ledger → `/stack` (not the end of the Zen-Z page): its filter spans three
+  products, so it belongs to none of them.
+- 2026-10-21: The morph uses React `<ViewTransition>` with `next/link` (built into Next 16.4 +
+  React 19.3, no config, no dependency). The incident teaser uses a plain link: it lands mid-page,
+  so it shouldn't morph the stage. The back link cross-fades (the pair doesn't re-form there).
+- 2026-10-21: The JS weight in the footer is measured in the browser (Resource Timing, encoded
+  bytes of same-origin scripts) instead of "from the build": Next 16's build output no longer
+  prints per-route sizes, and a value baked in before the build finishes couldn't be true.
+- 2026-10-21: Header blur bug: the minifier merged `backdrop-filter` + `-webkit-backdrop-filter`
+  and kept only the prefixed one, which Chromium ignores. Only the standard property is written.
+- 2026-10-22: Performance: images no longer request `fetchPriority="high"` except the Zen-Z
+  dashboard on its case page (desktop LCP); Geist Mono isn't preloaded; `text-wrap: pretty` and
+  the global `html:has()` are gone; content-visibility removed (pages are short now).
+- 2026-10-22: Copy is pronoun-free wherever Aayush is described in the third person.
+
+---
+
+The sections below describe v1/v2 and are kept for history; where they disagree with the v3
+notes above, v3 wins.
+
 ## 1. Goal
 
 One page that makes a design-literate startup founder think *"this person ships, and has taste"* within
