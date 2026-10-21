@@ -11,7 +11,7 @@ import "./globals.css";
  * Self-hosted, subset fonts (src/assets/fonts/web): only the characters this site uses
  * (Latin, Latin-1, punctuation, ₹ and arrows). Geist (body) and Geist Mono (numbers, code)
  * are variable, so one file each covers every weight; Schibsted Grotesk (headlines) is one
- * static SemiBold. Three preloaded files, ~66 kB total.
+ * static SemiBold. ~66 kB total; the two above-the-fold text faces are preloaded.
  */
 const geist = localFont({
   src: "../assets/fonts/web/geist.woff2",
@@ -20,11 +20,14 @@ const geist = localFont({
   display: "swap",
   adjustFontFallback: "Arial",
 });
+// Not preloaded: mono only sets small labels and numbers, which swap in harmlessly, and
+// preloads compete with the CSS and the headline font on the critical path.
 const geistMono = localFont({
   src: "../assets/fonts/web/geist-mono.woff2",
   weight: "100 900",
   variable: "--font-geist-mono",
   display: "swap",
+  preload: false,
   adjustFontFallback: false,
 });
 // Headlines only, always at 600.

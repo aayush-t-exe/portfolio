@@ -35,6 +35,7 @@ const mediaBox = "aspect-[4/3] sm:aspect-[16/10]";
 
 /** Zen-Z: the live admin dashboard with the payment screen in front of it. */
 export function ZenzMedia({ sizes, eager }: { sizes: { admin: string; phone: string }; eager?: boolean }) {
+  // On the case page (eager) the dashboard is the desktop LCP element.
   return (
     <Morph name="media-zen-z">
       <Stage className={mediaBox}>
@@ -46,6 +47,7 @@ export function ZenzMedia({ sizes, eager }: { sizes: { admin: string; phone: str
           }}
           sizes={sizes.admin}
           eager={eager}
+          priority={eager}
           className="absolute top-1/2 left-[6%] w-[68%] -translate-y-1/2"
         />
         <div className="absolute top-1/2 right-[6%] w-[25%] -translate-y-[46%]">

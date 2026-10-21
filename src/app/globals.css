@@ -146,9 +146,6 @@
     font-weight: 600;
   }
 
-  p {
-    text-wrap: pretty;
-  }
 }
 
 /* ───────────────────────────── Components ───────────────────────────── */
@@ -365,8 +362,8 @@
   backdrop-filter: saturate(1.4) blur(14px);
 }
 @media (min-width: 768px) {
-  html:has(.case-toc) {
-    scroll-padding-top: 7.5rem;
+  .case-page [id] {
+    scroll-margin-top: 7.5rem;
   }
 }
 

@@ -85,10 +85,10 @@ export function Stack() {
                     key={layer}
                     className="grid gap-3 border-b border-line py-5 md:grid-cols-[10rem_1fr] md:gap-6"
                   >
-                    <h3 className="label flex items-baseline gap-2 pt-1 md:block">
+                    <h2 className="label flex items-baseline gap-2 pt-1 md:block">
                       <span className="text-fg">{layer}</span>{" "}
                       <span className="tabular-nums">{tools.length}</span>
-                    </h3>
+                    </h2>
                     <ul className="grid min-w-0 gap-x-6 sm:grid-cols-2">
                       {tools.map((t) => (
                         <li

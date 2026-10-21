@@ -96,7 +96,7 @@ export function Hero() {
                 <span className="num flex items-start gap-1 text-[1.375rem] leading-none text-fg">
                   {p.value}
                   {p.href ? <ArrowUpRight size={13} className="shrink-0 text-muted" /> : null}
-                </span>
+                </span>{" "}
                 <span className="mt-1.5 block text-[0.8125rem] leading-snug text-muted">{p.label}</span>
               </>
             );

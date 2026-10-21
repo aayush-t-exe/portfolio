@@ -20,7 +20,7 @@ export function PhoneFrame({
   /** The app's UI: "light" (PrelimsDaily) or "dark" (Zen-Z). */
   tone: "light" | "dark";
   sizes?: string;
-  /** Above the fold: load now, at high priority. */
+  /** Load now rather than lazily (above the fold, or a morph target that must be ready). */
   eager?: boolean;
   className?: string;
 }) {
@@ -40,7 +40,7 @@ export function PhoneFrame({
             alt={shot.alt}
             sizes={sizes}
             draggable={false}
-            {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+            {...(eager ? { loading: "eager" as const } : {})}
             className="size-full object-cover object-top"
           />
         </div>
@@ -64,12 +64,15 @@ export function BrowserFrame({
   title,
   sizes = "(min-width: 1024px) 760px, 92vw",
   eager,
+  priority,
   className = "",
 }: {
   shot: Shot;
   title: string;
   sizes?: string;
   eager?: boolean;
+  /** The page's LCP image (the Zen-Z case page on desktop): fetch at high priority. */
+  priority?: boolean;
   className?: string;
 }) {
   const ratio = `${shot.image.width} / ${shot.image.height}`;
@@ -90,7 +93,8 @@ export function BrowserFrame({
           src={shot.image}
           alt={shot.alt}
           sizes={sizes}
-          {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+          {...(eager ? { loading: "eager" as const } : {})}
+          {...(priority ? { fetchPriority: "high" as const } : {})}
           className="size-full object-cover object-top"
         />
       </div>
