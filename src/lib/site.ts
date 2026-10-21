@@ -18,10 +18,10 @@ export const site = {
   url: rawUrl.replace(/\/$/, ""),
   name: "Aayush Thakur",
   shortName: "Aayush",
-  title: "Aayush Thakur: Founder-engineer who ships real products fast",
+  title: "Aayush Thakur: founder-engineer who built Zen-Z solo",
   /** ≤155 characters, strongest hook first (search snippets truncate). */
   description:
-    "Built Zen-Z solo: a live campus app with 150+ users in 2 days and ₹33K+ revenue. Aayush Thakur, founder-engineer who ships fast with AI. Jaipur, India.",
+    "Aayush Thakur built Zen-Z solo: a live campus app with 150+ users in 2 days and ₹33K+ revenue. AI-native founder-engineer in Jaipur, open to work.",
   /** Stable URL for structured data (doesn't change with build hashes). */
   image: "/aayush.jpg",
   location: "Jaipur, India",
@@ -53,7 +53,7 @@ export const projects = {
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.campussocial.app",
     sourceUrl: "https://github.com/aayush-t-exe/Zen-Z",
     /** Public commit log: every Claude co-authored commit carries a Co-Authored-By trailer. */
-    commitsUrl: "https://github.com/aayush-t-exe/Zen-Z/commits/main",
+    commitsUrl: "https://github.com/aayush-t-exe/Zen-Z/commits",
     instagram: "https://www.instagram.com/zen_z.app",
     instagramHandle: "@zen_z.app",
   },
@@ -70,7 +70,6 @@ export const routes = {
   prelims: "/work/prelimsdaily",
   stack: "/stack",
 } as const;
-
 
 /**
  * Numbers quoted on the site. Sources: Aayush (users, revenue), the resume (waitlist,

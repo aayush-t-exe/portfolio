@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JsonLd, graphs } from "@/lib/jsonld";
 import { openGraph } from "@/lib/metadata";
 import { About } from "@/sections/home/about";
-import { Contact } from "@/sections/contact";
+import { Ai } from "@/sections/home/ai";
 import { Hero } from "@/sections/home/hero";
 import { Work } from "@/sections/home/work";
 
@@ -17,8 +17,8 @@ export default function Home() {
       <JsonLd graph={graphs.home} />
       <Hero />
       <Work />
+      <Ai />
       <About />
-      <Contact />
     </>
   );
 }

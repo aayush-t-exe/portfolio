@@ -21,6 +21,9 @@ const EASE_IN_OUT = "cubic-bezier(0.77, 0, 0.175, 1)";
  * 5. Scroll-spy: the nav link for the section crossing the reading band gets aria-current.
  * 6. Delegated clicks: the theme toggle ([data-theme-toggle], light → dark → system) and
  *    copy-email buttons ([data-copy-email]). Both are server-rendered; only this hydrates.
+ * 7. The build receipt (footer) and the contact block: Jaipur's local time ([data-clock],
+ *    updated on the minute), how long ago the build was ([data-ago]) and how much JS the page
+ *    loaded ([data-js-kb], from Resource Timing). Each stays hidden or static without JS.
  *
  * It lives in the root layout (which persists across client navigations), so it re-scans
  * whenever the path changes.
@@ -112,6 +115,10 @@ export function PageBehavior() {
       });
     };
     document.addEventListener("click", onClick);
+    const stopClock = startClock();
+    relativeTimes();
+    if (document.readyState === "complete") measureJs();
+    else window.addEventListener("load", measureJs, { once: true });
     const cleanRails = [...document.querySelectorAll<HTMLElement>(".rail")].map(dragToScroll);
     // Only now (setup succeeded) tell the pre-paint failsafe not to disarm the reveal.
     root.setAttribute("data-reveal-ready", "");
@@ -122,11 +129,62 @@ export function PageBehavior() {
       spy.disconnect();
       spyLinks.forEach((a) => a.removeAttribute("aria-current"));
       document.removeEventListener("click", onClick);
+      window.removeEventListener("load", measureJs);
+      stopClock();
       cleanRails.forEach((clean) => clean());
     };
   }, [pathname]);
 
   return null;
+}
+
+/** Jaipur's time in every [data-clock], refreshed on the minute; their wrappers unhide. */
+function startClock() {
+  const clocks = document.querySelectorAll<HTMLTimeElement>("time[data-clock]");
+  if (!clocks.length) return () => {};
+  const fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  let timer: ReturnType<typeof setTimeout>;
+  const tick = () => {
+    const now = new Date();
+    const text = fmt.format(now);
+    clocks.forEach((c) => {
+      c.textContent = text;
+      c.dateTime = now.toISOString();
+    });
+    timer = setTimeout(tick, 60_000 - (now.getTime() % 60_000) + 50);
+  };
+  tick();
+  document.querySelectorAll<HTMLElement>("[data-clock-line]").forEach((el) => (el.hidden = false));
+  return () => clearTimeout(timer);
+}
+
+/** "on 21 Oct 2026" → "3 hours ago" (the absolute date moves to the tooltip). */
+function relativeTimes() {
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  document.querySelectorAll<HTMLTimeElement>("time[data-ago]").forEach((el) => {
+    const then = Date.parse(el.dateTime);
+    if (Number.isNaN(then)) return;
+    const s = Math.max(0, (Date.now() - then) / 1000);
+    const [value, unit]: [number, Intl.RelativeTimeFormatUnit] =
+      s < 3600 ? [Math.round(s / 60), "minute"] : s < 86_400 ? [Math.round(s / 3600), "hour"] : [Math.round(s / 86_400), "day"];
+    if (!el.title) el.title = el.textContent?.trim() ?? "";
+    el.textContent = rtf.format(-value, unit);
+  });
+}
+
+/** Encoded (on-the-wire) size of the same-origin scripts this page has loaded. */
+function measureJs() {
+  const out = document.querySelector<HTMLElement>("[data-js-kb]");
+  const item = out?.closest<HTMLElement>("[data-js-weight]");
+  if (!out || !item) return;
+  const bytes = performance
+    .getEntriesByType("resource")
+    .filter((e): e is PerformanceResourceTiming => (e as PerformanceResourceTiming).initiatorType === "script")
+    .filter((e) => e.name.startsWith(location.origin))
+    .reduce((sum, e) => sum + e.encodedBodySize, 0);
+  if (!bytes) return;
+  out.textContent = String(Math.round(bytes / 1024));
+  item.hidden = false;
 }
 
 /** The element a URL hash points to; null for a malformed hash (e.g. "#50%"), never a throw. */

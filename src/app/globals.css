@@ -305,6 +305,19 @@
   }
 }
 
+/* One grade for every photo of Aayush: about -10% saturation, a touch warmer. Applied in CSS
+   so a new photo only needs dropping in. */
+.photo {
+  filter: saturate(0.9) sepia(0.08);
+}
+
+/* Build receipt: items separated by a middot; hidden items (no JS yet) leave no gap. */
+.receipt > li:not([hidden]) ~ li:not([hidden])::before {
+  content: "·";
+  margin-inline: 0.6em;
+  color: var(--faint);
+}
+
 /* ───────────────────────────── Product stages ─────────────────────────────
    The same near-black panel in both themes; the products' own UI carries the colour. */
 .stage {
@@ -440,6 +453,18 @@
     }
   }
 
+  /* The hero's product stage enters once on load (CSS only, never waits for hydration). It is
+     the only thing in the first screen that moves; the text and CTAs are static. */
+  .stage-enter {
+    animation: stage-enter 450ms var(--ease-out) 80ms both;
+  }
+  @keyframes stage-enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+  }
+
   /* Hero entrance: plays once on load, CSS-only so it never waits for hydration. */
   .enter {
     animation: enter 800ms var(--ease-out) both;
@@ -479,7 +504,7 @@
     inset: 0;
     border-radius: inherit;
     background: inherit;
-    animation: pulse 2.4s var(--ease-out) infinite;
+    animation: pulse 2.4s var(--ease-out) 600ms 3 both;
   }
   @keyframes pulse {
     0% {

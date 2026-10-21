@@ -18,7 +18,7 @@ const stackLines = stackLayers
 
 const body = `# ${site.name}
 
-> ${site.name} is a founder-engineer from ${site.location} who ships real products fast with AI. Founder & CTO of [Zen-Z](${projects.zenz.url}), a live campus social app built solo, and a third-year student: ${site.education.line}.
+> ${site.name} is an AI-native founder-engineer from ${site.location}: Founder & CTO of [Zen-Z](${projects.zenz.url}), a live campus social app with paying users that ${site.shortName} built solo, and a third-year student (${site.education.line}).
 
 Everything below is factual and matches the portfolio at ${site.url} and the resume linked below.
 

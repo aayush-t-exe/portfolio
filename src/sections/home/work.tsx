@@ -11,7 +11,7 @@ import { facts, projects, routes } from "@/lib/site";
  */
 export function Work() {
   return (
-    <section id="work" aria-labelledby="work-title" className="scroll-mt-20 py-20 md:py-28">
+    <section id="work" aria-labelledby="work-title" className="scroll-mt-20 pt-16 pb-20 md:pt-24 md:pb-28">
       <div className="container-page">
         <h2 id="work-title" className="h2">
           Work
