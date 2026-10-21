@@ -16,6 +16,8 @@ const EASE_IN_OUT = "cubic-bezier(0.77, 0, 0.175, 1)";
  *    content above the target as already shown, then scroll ourselves.
  * 3. The payment loop: a dot travels "create order →" and back "← signed webhook" along
  *    `[data-pulse]` tracks, twice, when the diagram first comes into view.
+ * 4. Phone rails: mouse users can drag them; the edge fade goes once the end is reached.
+ *    Layout is only read inside scroll/pointer events, never at mount (no forced reflow).
  *
  * It lives in the root layout (which persists across client navigations), so it re-scans
  * whenever the path changes.
@@ -75,11 +77,13 @@ export function Motion() {
       });
     };
     document.addEventListener("click", onClick);
+    const cleanRails = [...document.querySelectorAll<HTMLElement>(".rail")].map(dragToScroll);
 
     return () => {
       reveal.disconnect();
       pulse.disconnect();
       document.removeEventListener("click", onClick);
+      cleanRails.forEach((clean) => clean());
     };
   }, [pathname]);
 
@@ -114,4 +118,44 @@ function runPulse(track: HTMLElement) {
     ],
     { duration: 2100, iterations: 2, delay: 300 },
   );
+}
+
+/** Mouse drag-to-scroll for a horizontal rail (touch and trackpads scroll natively). */
+function dragToScroll(rail: HTMLElement) {
+  let startX = 0;
+  let startLeft = 0;
+  let dragging = false;
+
+  const onScroll = () => {
+    rail.toggleAttribute("data-end", rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 8);
+  };
+  const onDown = (e: PointerEvent) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    dragging = true;
+    startX = e.clientX;
+    startLeft = rail.scrollLeft;
+    rail.style.scrollSnapType = "none";
+    rail.setPointerCapture(e.pointerId);
+  };
+  const onMove = (e: PointerEvent) => {
+    if (dragging) rail.scrollLeft = startLeft - (e.clientX - startX);
+  };
+  const onUp = () => {
+    if (!dragging) return;
+    dragging = false;
+    rail.style.scrollSnapType = "";
+  };
+
+  rail.addEventListener("scroll", onScroll, { passive: true });
+  rail.addEventListener("pointerdown", onDown);
+  rail.addEventListener("pointermove", onMove);
+  rail.addEventListener("pointerup", onUp);
+  rail.addEventListener("pointercancel", onUp);
+  return () => {
+    rail.removeEventListener("scroll", onScroll);
+    rail.removeEventListener("pointerdown", onDown);
+    rail.removeEventListener("pointermove", onMove);
+    rail.removeEventListener("pointerup", onUp);
+    rail.removeEventListener("pointercancel", onUp);
+  };
 }

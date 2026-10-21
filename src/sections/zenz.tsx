@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
-import { CodeBlock } from "@/components/code-block";
 import { BrowserFrame, Caption, PhoneFrame, PhoneRail } from "@/components/frames";
 import { ArrowUpRight } from "@/components/icons";
 import { facts, projects } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import { ZenZArchitecture } from "@/sections/zenz-architecture";
-import admin from "@/assets/zenz/admin.png";
+import { Incident } from "@/sections/zenz-incident";
+import adminBand from "@/assets/zenz/admin-band.png";
 import home from "@/assets/zenz/home.jpg";
 import game from "@/assets/zenz/flow-1-game.jpg";
 import slot from "@/assets/zenz/flow-2-slot.jpg";
@@ -63,38 +63,7 @@ const flow = [
   },
 ];
 
-const VERIFY_SKETCH = `
-// supabase/functions/payu-webhook: a simplified sketch of the real handler
-Deno.serve(async (req) => {
-  const p = Object.fromEntries(await req.formData());
 
-  // PayU's docs show a 5-udf formula. Payment Links really use all ten,
-  // confirmed byte for byte against a live ₹1 transaction.
-  const expected = await sha512([
-    SALT, p.status,
-    p.udf10, p.udf9, p.udf8, p.udf7, p.udf6,
-    p.udf5, p.udf4, p.udf3, p.udf2, p.udf1,
-    p.email, p.firstname, p.productinfo, p.amount, p.txnid, KEY,
-  ].join("|"));
-
-  // Constant-time compare: a bad signature confirms nothing.
-  if (!timingSafeEqual(expected, p.hash)) return reject(p, "invalid_signature");
-
-  // Cancelled, then paid on a stale tab? Not confirmed:
-  // logged as "payment_race_manual_refund_needed".
-  const outcome = await settleBooking(p);
-
-  await logEvent(p, outcome);
-  return ok();
-});
-
-// Every call is logged with its outcome. Best-effort: never changes the response.
-async function logEvent(p, outcome) {
-  try {
-    await db.from("payment_webhook_events").insert({ txnid: p.txnid, outcome });
-  } catch {}
-}
-`;
 
 export function ZenZ() {
   return (
@@ -105,17 +74,27 @@ export function ZenZ() {
         name="Zen-Z"
         headingId="zenz-title"
         tagline="Small groups of strangers, one plan, and nobody has to be the organiser."
+        tldr={[
+          { term: "Problem", value: "Meeting new people at college depends on luck, or on someone organising." },
+          {
+            term: "Built",
+            value: "The student app (Android, iOS and web), the admin panel and the Supabase backend with PayU payments. Solo.",
+          },
+          { term: "Result", value: "Live on Google Play with paying users, and a public, tested codebase." },
+        ]}
         meta={[
           { term: "Role", value: "Founder & CTO, sole engineer" },
           { term: "Timeline", value: "Jul 2026 – now" },
-          { term: "Platforms", value: "Android (Play Store), web, admin" },
+          { term: "Platforms", value: "Android, iOS (PWA), web, admin" },
           { term: "Stack", value: "React Native, Next.js, Supabase, PayU" },
+          { term: "Outcome", value: "Live on Google Play, paying users" },
         ]}
         actions={
           <>
             <a href={zenz.url} target="_blank" rel="noopener" className="btn btn-primary press">
               Visit {zenz.urlLabel}
               <ArrowUpRight size={16} />
+              <span className="sr-only"> (opens in new tab)</span>
             </a>
             <a href={zenz.playStoreUrl} target="_blank" rel="noopener" className="btn btn-ghost press">
               Google Play
@@ -131,10 +110,11 @@ export function ZenZ() {
         }
       />
 
-      {/* Hero composition: the admin dashboard with the student app overlapping it */}
+      {/* Hero composition: the live admin dashboard with the student app overlapping it.
+          Below sm only the phone shows. The phone settles in after the dashboard (data-follow). */}
       <figure data-reveal="clip" style={{ "--clip-r": "22px" } as CSSProperties} className="mt-14 md:mt-20">
         <div
-          className="relative overflow-hidden rounded-[22px] border border-line bg-surface-2 px-4 pt-6 pb-10 sm:px-10 sm:pt-12 sm:pb-16 lg:px-14"
+          className="relative flex justify-center overflow-hidden rounded-[22px] border border-line bg-surface-2 px-4 py-8 sm:aspect-[2/1] sm:items-center sm:justify-start sm:px-[5%] sm:py-0"
           style={{
             backgroundImage: "radial-gradient(var(--line-strong) 1px, transparent 1px)",
             backgroundSize: "18px 18px",
@@ -143,25 +123,28 @@ export function ZenZ() {
           <BrowserFrame
             title="admin.zen-z.site"
             shot={{
-              image: admin,
-              alt: "Zen-Z admin dashboard: bookings this week by category, groups formed, unmatched students needing action, pending reports and payments to check",
+              image: adminBand,
+              alt: "Zen-Z admin dashboard: pending reports and payments to check, both at zero, with the students and reports tools below",
             }}
-            className="w-[88%] sm:w-[80%]"
+            sizes="(min-width: 1024px) 800px, 72vw"
+            className="hidden w-[71%] sm:block"
           />
-          {/* The phone settles in just after the dashboard (data-follow). */}
-          <div data-follow className="absolute right-[4%] bottom-[6%] w-[30%] sm:w-[23%] lg:right-[6%] lg:w-[21%]">
+          <div
+            data-follow
+            className="w-[62vw] max-w-[260px] sm:absolute sm:top-1/2 sm:right-[6%] sm:w-[19%] sm:max-w-none sm:-translate-y-1/2"
+          >
             <PhoneFrame
               tone="dark"
               shot={{
                 image: home,
                 alt: "Zen-Z app home screen: Welcome Aayush, with Cafés, Dinners, Movies and Sports to pick from",
               }}
-              sizes="(min-width: 1024px) 260px, 30vw"
+              sizes="(min-width: 640px) 22vw, 62vw"
             />
           </div>
         </div>
         <Caption>
-          The live admin dashboard (bookings, groups, the matching queue, payments to check) and the
+          The live admin dashboard, including the &ldquo;Payments to check&rdquo; queue, beside the
           student app&rsquo;s home screen.
         </Caption>
       </figure>
@@ -181,12 +164,7 @@ export function ZenZ() {
               movies and sports are paid.
             </p>
             <p>
-              Demand came first: <strong>65+ students joined the waitlist</strong> before launch, and{" "}
-              <span className="whitespace-nowrap">Zen-Z&rsquo;s</span>{" "}
-              <a href={zenz.instagram} target="_blank" rel="noopener" className="link text-fg">
-                Instagram<span className="sr-only"> (opens in new tab)</span>
-              </a>{" "}
-              has grown to <strong>550+ followers and 140K+ views</strong>.
+              Demand came first: <strong>65+ students joined the waitlist</strong> before launch.
             </p>
           </Body>
         </Chapter>
@@ -257,6 +235,14 @@ export function ZenZ() {
               hold even if the app has a bug. Anything that touches money runs in Edge
               Functions on the server, never in the client.
             </p>
+            <p>
+              The schema grew through <strong>102 SQL migrations</strong> and{" "}
+              <strong>41 Postgres functions</strong>. Three pg_cron jobs keep it moving: notifications
+              flush and venues are revealed every minute, and slots roll over hourly. Free cafés and
+              dinners are sealed by a database trigger, so the client can&rsquo;t fake a ₹0 price.
+              Profile photos are protected by RLS and a view that leaves the photo column out, in a
+              private storage bucket; the database layers are tested.
+            </p>
           </Body>
         </Chapter>
 
@@ -313,92 +299,39 @@ function Surface({
   );
 }
 
-function Incident() {
-  return (
-    <div>
-      <div data-reveal className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-accent-soft px-2.5 py-1 font-mono text-[11px] font-medium text-accent uppercase">
-          Post-launch incident
-        </span>
-        <span className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-muted uppercase">
-          Resolved
-        </span>
-      </div>
-      <p
-        data-reveal
-        style={stagger(1)}
-        className="mt-5 max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.625rem)] leading-[1.08] font-medium tracking-[-0.035em]"
-      >
-        A student paid. The app said <span className="serif-em text-accent">unpaid.</span>
-      </p>
-      <Body>
-        <p>
-          After launch, a real booking that had been paid for got stuck as unpaid. A student had paid
-          real money and the product told them they hadn&rsquo;t. For an app that asks strangers to
-          trust it with their evenings and their money, that is the worst kind of bug.
-        </p>
-        <p>I rebuilt the payment path around one rule: <strong>the server is the only source of payment truth.</strong></p>
-      </Body>
-
-      <ol data-reveal className="mt-8 grid gap-3 sm:grid-cols-3">
-        {[
-          {
-            t: "Verify, don't trust",
-            d: "Bookings are confirmed only when PayU's webhook arrives with a valid SHA-512 signature, recomputed on the server with a secret salt.",
-          },
-          {
-            t: "Log everything",
-            d: "Every webhook call is recorded with its outcome in payment_webhook_events. Best-effort, so logging can never change PayU's response.",
-          },
-          {
-            t: "Client stays dumb",
-            d: "Orders are created server-side and the app never marks anything as paid. It waits for the server's answer.",
-          },
-        ].map((s, i) => (
-          <li key={s.t} className="rounded-[12px] border border-line bg-surface p-4">
-            <span className="font-mono text-xs text-accent">0{i + 1}</span>
-            <p className="mt-2 font-medium tracking-[-0.01em]">{s.t}</p>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted">{s.d}</p>
-          </li>
-        ))}
-      </ol>
-
-      <div data-reveal className="mt-8">
-        <CodeBlock
-          code={VERIFY_SKETCH}
-          filename="payu-webhook/index.ts"
-          badge="simplified sketch"
-          label="Simplified sketch of the PayU webhook handler"
-        />
-      </div>
-
-      <p data-reveal className="mt-6 max-w-[62ch] border-l-2 border-accent pl-4 text-[1.0625rem] leading-relaxed">
-        <span className="font-medium">The guarantee now:</span>{" "}
-        <span className="text-muted">
-          no booking is confirmed without a verified payment, and every payment question can be
-          answered from the logs. The admin dashboard also has a{" "}
-          <span className="text-fg">Payments to check</span> queue for anything still unpaid 10+
-          minutes after a payment attempt.
-        </span>
-      </p>
-    </div>
-  );
-}
-
 function Results() {
   const metrics = [
     { v: "150+", l: "users in the first 2 days after launch" },
     { v: "₹33K+", l: "total revenue so far" },
     { v: "65+", l: "students on the waitlist before launch" },
-    { v: "140K+", l: "Instagram views · 550+ followers" },
+    {
+      v: "140K+",
+      l: (
+        <>
+          views on{" "}
+          <a href={projects.zenz.instagram} target="_blank" rel="noopener" className="link text-fg">
+            Instagram<span className="sr-only"> (opens in new tab)</span>
+          </a>{" "}
+          · 550+ followers
+        </>
+      ),
+    },
   ];
   const z = facts.zenz;
   const build = [
     `${z.appScreens} app screens`,
     `${z.tables} tables · RLS on all`,
+    `${z.migrations} migrations`,
     `${z.edgeFunctions} Edge Functions`,
-    `${z.testSuites} test suites in CI`,
-    `${z.commits} commits`,
+    `${z.ciJobs}-job CI`,
+    `${z.pgtapAssertions} pgTAP assertions`,
+    `${z.commits} commits · ${z.claudeCommits} with Claude`,
+  ];
+  const along = [
+    "Moved payments from Razorpay to PayU mid-build.",
+    "Got past a Play Store rejection by building a reviewer sign-in path.",
+    "Ships to iOS as a PWA, tested on BrowserStack; the native app updates over the air with EAS Update.",
+    `${z.pgtapAssertions} pgTAP assertions run in CI against a real hosted Postgres. Writing them found and fixed 3 RLS and authorization bugs, and another test caught a function that anyone with the public key could call to delete any account.`,
   ];
   return (
     <div className="space-y-4">
@@ -419,6 +352,17 @@ function Results() {
             {b}
           </span>
         ))}
+      </div>
+      <div data-reveal className="rounded-[14px] border border-line p-5 sm:p-6">
+        <p className="label">Along the way</p>
+        <ul className="mt-3 grid gap-x-8 gap-y-2.5 text-[0.9375rem] leading-relaxed text-muted md:grid-cols-2">
+          {along.map((t) => (
+            <li key={t} className="flex gap-2.5">
+              <span aria-hidden className="mt-[0.6em] h-px w-2.5 shrink-0 bg-line-strong" />
+              {t}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

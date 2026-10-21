@@ -6,6 +6,7 @@ export function CaseHeader({
   eyebrow,
   name,
   tagline,
+  tldr,
   meta,
   actions,
   headingId,
@@ -14,6 +15,8 @@ export function CaseHeader({
   eyebrow: string;
   name: string;
   tagline: ReactNode;
+  /** Problem / Built / Result, for skimmers. */
+  tldr: Array<{ term: string; value: ReactNode }>;
   meta: Array<{ term: string; value: ReactNode }>;
   actions?: ReactNode;
   headingId: string;
@@ -41,10 +44,18 @@ export function CaseHeader({
         >
           {tagline}
         </p>
+        <dl data-reveal="fade" style={stagger(3)} className="mt-6 max-w-[60ch] space-y-1.5 text-[0.9375rem] leading-relaxed">
+          {tldr.map((t) => (
+            <div key={t.term} className="grid grid-cols-[4.5rem_1fr] gap-3">
+              <dt className="label pt-[0.2rem]">{t.term}</dt>
+              <dd className="text-muted">{t.value}</dd>
+            </div>
+          ))}
+        </dl>
         <dl
           data-reveal
-          style={stagger(3)}
-          className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-6 sm:grid-cols-4"
+          style={stagger(4)}
+          className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-6 sm:grid-cols-3 lg:grid-cols-5"
         >
           {meta.map((m) => (
             <div key={m.term}>
@@ -54,7 +65,7 @@ export function CaseHeader({
           ))}
         </dl>
         {actions ? (
-          <div data-reveal style={stagger(4)} className="mt-8 flex flex-wrap gap-3">
+          <div data-reveal style={stagger(5)} className="mt-8 flex flex-wrap gap-3">
             {actions}
           </div>
         ) : null}

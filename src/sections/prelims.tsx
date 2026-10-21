@@ -76,17 +76,27 @@ export function PrelimsDaily() {
         name="PrelimsDaily"
         headingId="prelims-title"
         tagline="A 10-minute daily habit for UPSC Prelims, from empty repo to tested app in a day."
+        tldr={[
+          { term: "Problem", value: "UPSC aspirants don't fail for lack of material, but for lack of consistency." },
+          { term: "Built", value: "An offline daily-practice app with streaks, XP and reminders that adapt, in one day." },
+          {
+            term: "Result",
+            value: `${facts.prelims.tests} passing tests, every trade-off written down, and an installable Android build.`,
+          },
+        ]}
         meta={[
           { term: "Role", value: "Solo: product, design, code" },
           { term: "Timeline", value: "1 day · Oct 2026" },
           { term: "Platforms", value: "Android, iOS, web (Expo)" },
           { term: "Stack", value: "Expo, TypeScript, Zustand, Reanimated" },
+          { term: "Outcome", value: `Shipped with ${facts.prelims.tests} passing tests` },
         ]}
         actions={
           <a href={prelims.url} target="_blank" rel="noopener" className="btn btn-primary press">
             <GitHub size={16} />
             Read the code
             <ArrowUpRight size={16} />
+            <span className="sr-only"> (opens in new tab)</span>
           </a>
         }
       />
@@ -122,8 +132,7 @@ export function PrelimsDaily() {
             <ol className="grid gap-4 sm:grid-cols-2">
               {decisions.map((d, i) => (
                 <li key={d.title} data-reveal style={stagger(i % 2)} className="card flex flex-col p-5 sm:p-7">
-                  <span className="font-mono text-xs text-muted">Decision 0{i + 1}</span>
-                  <p className="mt-3 text-xl font-medium tracking-[-0.02em]">{d.title}</p>
+                  <p className="text-xl font-medium tracking-[-0.02em]">{d.title}</p>
                   <p className="mt-2 leading-relaxed text-muted">{d.body}</p>
                   <p className="mt-auto pt-5 text-sm leading-relaxed">
                     <span className="font-mono text-xs text-accent uppercase">Trade-off </span>

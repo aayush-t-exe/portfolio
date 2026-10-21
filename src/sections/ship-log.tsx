@@ -1,5 +1,9 @@
+import Image, { type StaticImageData } from "next/image";
 import { nb } from "@/lib/nobreak";
+import { facts } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
+import zenzIcon from "@/assets/zenz/icon.png";
+import prelimsIcon from "@/assets/prelims/icon.png";
 
 type Entry = {
   when: string;
@@ -8,6 +12,8 @@ type Entry = {
   detail: string;
   tag: "live" | "shipped" | "pitch" | "founded";
   href?: string;
+  /** The product's real app icon, so the first screen shows the products, not just words. */
+  thumb?: StaticImageData;
 };
 
 /** Real milestones only, newest first. Launch timing isn't dated, so it sits inside "Now". */
@@ -15,17 +21,19 @@ const entries: Entry[] = [
   {
     when: "Now",
     title: "Running Zen-Z",
-    detail: "Live on the Play Store. 150+ users in its first 2 days, ₹33K+ revenue.",
+    detail: "Live on Google Play and the web, matching students into small groups.",
     tag: "live",
     href: "#zen-z",
+    thumb: zenzIcon,
   },
   {
     when: "Oct 2026",
     dateTime: "2026-10",
     title: "Shipped PrelimsDaily",
-    detail: "A UPSC practice app, built in one day, with 72 unit tests.",
+    detail: `A UPSC practice app, built in one day, with ${facts.prelims.tests} unit tests.`,
     tag: "shipped",
     href: "#prelimsdaily",
+    thumb: prelimsIcon,
   },
   {
     when: "Sep 2026",
@@ -63,8 +71,17 @@ export function ShipLog() {
                 e.tag === "live" ? "pulse-dot bg-accent" : "bg-line-strong"
               }`}
             />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline justify-between gap-3">
+            <div className="flex min-w-0 flex-1 gap-3.5">
+              {e.thumb ? (
+                <Image
+                  src={e.thumb}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="size-10 shrink-0 rounded-[10px] shadow-[0_0_0_1px_var(--line-strong)]"
+                />
+              ) : null}
+              <div className="min-w-0 flex-1">
                 <h3 className="text-[0.9375rem] font-medium tracking-[-0.01em]">
                   {e.href ? (
                     <a href={e.href} className="link">
@@ -75,14 +92,14 @@ export function ShipLog() {
                   )}
                 </h3>
                 {e.dateTime ? (
-                  <time dateTime={e.dateTime} className="shrink-0 font-mono text-xs text-muted">
+                  <time dateTime={e.dateTime} className="mt-0.5 block font-mono text-xs text-muted">
                     {e.when}
                   </time>
                 ) : (
-                  <span className="shrink-0 font-mono text-xs font-medium text-accent">{e.when}</span>
+                  <span className="mt-0.5 block font-mono text-xs font-medium text-accent">{e.when}</span>
                 )}
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{nb(e.detail)}</p>
               </div>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{nb(e.detail)}</p>
             </div>
           </li>
         ))}

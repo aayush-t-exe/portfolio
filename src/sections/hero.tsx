@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden">
       <GridBackdrop />
-      <div className="container-page relative grid gap-14 pt-14 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-10 lg:pt-28 lg:pb-24">
+      <div className="container-page relative grid gap-14 pt-14 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-24">
         <div className="lg:col-span-7">
           <p className="enter label inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/70 py-1.5 pr-3.5 pl-3 normal-case">
             <span className="pulse-dot relative size-1.5 rounded-full bg-accent" aria-hidden />
@@ -51,7 +51,7 @@ export function Hero() {
             </a>
             <CopyEmail
               email={site.email}
-              className="ml-1 h-11 rounded-full px-2 font-mono text-[0.8125rem] text-muted hover:text-fg"
+              className="-ml-2 h-11 rounded-full px-2 font-mono text-[0.8125rem] text-muted hover:text-fg sm:ml-1"
             />
           </div>
         </div>

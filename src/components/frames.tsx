@@ -36,6 +36,7 @@ export function PhoneFrame({
             src={shot.image}
             alt={shot.alt}
             sizes={sizes}
+            draggable={false}
             className="size-full object-cover object-top"
           />
         </div>
@@ -57,7 +58,7 @@ function StatusBar() {
   );
 }
 
-/** Minimal browser chrome for desktop screenshots (16:10). */
+/** Minimal browser chrome for desktop screenshots. The box takes the image's own ratio. */
 export function BrowserFrame({
   shot,
   title,
@@ -69,6 +70,7 @@ export function BrowserFrame({
   sizes?: string;
   className?: string;
 }) {
+  const ratio = `${shot.image.width} / ${shot.image.height}`;
   return (
     <div className={`card overflow-hidden rounded-[14px] p-0 ${className}`}>
       <div className="flex h-9 items-center gap-3 border-b border-line bg-surface px-3.5">
@@ -79,7 +81,7 @@ export function BrowserFrame({
         </span>
         <span className="truncate font-mono text-[11px] text-muted">{title}</span>
       </div>
-      <div className="dim-in-dark relative aspect-[16/10] bg-white">
+      <div className="browser-dim relative bg-white" style={{ aspectRatio: ratio }}>
         <Image src={shot.image} alt={shot.alt} sizes={sizes} className="size-full object-cover object-top" />
       </div>
     </div>
@@ -87,8 +89,10 @@ export function BrowserFrame({
 }
 
 /**
- * A row of phone screens: a swipeable rail on touch, a grid from md up.
- * `numbered` adds step labels (for flows); otherwise alternate screens are offset.
+ * A row of phone screens as a horizontal snap scroller at every width: phones stay a
+ * legible 230px instead of shrinking to fit the column. Mouse users can drag (see Motion),
+ * use the thin scrollbar, or shift+wheel. `numbered` adds step labels (for flows);
+ * otherwise alternate screens are offset.
  */
 export function PhoneRail({
   label,
@@ -101,38 +105,44 @@ export function PhoneRail({
   tone: "light" | "dark";
   numbered?: boolean;
 }) {
-  const cols = items.length === 6 ? "md:grid-cols-6" : "md:grid-cols-5";
   return (
-    <ul
-      tabIndex={0}
-      aria-label={label}
-      className={`rail scroller -mx-[clamp(1.25rem,4vw,2.5rem)] flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,2.5rem)] pt-2 pb-6 md:mx-0 md:grid ${cols} md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:gap-6`}
-    >
-      {items.map((s, i) => (
-        <li
-          key={s.title}
-          data-reveal="clip"
-          style={stagger(i)}
-          className={`w-[62vw] max-w-[260px] shrink-0 snap-center md:w-auto md:max-w-none ${
-            !numbered && i % 2 === 1 ? "md:translate-y-10" : ""
-          }`}
-        >
-          <figure>
-            {numbered ? (
-              <p className="mb-3 flex items-center gap-2 font-mono text-xs text-muted">
-                <span className={s.step === "Pay" ? "text-accent" : "text-fg"}>{s.step}</span>
-                <span aria-hidden className="rule-draw h-px flex-1 bg-line-strong" />
-              </p>
-            ) : null}
-            <PhoneFrame shot={s} tone={tone} sizes={`(min-width: 768px) ${numbered ? "16vw" : "20vw"}, 62vw`} />
-            <figcaption className="mt-4">
-              <span className="block text-sm font-medium">{s.title}</span>
-              <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{s.caption}</span>
-            </figcaption>
-          </figure>
-        </li>
-      ))}
-    </ul>
+    <div className="relative">
+      <p aria-hidden className="mb-3 flex justify-end font-mono text-xs text-muted">
+        <span className="rail-hint">drag &rarr;</span>
+      </p>
+      <ul
+        tabIndex={0}
+        aria-label={`${label} (scrolls sideways)`}
+        className={`rail scroller -mx-[clamp(1.25rem,4vw,2.5rem)] flex snap-x snap-mandatory scroll-px-[clamp(1.25rem,4vw,2.5rem)] gap-4 overflow-x-auto px-[clamp(1.25rem,4vw,2.5rem)] pt-2 md:gap-6 ${
+          numbered ? "pb-6" : "pb-16"
+        }`}
+      >
+        {items.map((s, i) => (
+          <li
+            key={s.title}
+            data-reveal="clip"
+            style={stagger(i)}
+            className={`w-[min(62vw,260px)] shrink-0 snap-start md:w-[230px] ${
+              !numbered && i % 2 === 1 ? "md:translate-y-10" : ""
+            }`}
+          >
+            <figure>
+              {numbered ? (
+                <p className="mb-3 flex items-center gap-2 font-mono text-xs text-muted">
+                  <span className={s.step === "Pay" ? "text-accent" : "text-fg"}>{s.step}</span>
+                  <span aria-hidden className="rule-draw h-px flex-1 bg-line-strong" />
+                </p>
+              ) : null}
+              <PhoneFrame shot={s} tone={tone} sizes="(min-width: 768px) 230px, min(62vw, 260px)" />
+              <figcaption className="mt-4">
+                <span className="block text-sm font-medium">{s.title}</span>
+                <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{s.caption}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

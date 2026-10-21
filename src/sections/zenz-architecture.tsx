@@ -10,7 +10,7 @@ export function ZenZArchitecture() {
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-[1fr_6.5rem_1.3fr_6.5rem_0.9fr] lg:gap-0">
           <Column title="Clients">
-            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="20 app screens · booking flow · push" />
+            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="20 app screens · Android, iOS (PWA), web" />
             <Node name="Admin panel" detail="Next.js" foot="Matching board · moderation · analytics" />
           </Column>
 
@@ -19,10 +19,10 @@ export function ZenZArchitecture() {
           <Column title="Supabase" emphasis>
             <div className="grid grid-cols-2 gap-2">
               <Node name="Postgres" detail="28 tables, RLS on every one" wide />
-              <Node name="Auth" detail="Student accounts" />
+              <Node name="Auth" detail="Email OTP" />
               <Node name="Realtime" detail="Group chat" />
               <Node name="Edge Functions" detail="7 serverless functions" accent />
-              <Node name="pg_cron" detail="Scheduled jobs" />
+              <Node name="pg_cron" detail="3 scheduled jobs" />
             </div>
           </Column>
 
@@ -30,24 +30,28 @@ export function ZenZArchitecture() {
 
           <Column title="Services">
             <Node name="PayU" detail="Checkout + webhooks" accent />
+            <Node name="Brevo" detail="Email OTP delivery" />
+            <Node name="Expo Push" detail="Notifications" />
+            <Node name="EAS Update" detail="Over-the-air updates" />
             <Node name="Sentry" detail="Error monitoring" />
           </Column>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[10px] border border-dashed border-line-strong px-4 py-3 font-mono text-[11.5px] leading-relaxed text-muted">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[10px] border border-dashed border-line-strong px-4 py-3 font-mono text-xs leading-relaxed text-muted">
           <span className="text-fg">ship</span>
           <span aria-hidden>→</span>
-          GitHub Actions CI (37 test suites: Vitest, Jest, pgTAP)
+          GitHub Actions: 11 jobs, 37 test suites (Vitest, Jest, pgTAP)
           <span aria-hidden>→</span>
           Google Play + web (Vercel)
-          <span className="sm:ml-auto">183 commits</span>
+          <span className="sm:ml-auto">183 commits · 102 migrations</span>
         </div>
       </div>
       <p className="sr-only">
         The mobile and web app and the Next.js admin panel talk to Supabase for authentication,
         database queries protected by row-level security, and realtime group chat. Supabase Edge
         Functions create PayU payment orders on the server and receive PayU&rsquo;s signed webhooks.
-        Errors are reported to Sentry.
+        Sign-in is by email OTP sent through Brevo, push notifications go through Expo, the app
+        updates over the air with EAS Update, and errors are reported to Sentry.
       </p>
       <figcaption id="arch-caption" className="mt-3 font-mono text-xs leading-relaxed text-muted">
         Fig. 1: Zen-Z architecture. Everything in this diagram was designed and built by one person.
