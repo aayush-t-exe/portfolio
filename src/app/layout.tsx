@@ -103,7 +103,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: prePaint }} />
       </head>
-      <body className="min-h-dvh bg-bg text-fg">
+      <body id="top" className="min-h-dvh bg-bg text-fg">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
