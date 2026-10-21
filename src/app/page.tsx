@@ -7,6 +7,7 @@ import { Contact } from "@/sections/contact";
 import { Hero } from "@/sections/hero";
 import { Process } from "@/sections/process";
 import { Proof } from "@/sections/proof";
+import { Stack } from "@/sections/stack";
 import { Work } from "@/sections/work";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function Home() {
       <Proof />
       <Work />
       <Process />
+      <Stack />
       <About />
       <Contact />
     </>

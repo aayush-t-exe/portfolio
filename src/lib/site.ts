@@ -93,3 +93,51 @@ export const facts = {
     suites: 5,
   },
 } as const;
+
+/** Where a tool shipped: Z = Zen-Z, P = PrelimsDaily, S = this site. */
+export type Project = "Z" | "P" | "S";
+
+export const projectNames: Record<Project, string> = { Z: "Zen-Z", P: "PrelimsDaily", S: "This site" };
+
+export const stackLayers = ["Client", "Data & backend", "Payments & infra", "Quality", "AI workflow"] as const;
+
+type Tool = {
+  name: string;
+  layer: (typeof stackLayers)[number];
+  /** Simple Icons slug (see components/stack-icons.ts); a 2-letter mono tile otherwise. */
+  icon?: import("@/components/stack-icons").StackIcon;
+  mono?: string;
+  note: string;
+  usedIn: Project[];
+};
+
+/** The stack, single source for the Stack ledger, llms.txt and JSON-LD knowsAbout. */
+export const stack: Tool[] = [
+  { name: "TypeScript", layer: "Client", icon: "typescript", note: "every project, end to end", usedIn: ["Z", "P", "S"] },
+  { name: "React Native + Expo", layer: "Client", icon: "expo", note: "Zen-Z app and PrelimsDaily", usedIn: ["Z", "P"] },
+  { name: "Next.js", layer: "Client", icon: "nextdotjs", note: "admin panel + this site", usedIn: ["Z", "S"] },
+  { name: "Tailwind CSS", layer: "Client", icon: "tailwindcss", note: "this site's design tokens", usedIn: ["S"] },
+  { name: "Reanimated", layer: "Client", mono: "Re", note: "60fps ring + XP bar", usedIn: ["P"] },
+  { name: "Zustand", layer: "Client", mono: "Zu", note: "state with versioned persistence", usedIn: ["P"] },
+  { name: "dnd-kit", layer: "Client", mono: "dk", note: "drag-and-drop matching board", usedIn: ["Z"] },
+  { name: "Supabase", layer: "Data & backend", icon: "supabase", note: "auth, realtime, 7 Edge Functions", usedIn: ["Z"] },
+  { name: "Postgres + RLS", layer: "Data & backend", icon: "postgresql", note: "28 tables, RLS on every one", usedIn: ["Z"] },
+  { name: "Edge Functions (Deno)", layer: "Data & backend", icon: "deno", note: "payment orders and webhooks", usedIn: ["Z"] },
+  { name: "Realtime", layer: "Data & backend", mono: "Rt", note: "group chat", usedIn: ["Z"] },
+  { name: "pg_cron", layer: "Data & backend", mono: "cr", note: "3 scheduled jobs", usedIn: ["Z"] },
+  { name: "PayU", layer: "Payments & infra", mono: "Pu", note: "SHA-512 verified webhooks", usedIn: ["Z"] },
+  { name: "Vercel", layer: "Payments & infra", icon: "vercel", note: "web hosting", usedIn: ["Z", "S"] },
+  { name: "Expo Push", layer: "Payments & infra", icon: "expo", note: "push notifications", usedIn: ["Z"] },
+  { name: "EAS Update", layer: "Payments & infra", icon: "expo", note: "over-the-air updates", usedIn: ["Z"] },
+  { name: "Brevo", layer: "Payments & infra", icon: "brevo", note: "email OTP sign-in", usedIn: ["Z"] },
+  { name: "Sentry", layer: "Payments & infra", icon: "sentry", note: "error monitoring", usedIn: ["Z"] },
+  { name: "GitHub Actions", layer: "Quality", icon: "githubactions", note: "11-job CI pipeline", usedIn: ["Z"] },
+  { name: "Vitest", layer: "Quality", icon: "vitest", note: "admin + Edge Function tests", usedIn: ["Z"] },
+  { name: "Jest", layer: "Quality", icon: "jest", note: "mobile app tests", usedIn: ["Z", "P"] },
+  { name: "pgTAP", layer: "Quality", mono: "pg", note: "115 DB assertions in CI", usedIn: ["Z"] },
+  { name: "Claude Code", layer: "AI workflow", icon: "claude", note: "co-author on 152 of 183 Zen-Z commits", usedIn: ["Z", "P", "S"] },
+  { name: "Cursor", layer: "AI workflow", icon: "cursor", note: "editor for day-to-day builds", usedIn: ["Z", "P"] },
+];
+
+/** Shown muted under the ledger: no shipped evidence, so not in the main list. */
+export const coursework = ["Python", "Java"];

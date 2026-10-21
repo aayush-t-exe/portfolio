@@ -509,13 +509,20 @@
   display: none;
 }
 
-/* Light-UI screenshots are dimmed a touch in dark mode so they don't glare. */
+/* Light-UI screenshots are dimmed in dark mode so they don't glare. The white admin
+   dashboard needs more than the phone screens. */
 :root[data-theme="dark"] .dim-in-dark {
   filter: brightness(0.86);
+}
+:root[data-theme="dark"] .browser-dim {
+  filter: brightness(0.78) contrast(1.05);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .dim-in-dark {
     filter: brightness(0.86);
+  }
+  :root:not([data-theme="light"]) .browser-dim {
+    filter: brightness(0.78) contrast(1.05);
   }
 }
 
@@ -523,6 +530,121 @@
 ::view-transition-new(root) {
   animation-duration: 260ms;
   animation-timing-function: ease;
+}
+
+/* Incident timeline: the connecting line (vertical on mobile, horizontal from sm). */
+.incident-line::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 4px;
+  width: 1px;
+  background: var(--line-strong);
+  transform-origin: top;
+}
+@media (min-width: 640px) {
+  .incident-line::before {
+    top: 4px;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    height: 1px;
+    transform-origin: left;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-armed .incident-line::before {
+    transform: scaleY(0);
+    transition: transform 700ms var(--ease-out) 150ms;
+  }
+  @media (min-width: 640px) {
+    .reveal-armed .incident-line::before {
+      transform: scaleX(0);
+    }
+  }
+  .reveal-armed .incident-line[data-shown]::before {
+    transform: none;
+  }
+}
+
+/* Case index cards: the thumbnail settles a touch on hover (fine pointers, motion allowed). */
+.case-card-img {
+  transition: transform 500ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .case-card:hover .case-card-img {
+    transform: scale(1.02);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .case-card {
+    transition: border-color 200ms ease;
+  }
+  .case-card:hover {
+    border-color: var(--line-strong);
+  }
+}
+
+/* ───────────────────────────── Stack ledger ─────────────────────────────
+   The filter is radio inputs; everything below is driven by :has(), so no JS. */
+.stack-pill {
+  width: calc((100% - 0.5rem) / 4);
+  transform: translateX(calc(var(--n, 0) * 100%));
+  transition: transform 220ms var(--ease-out);
+}
+.stack:has([data-filter="Z"]:checked) {
+  --n: 1;
+}
+.stack:has([data-filter="P"]:checked) {
+  --n: 2;
+}
+.stack:has([data-filter="S"]:checked) {
+  --n: 3;
+}
+.stack-filter label:has(input:checked) {
+  color: var(--bg);
+}
+.stack-filter label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.tool {
+  transition:
+    opacity 200ms ease,
+    filter 200ms ease,
+    background-color 160ms ease;
+}
+.stack:has([data-filter="Z"]:checked) .tool:not([data-z]),
+.stack:has([data-filter="P"]:checked) .tool:not([data-p]),
+.stack:has([data-filter="S"]:checked) .tool:not([data-s]) {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+.tool-glyph,
+.tool-chip {
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tool:hover {
+    background: var(--surface);
+  }
+  /* The only place brand colours appear. */
+  .tool:hover .tool-glyph {
+    color: var(--brand, var(--fg));
+  }
+  .tool:hover .tool-chip {
+    color: var(--accent);
+    border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack-pill {
+    transition: none;
+  }
 }
 
 /* Syntax colours for the build-time highlighter (short class names keep the HTML small). */
@@ -556,10 +678,33 @@
   }
 }
 
-/* Horizontal scroller without a visible scrollbar (gallery on touch). */
+/* Horizontal rails: no scrollbar on touch (swipe), a thin one for mouse users; the edge fades
+   to hint there's more. Dragging with a mouse is handled in Motion. */
 .scroller {
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  mask-image: linear-gradient(to right, black calc(100% - 4rem), transparent);
 }
 .scroller::-webkit-scrollbar {
   display: none;
+}
+.scroller[data-end] {
+  mask-image: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .scroller {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+    cursor: grab;
+  }
+  .scroller:active {
+    cursor: grabbing;
+  }
+}
+.rail img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.rail-hint {
+  transition: opacity 200ms ease;
 }

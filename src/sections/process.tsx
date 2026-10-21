@@ -21,20 +21,6 @@ const steps = [
   },
 ];
 
-const stack = [
-  { group: "Languages", items: ["TypeScript", "JavaScript", "SQL"] },
-  {
-    group: "Frontend & mobile",
-    items: ["React Native (Expo)", "React", "Next.js", "Tailwind CSS", "TanStack Query", "Zustand", "Reanimated"],
-  },
-  {
-    group: "Backend & cloud",
-    items: ["Supabase", "PostgreSQL + RLS", "Edge Functions", "Realtime", "REST & webhooks", "PayU", "Vercel", "EAS"],
-  },
-  { group: "Quality", items: ["GitHub Actions CI", "Vitest", "Jest", "pgTAP", "Sentry", "Git"] },
-  { group: "AI", items: ["Claude Code", "Cursor"] },
-];
-
 export function Process() {
   return (
     <section
@@ -82,33 +68,6 @@ export function Process() {
           </div>
         </div>
 
-        <div className="mt-24 md:mt-32">
-          <div className="grid gap-6 md:grid-cols-12 md:gap-8">
-            <h3 data-reveal className="label md:col-span-3 md:pt-1">
-              <span className="text-fg">Stack</span> · what I reach for
-            </h3>
-            <dl className="grid gap-x-8 gap-y-8 sm:grid-cols-2 md:col-span-9 lg:grid-cols-3">
-              {stack.map((g, i) => (
-                <div key={g.group} data-reveal style={stagger(i)}>
-                  <dt className="text-sm font-medium">{g.group}</dt>
-                  <dd className="mt-3 flex flex-wrap gap-1.5">
-                    {g.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-line bg-surface px-2.5 py-1 text-[0.8125rem] text-muted"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p className="text-sm text-muted md:col-span-9 md:col-start-4">
-              Also (coursework): Python, Java
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

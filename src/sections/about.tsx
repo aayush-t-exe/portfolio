@@ -17,7 +17,7 @@ export function About() {
     <section id="about" aria-labelledby="about-title" className="cv-auto border-t border-line py-20 [--cv-h:1600px] md:py-32">
       <div className="container-page">
         <SectionHeading
-          index="03"
+          index="04"
           label="About"
           headingId="about-title"
           title={

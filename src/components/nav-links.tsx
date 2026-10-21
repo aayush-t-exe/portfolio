@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const links = [
   { id: "work", label: "Work", className: "" },
   { id: "process", label: "Process", className: "hidden md:inline-flex" },
+  { id: "stack", label: "Stack", className: "hidden lg:inline-flex" },
   { id: "about", label: "About", className: "hidden sm:inline-flex" },
   { id: "contact", label: "Contact", className: "" },
 ] as const;
