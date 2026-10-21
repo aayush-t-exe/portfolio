@@ -130,7 +130,7 @@ export function PhoneRail({
         {items.map((s, i) => (
           <li
             key={s.title}
-            data-reveal="clip"
+            data-reveal
             style={stagger(i)}
             className={`w-[min(62vw,260px)] shrink-0 snap-start md:w-[230px] ${
               !numbered && i % 2 === 1 ? "md:translate-y-10" : ""
@@ -140,7 +140,7 @@ export function PhoneRail({
               {numbered ? (
                 <p className="mb-3 flex items-center gap-2 font-mono text-xs text-muted">
                   <span className={s.step === "Pay" ? "text-accent" : "text-fg"}>{s.step}</span>
-                  <span aria-hidden className="rule-draw h-px flex-1 bg-line-strong" />
+                  <span aria-hidden className="h-px flex-1 bg-line-strong" />
                 </p>
               ) : null}
               <PhoneFrame shot={s} tone={tone} sizes="(min-width: 768px) 230px, min(62vw, 260px)" />

@@ -363,7 +363,6 @@
 .case-toc {
   background: color-mix(in oklab, var(--bg) 88%, transparent);
   backdrop-filter: saturate(1.4) blur(14px);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
 }
 @media (min-width: 768px) {
   html:has(.case-toc) {
@@ -384,15 +383,17 @@
 }
 
 /* ───────────────────────────── Motion ─────────────────────────────
-   Reveal on scroll, armed only once JS has run (html.reveal-armed), so no-JS visitors
-   and print see everything. Variants via the attribute value:
-     data-reveal / ="up"  opacity + 10px rise   (headings, leads, cards)
-     ="fade"              opacity only           (long body copy)
-     ="clip"              figure "develops" from the top, image settles from 1.015
-   Stagger with style={stagger(n)}; capped at 5 steps (300ms) so long lists never wait. */
+   Deliberately little (v3 halved it). What moves:
+   - figures and cards reveal once as they arrive (data-reveal): 350ms fade + 8px rise, ≤ 40ms
+     stagger. Text never reveals; it is simply there.
+   - the hero stage enters once on load; the status dot pulses three times and stops;
+   - the case-page TOC fills with chapter progress (scroll-driven, CSS only);
+   - the payment-loop dot (WAAPI, PageBehavior), the theme cross-fade, the card → case morph,
+     and press/hover feedback.
+   Reveals are armed only once JS has run (html.reveal-armed), so no-JS visitors and print see
+   everything. */
 
-/* Scroll-linked indicators stay hidden unless motion is allowed and the browser supports
-   scroll timelines (enabled further down). */
+/* Scroll-linked indicators stay hidden unless motion is allowed and scroll timelines exist. */
 .toc-fill {
   display: none;
 }
@@ -400,64 +401,15 @@
 @media (prefers-reduced-motion: no-preference) {
   .reveal-armed [data-reveal] {
     opacity: 0;
-    transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 8px, 0);
     transition:
-      opacity 450ms var(--ease-out),
-      transform 600ms var(--ease-out),
-      clip-path 700ms var(--ease-out);
-    transition-delay: calc(min(var(--i, 0), 5) * 60ms);
-  }
-  .reveal-armed [data-reveal="fade"] {
-    transform: none;
-    transition: opacity 400ms var(--ease-out);
-    transition-delay: calc(min(var(--i, 0), 5) * 60ms);
-  }
-  /* Develop: clip from the top (negative insets so shadows are never cut once shown). */
-  .reveal-armed [data-reveal="clip"] {
-    opacity: 1;
-    transform: none;
-    clip-path: inset(6% -12% -12% -12% round var(--clip-r, 0px));
-  }
-  .reveal-armed [data-reveal="clip"] img {
-    transform: scale(1.015);
-    transition: transform 900ms var(--ease-out);
+      opacity 350ms var(--ease-out),
+      transform 350ms var(--ease-out);
+    transition-delay: calc(min(var(--i, 0), 3) * 40ms);
   }
   .reveal-armed [data-reveal][data-shown] {
     opacity: 1;
     transform: none;
-  }
-  .reveal-armed [data-reveal="clip"][data-shown] {
-    clip-path: inset(-12% -12% -12% -12% round var(--clip-r, 0px));
-  }
-  .reveal-armed [data-reveal="clip"][data-shown] img {
-    transform: none;
-  }
-  /* A child that follows its revealed parent (the phone over the admin dashboard). */
-  .reveal-armed [data-reveal] [data-follow] {
-    opacity: 0;
-    transform: translate3d(0, 24px, 0);
-    transition:
-      opacity 450ms var(--ease-out) 120ms,
-      transform 600ms var(--ease-out) 120ms;
-  }
-  .reveal-armed [data-reveal][data-shown] [data-follow] {
-    opacity: 1;
-    transform: none;
-  }
-  /* Hairlines draw left to right once their block is revealed. */
-  .reveal-armed [data-reveal] .rule-draw {
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 400ms var(--ease-out) 150ms;
-  }
-  .reveal-armed [data-reveal][data-shown] .rule-draw {
-    transform: none;
-  }
-  /* Swipe rails reveal each item as it arrives, with no stagger wait. */
-  @media (max-width: 767px) {
-    .reveal-armed .rail > [data-reveal] {
-      transition-delay: 0ms;
-    }
   }
 
   /* The hero's product stage enters once on load (CSS only, never waits for hydration). It is
@@ -472,46 +424,15 @@
     }
   }
 
-  /* Hero entrance: plays once on load, CSS-only so it never waits for hydration. */
-  .enter {
-    animation: enter 800ms var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
-  }
-  @keyframes enter {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 12px, 0);
-    }
-  }
-
-  /* Ship log: the spine draws down, then each dot pops in with its entry. Plays once. */
-  .ship-spine::before {
-    transform-origin: top;
-    animation: spine 700ms var(--ease-out) 240ms both;
-  }
-  @keyframes spine {
-    from {
-      transform: scaleY(0);
-    }
-  }
-  .ship-dot {
-    animation: dot 250ms var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 80ms + 160ms);
-  }
-  @keyframes dot {
-    from {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-  }
-
+  /* Status dot: three pulses after load, then still. */
   .pulse-dot::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     background: inherit;
-    animation: pulse 2.4s var(--ease-out) 600ms 3 both;
+    opacity: 0;
+    animation: pulse 2.4s var(--ease-out) 600ms 3;
   }
   @keyframes pulse {
     0% {
@@ -525,19 +446,6 @@
     }
   }
 
-  /* Scroll-linked progress, where supported: no JS. */
-  @supports (animation-timeline: scroll()) {
-    .reading-progress {
-      display: block;
-      animation: progress linear both;
-      animation-timeline: scroll(root);
-    }
-    @keyframes progress {
-      from {
-        transform: scaleX(0);
-      }
-    }
-  }
   /* Case-page TOC: each item's underline fills while its chapter covers the viewport (the
      timeline name is set inline per item; the wrapper's timeline-scope makes it visible). */
   @supports (animation-timeline: view()) and (timeline-scope: --x) {
@@ -562,8 +470,8 @@
   }
 }
 
-/* Reduced motion: 200ms fades only. No transforms, clips, travelling dots or scroll
-   timelines; the spine and rules render fully drawn. */
+/* Reduced motion: 200ms fades on figures only. No transforms, travelling dots, pulses or
+   scroll timelines. */
 @media (prefers-reduced-motion: reduce) {
   .reveal-armed [data-reveal] {
     opacity: 0;
@@ -589,25 +497,27 @@
     --accent: #c8100f;
     color-scheme: light;
   }
-  .reveal-armed [data-reveal],
-  .reveal-armed [data-reveal] [data-follow],
-  .reveal-armed .rule-draw,
-  .reveal-armed .incident-line::before,
-  .reveal-armed [data-reveal="clip"] img {
+  .reveal-armed [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
-    clip-path: none !important;
+  }
+  .site-header,
+  .case-toc {
+    position: static;
   }
 }
 
 /* ───────────────────────────── Header ─────────────────────────────
-   Transparent at the top; gains a translucent surface + hairline once the page
-   scrolls. Uses a scroll-driven animation where supported, so it costs no JS. */
+   A translucent surface with a backdrop blur, always. Where scroll timelines exist, only the
+   background tint and the hairline fade in over the first 96px.
+   v2 bug: the source declared backdrop-filter and then -webkit-backdrop-filter; the CSS
+   minifier merged them and kept only the prefixed form, which Chromium ignores, so there was
+   no blur and body text showed through the translucent nav. Write the standard property only
+   (the build adds the prefix), and keep the blur out of the scroll animation. */
 
 .site-header {
-  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
   backdrop-filter: saturate(1.4) blur(14px);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -619,9 +529,8 @@
   }
   @keyframes header-solidify {
     from {
-      background: color-mix(in oklab, var(--bg) 0%, transparent);
+      background-color: color-mix(in oklab, var(--bg) 0%, transparent);
       border-bottom-color: transparent;
-      backdrop-filter: none;
     }
   }
 }
@@ -766,39 +675,6 @@
     transform-origin: left;
   }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .reveal-armed .incident-line::before {
-    transform: scaleY(0);
-    transition: transform 700ms var(--ease-out) 150ms;
-  }
-  @media (min-width: 640px) {
-    .reveal-armed .incident-line::before {
-      transform: scaleX(0);
-    }
-  }
-  .reveal-armed .incident-line[data-shown]::before {
-    transform: none;
-  }
-}
-
-/* Case index cards: the thumbnail settles a touch on hover (fine pointers, motion allowed). */
-.case-card-img {
-  transition: transform 500ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .case-card:hover .case-card-img {
-    transform: scale(1.02);
-  }
-}
-@media (hover: hover) and (pointer: fine) {
-  .case-card {
-    transition: border-color 200ms ease;
-  }
-  .case-card:hover {
-    border-color: var(--line-strong);
-  }
-}
-
 /* ───────────────────────────── Stack ledger ─────────────────────────────
    The filter is radio inputs; everything below is driven by :has(), so no JS. */
 .stack-pill {
