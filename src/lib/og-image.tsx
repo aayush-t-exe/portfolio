@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { site } from "@/lib/site";
+import { facts, site } from "@/lib/site";
 
 /** Shared renderer for opengraph-image and twitter-image (1200 × 630). */
 
@@ -106,8 +106,8 @@ export function renderOgImage() {
           }}
         >
           <div style={{ display: "flex", gap: 36 }}>
-            <span style={{ color: ink }}>150+ users in 2 days</span>
-            <span>₹33K+ revenue</span>
+            <span style={{ color: ink }}>{facts.zenz.users} users in 2 days</span>
+            <span>{facts.zenz.revenue} revenue</span>
             <span>built solo</span>
           </div>
           <span>{site.url.replace(/^https?:\/\//, "")}</span>

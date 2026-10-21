@@ -36,7 +36,7 @@ export function Stack() {
           <div className="md:col-span-9 md:col-start-4">
             <div
               role="radiogroup"
-              aria-label="Show tools used in"
+              aria-label="Highlight tools used in"
               className="stack-filter relative grid grid-cols-4 rounded-full border border-line bg-surface p-1"
             >
               <span aria-hidden className="stack-pill absolute inset-y-1 left-1 rounded-full bg-fg" />
@@ -61,7 +61,10 @@ export function Stack() {
                   ) : (
                     <span className="truncate">{f.label}</span>
                   )}
-                  <span className="font-mono text-xs tabular-nums">{count(f.id)}</span>
+                  <span className="font-mono text-xs tabular-nums">
+                    {count(f.id)}
+                    <span className="sr-only"> tools</span>
+                  </span>
                 </label>
               ))}
             </div>
@@ -87,7 +90,7 @@ export function Stack() {
                           data-z={t.usedIn.includes("Z") || undefined}
                           data-p={t.usedIn.includes("P") || undefined}
                           data-s={t.usedIn.includes("S") || undefined}
-                          className="tool -mx-2 flex h-14 items-center gap-3 rounded-[10px] px-2"
+                          className="tool -mx-2 flex h-14 min-w-0 items-center gap-3 rounded-[10px] px-2"
                           style={brandStyle(t.icon)}
                         >
                           {t.icon ? (

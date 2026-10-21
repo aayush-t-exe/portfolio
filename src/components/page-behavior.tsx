@@ -30,7 +30,6 @@ export function PageBehavior() {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.setAttribute("data-reveal-ready", "");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // A saved theme overrides the OS; keep the browser chrome colour in step with it.
@@ -38,7 +37,7 @@ export function PageBehavior() {
     if (saved) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", THEME_COLOR[saved]));
 
     // Arriving on a hash: everything above the target is already "seen".
-    if (location.hash) showAbove(document.getElementById(decodeURIComponent(location.hash.slice(1))));
+    if (location.hash) showAbove(byHash(location.hash));
 
     const reveal = new IntersectionObserver(
       (entries) => {
@@ -97,7 +96,7 @@ export function PageBehavior() {
       const link = target?.closest?.("a[href*='#']");
       if (!(link instanceof HTMLAnchorElement)) return;
       if (link.origin !== location.origin || link.pathname !== location.pathname || !link.hash) return;
-      const section = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      const section = byHash(link.hash);
       if (!section) return;
 
       e.preventDefault();
@@ -113,17 +112,29 @@ export function PageBehavior() {
     };
     document.addEventListener("click", onClick);
     const cleanRails = [...document.querySelectorAll<HTMLElement>(".rail")].map(dragToScroll);
+    // Only now (setup succeeded) tell the pre-paint failsafe not to disarm the reveal.
+    root.setAttribute("data-reveal-ready", "");
 
     return () => {
       reveal.disconnect();
       pulse.disconnect();
       spy.disconnect();
+      spyLinks.forEach((a) => a.removeAttribute("aria-current"));
       document.removeEventListener("click", onClick);
       cleanRails.forEach((clean) => clean());
     };
   }, [pathname]);
 
   return null;
+}
+
+/** The element a URL hash points to; null for a malformed hash (e.g. "#50%"), never a throw. */
+function byHash(hash: string) {
+  try {
+    return document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch {
+    return null;
+  }
 }
 
 /** Reveal targets that sit before `target` in the document render as already shown. */
@@ -174,12 +185,20 @@ function dragToScroll(rail: HTMLElement) {
     rail.setPointerCapture(e.pointerId);
   };
   const onMove = (e: PointerEvent) => {
-    if (dragging) rail.scrollLeft = startLeft - (e.clientX - startX);
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    // Past a few pixels it's a drag, not a click: stop caption text from being selected.
+    if (Math.abs(dx) > 4 && !rail.hasAttribute("data-dragging")) {
+      rail.setAttribute("data-dragging", "");
+      getSelection()?.removeAllRanges();
+    }
+    rail.scrollLeft = startLeft - dx;
   };
   const onUp = () => {
     if (!dragging) return;
     dragging = false;
     rail.style.scrollSnapType = "";
+    rail.removeAttribute("data-dragging");
   };
 
   rail.addEventListener("scroll", onScroll, { passive: true });
@@ -208,11 +227,13 @@ function cycleTheme(reduce: boolean) {
     root.dataset.themePref = next;
     if (next === "system") delete root.dataset.theme;
     else root.dataset.theme = next;
-    // Keep the mobile browser chrome in step with what's on screen.
-    const resolved = next === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : next;
+    // Keep the mobile browser chrome in step: an override pins both metas; "system" restores
+    // each meta's own colour so its media query decides again.
     document
       .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
-      .forEach((m) => m.setAttribute("content", next === "system" ? (m.media.includes("dark") ? THEME_COLOR.dark : THEME_COLOR.light) : THEME_COLOR[resolved]));
+      .forEach((m) =>
+        m.setAttribute("content", next === "system" ? THEME_COLOR[m.media.includes("dark") ? "dark" : "light"] : THEME_COLOR[next]),
+      );
     try {
       if (next === "system") localStorage.removeItem("theme");
       else localStorage.setItem("theme", next);

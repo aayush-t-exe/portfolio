@@ -102,7 +102,7 @@ export function Work() {
             </p>
           </div>
           <p className="font-mono text-sm text-muted">
-            Placed <span className="text-fg">5th</span> of ~75 teams
+            Placed <span className="text-fg">{facts.sih}</span>
           </p>
         </aside>
       </div>

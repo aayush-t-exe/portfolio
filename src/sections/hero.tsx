@@ -1,6 +1,6 @@
 import { ArrowDown, Download } from "@/components/icons";
 import { CopyEmail } from "@/components/copy-email";
-import { site } from "@/lib/site";
+import { facts, site } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import { ShipLog } from "@/sections/ship-log";
 
@@ -36,7 +36,7 @@ export function Hero() {
               Zen-Z
             </a>{" "}
             on my own (the app, admin panel, backend and payments), and it reached{" "}
-            <strong className="font-medium text-fg">150+ users in its first two days</strong>. I
+            <strong className="font-medium text-fg">{facts.zenz.users} users in its first two days</strong>. I
             work AI-native with Claude Code and Cursor, and I understand every line I ship.
           </p>
 

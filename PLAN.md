@@ -63,37 +63,43 @@ confident, but cold, and it fights the main asset (app screenshots and a story-d
 
 ## 4. Information architecture (single page plus a few routes)
 
-1. **Header**: monogram, anchor nav (Work · Process · About · Contact), theme toggle, Resume.
-2. **Hero**: status pill ("Founder & CTO @ Zen-Z · Jaipur"); H1 *"I build products people
-   actually use, and ship them fast."*; a one-paragraph proof; CTAs (See the work, Resume,
-   copy email). On the right, a **ship log** card: a reverse-chronological changelog of real
-   milestones, which doubles as the hero visual.
-3. **Proof strip**: 150+ users in 2 days · ₹33K+ revenue · 140K+ IG views · 66 tests in one day.
-4. **Work**
-   - **Case 01, Zen-Z** (hero case study): Problem → What I built (3 surfaces) → Architecture
-     diagram (HTML/SVG, not an image) → **Incident: "the booking that paid but didn't"**
-     (post-mortem with timeline and a simplified verification code sketch) → Results.
-     Placeholders for the screenshots still needed.
-   - **Case 02, PrelimsDaily**: built in a day; a phone gallery of 5 real screenshots; 4 engineering
-     decisions (local dates not UTC, a seeded daily set, reminder scheduling, UI-thread animation);
-     66 tests; GitHub link.
+1. **Header**: avatar (with an "Open to work · Jaipur (IST)" status dot) and name, anchor nav
+   (Work · Process · Stack · About · Contact), theme toggle (light → dark → system), Resume.
+2. **Hero**: status pill; H1 *"I ship real products, fast."*; intro; CTAs (See the work,
+   Resume, copy email). Beside it, the **ship log**: real milestones with the two products'
+   app icons, so the first screen shows products, not just words.
+3. **Proof strip**: 150+ users in 2 days · ₹33K+ revenue · 140K+ Instagram views · 1 day / 72 tests.
+4. **Work**: a two-card **case index** (composited real screens), then:
+   - **Case 01, Zen-Z**: header with a Problem/Built/Result TL;DR and Outcome; the live admin
+     dashboard and app → The problem → What I built (booking-flow strip, three surfaces) →
+     Architecture (HTML diagram with the payment-loop dot) → **Incident** (16 Sep 2026: timeline,
+     before/after, follow-up, race, code sketch) → Results (metrics, under the hood, along the way).
+   - **Case 02, PrelimsDaily**: TL;DR; 230px phone rail of 5 real screens; decisions; 72 tests.
    - **Also**: SIH internal round, 5th of ~75 teams.
-5. **How I work with AI**: a 4-step loop (Plan → Build → Review → Ship) with concrete evidence:
-   CLAUDE.md/AGENTS.md in repos, a "fix review findings" commit, this site's own PLAN.md.
-6. **Stack**: grouped by Languages, Product, Backend, Quality and tooling.
-7. **About**: photo placeholder plus a short first-person bio.
-8. **Contact**: large email link with copy-to-clipboard, GitHub, LinkedIn, Resume.
-9. **Footer**: colophon ("Designed and built by Aayush with Claude Code").
+5. **How I work with AI**: a 4-step loop with checkable evidence: 152/183 Zen-Z commits
+   co-authored with Claude, this repo's PLAN.md decision log, PrelimsDaily commit 98611bf.
+6. **Stack ledger** (`#stack`): layers as rows, each tool with what it was used for and where it
+   shipped (Zen-Z / PrelimsDaily / this site), a CSS-only project filter; coursework line.
+7. **About**: portrait ("Fig. 2") plus a short first-person bio and facts.
+8. **Contact**: email (mailto + copy), a card with what Aayush is looking for, GitHub, LinkedIn,
+   Resume.
+9. **Footer**: colophon.
 
 ## 5. Content rules
-- Only facts from the brief **and the resume PDF the site offers for download** (for example the
-  28-table schema with RLS, 7 Edge Functions, 37 CI test suites, 179 commits, ~25 screens,
-  admin matching board). No invented numbers, clients or testimonials.
-- The PayU verification code is labelled a *simplified sketch*: it shows the technique (SHA-512
-  reverse hash and log-before-trust), not production code.
-- The incident write-up states only what is known: after launch a real paid booking stayed unpaid;
-  the fix moved confirmation to server-side, signature-verified webhooks with every call logged.
-  No invented root cause.
+- Every number comes from the brief, the resume PDF (published on the site) or the two repos
+  (campus-social, prelims-daily), and lives once in `facts` in `src/lib/site.ts`.
+- Verified against the Zen-Z repo on 2026-10-21 (independent fact-check): 183 commits (152
+  co-authored with Claude, 33 days), 20 app screens, 28 tables with RLS on all, 102 migrations,
+  41 Postgres functions, 7 Edge Functions, 3 pg_cron jobs, 11 CI jobs, 37 suites, 115 pgTAP
+  assertions (against a hosted Supabase dev Postgres), group sizes, pricing since 28 Sep, the
+  incident commits and dates. Wording deliberately avoided where the repo didn't support it:
+  "76 RLS policies" (about 61 are live), "audited" for admin_mark_booking_paid (no audit
+  record), "polls" for the 23 Sep fix (it re-checks on tab return).
+- The PayU code is labelled a *simplified sketch* of the real handler (real table name, hash
+  field order, constant-time compare, best-effort logging, race outcome name).
+- "150+ users in 2 days" and "₹33K+ revenue" are Aayush's own figures (confirmed); the repo
+  README's "150+ students finished the personality quiz in the first week" is a different
+  metric and isn't used.
 
 ## 6. Tech decisions
 
@@ -102,17 +108,23 @@ confident, but cold, and it fights the main asset (app screenshots and a story-d
 | Next.js 16 App Router, fully static | Every route pre-renders; best TTFB and LCP on Vercel. |
 | Tailwind v4 (CSS-first `@theme`) | Tokens in CSS variables, no config file. |
 | `next/font/local` with subset fonts | Geist + Geist Mono (variable) and Instrument Serif Italic, subset to the site's characters: ~60 kB, all preloaded, metric-matched fallbacks. |
-| No animation library | IntersectionObserver plus CSS transitions covers every effect; saves ~30–50 kB of JS. |
-| Own theme toggle (inline pre-paint script) | Avoids `next-themes`; no flash and a ~20-line script. |
-| `next/og` for OG/Twitter images | Generated at build; no design tool needed. |
-| Placeholder images resolved at build (`fs.existsSync`) | Aayush drops a file into `public/images/...` and it replaces the placeholder automatically. |
+| No animation library | CSS transitions, scroll-driven animations and one WAAPI sequence cover everything. |
+| **One client island** (`PageBehavior`) | Reveal, anchors, scroll-spy, theme cycling, copy-email and rail drag via attributes and event delegation; nav, toggle and copy buttons are server components. |
+| Own theme handling (inline pre-paint script) | No `next-themes`; no flash; `data-theme-pref` drives the toggle's icon/label in CSS. |
+| CSS-only Stack filter | Radio inputs + `:has()`; no JS, no reflow. |
+| Stack glyphs as per-icon CSS masks | Simple Icons (CC0) in `public/stack-icons/`; a mask only loads when its element is styled, so nothing is fetched until the section renders, and ~20 kB of paths stay out of the HTML/RSC payload. (The brief asked for inline glyphs; inlining doubled the bytes in HTML + payload, which was the main Lighthouse cost.) |
+| `next/og` for OG/Twitter images | Generated at build. |
 | Total runtime deps: `next`, `react`, `react-dom` | Nothing else. |
 
-SEO/AEO: metadata API (title template, description, canonical, OG, Twitter), `sitemap.ts`,
-`robots.ts`, JSON-LD (`Person`, `WebSite`, `ProfilePage`, plus `SoftwareApplication` for each
-project), `public/llms.txt`, semantic landmarks, a single H1 and a logical H2/H3 outline.
+SEO/AEO: metadata API (title template, description ≤155 chars, canonical on the home page only,
+OG, Twitter), `sitemap.ts`, `robots.ts`, JSON-LD (`Person` with a stable image, `Organization`
+for Zen-Z with `sameAs`, `WebSite`, `ProfilePage`, `SoftwareApplication` with the Play URL,
+`SoftwareSourceCode` for PrelimsDaily), `/llms.txt` generated from `site.ts` (a route, not a
+file). The web manifest can't be theme-aware (no media queries in the format); browser chrome
+colour follows the theme via media-queried `theme-color` metas, synced when the user overrides.
 
-Site URL: `NEXT_PUBLIC_SITE_URL`, defaulting to `https://aayushthakur.vercel.app`.
+Site URL: `NEXT_PUBLIC_SITE_URL`, else Vercel's production domain, else
+`https://aayushthakur.vercel.app`.
 
 ## 7. Process
 1. Scaffold → tokens and layout → sections one by one (one commit each).
@@ -146,3 +158,26 @@ Site URL: `NEXT_PUBLIC_SITE_URL`, defaulting to `https://aayushthakur.vercel.app
   booking flow as a six-screen strip (five choices, then payment) instead. The admin crop drops
   the browser chrome; phone crops drop the status bar. The profile screenshot was not used
   because it shows a phone number and personal email.
+
+### v2 (from BRIEF.md: design critique, code/Lighthouse audit, repo fact-check)
+- 2026-10-21: Reveal failsafe has its own class (`reveal-armed`); it can no longer hide the
+  theme toggle by removing `js`.
+- 2026-10-21: Facts corrected against the repos and centralised in `facts` (72 tests / 5 suites,
+  183 commits, 20 app screens, group sizes, pricing). Play Store and public Source links added.
+- 2026-10-21: Header avatar uses `loading="eager"` (the brief said `priority`, deprecated in
+  Next 16); the avatar crop box was moved 14px down so the chin isn't cut.
+- 2026-10-21: Motion v2: CSS-first reveal variants, ship-log spine, developing figures, drawn
+  hairlines, the payment-loop dot (WAAPI, twice), chapter progress and a reading bar on scroll
+  timelines. Reduced motion: 200ms fades only.
+- 2026-10-21: Ship-log thumbnails use the real app icons instead of screen crops (legible at
+  40px).
+- 2026-10-21: The admin dashboard is shown as the band with "Pending reports" and "Payments to
+  check" (both 0), plus the Students/Reports tools: any 16:10 crop with the header also showed
+  the old "Campus Social" title or this week's low numbers. Below sm, only the phone shows.
+- 2026-10-21: Phone rails are 230px snap scrollers at every width (with mouse drag) instead of a
+  6-column grid that shrank phones to ~170px.
+- 2026-10-21: PrelimsDaily "Result" is vertically centred and "Smart reminders" starts at its
+  Settings heading (reframed, no content changed) to avoid empty space and a mid-scroll start.
+- 2026-10-21: Jest is tagged for Zen-Z and PrelimsDaily (PrelimsDaily's tests run on jest-expo),
+  correcting the brief's "Zen-Z only".
+- 2026-10-21: NavLinks, ThemeToggle and CopyEmail became server components; one client island.

@@ -1,4 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
+import { facts } from "@/lib/site";
+
+const z = facts.zenz;
 
 /**
  * Zen-Z system diagram, built in HTML so it reflows (columns on desktop, a vertical
@@ -10,7 +13,7 @@ export function ZenZArchitecture() {
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-[1fr_8rem_1.3fr_8rem_0.9fr] lg:gap-0">
           <Column title="Clients">
-            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="20 app screens · Android, iOS (PWA), web" />
+            <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot={`${z.appScreens} app screens · Android, iOS (PWA), web`} />
             <Node name="Admin panel" detail="Next.js" foot="Matching board · moderation · analytics" />
           </Column>
 
@@ -18,11 +21,11 @@ export function ZenZArchitecture() {
 
           <Column title="Supabase" emphasis>
             <div className="grid grid-cols-2 gap-2">
-              <Node name="Postgres" detail="28 tables, RLS on every one" wide />
+              <Node name="Postgres" detail={`${z.tables} tables, RLS on every one`} wide />
               <Node name="Auth" detail="Email OTP" />
               <Node name="Realtime" detail="Group chat" />
-              <Node name="Edge Functions" detail="7 serverless functions" accent />
-              <Node name="pg_cron" detail="3 scheduled jobs" />
+              <Node name="Edge Functions" detail={`${z.edgeFunctions} serverless functions`} accent />
+              <Node name="pg_cron" detail={`${z.cronJobs} scheduled jobs`} />
             </div>
           </Column>
 
@@ -30,20 +33,25 @@ export function ZenZArchitecture() {
 
           <Column title="Services">
             <Node name="PayU" detail="Checkout + webhooks" accent />
-            <Node name="Brevo" detail="Email OTP delivery" />
-            <Node name="Expo Push" detail="Notifications" />
-            <Node name="EAS Update" detail="Over-the-air updates" />
-            <Node name="Sentry" detail="Error monitoring" />
+            {/* Supporting services sit in a compact 2x2 so the column matches its neighbours. */}
+            <div className="grid grid-cols-2 gap-2">
+              <Node name="Brevo" detail="Email OTP" />
+              <Node name="Expo Push" detail="Notifications" />
+              <Node name="EAS Update" detail="OTA updates" />
+              <Node name="Sentry" detail="Errors" />
+            </div>
           </Column>
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[10px] border border-dashed border-line-strong px-4 py-3 font-mono text-xs leading-relaxed text-muted">
           <span className="text-fg">ship</span>
           <span aria-hidden>→</span>
-          GitHub Actions: 11 jobs, 37 test suites (Vitest, Jest, pgTAP)
+          GitHub Actions: {z.ciJobs} jobs, {z.testSuites} test suites (Vitest, Jest, pgTAP)
           <span aria-hidden>→</span>
           Google Play + web (Vercel)
-          <span className="sm:ml-auto">183 commits · 102 migrations</span>
+          <span className="sm:ml-auto">
+            {z.commits} commits · {z.migrations} migrations
+          </span>
         </div>
       </div>
       <p className="sr-only">
@@ -118,7 +126,7 @@ function Connector({ labels, accent }: { labels: string[]; accent?: boolean }) {
       <span className={`absolute inset-y-0 left-1/2 w-px -translate-x-1/2 lg:hidden ${line}`} />
       <span className={`absolute inset-x-0 top-1/2 hidden h-px -translate-y-1/2 lg:block ${line}`} />
       {accent ? (
-        // The payment loop: Motion sends a dot out along "create order →" and back along
+        // The payment loop: PageBehavior sends a dot out along "create order →" and back along
         // "← signed webhook". Vertical on mobile, horizontal on desktop.
         <span
           data-pulse

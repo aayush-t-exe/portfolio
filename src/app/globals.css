@@ -121,7 +121,7 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
-  /* Sections focused programmatically after an anchor jump (Motion) aren't controls. */
+  /* Sections focused programmatically after an anchor jump (PageBehavior) aren't controls. */
   [tabindex="-1"]:focus {
     outline: none;
   }
@@ -172,8 +172,10 @@
       border-color 200ms ease,
       color 200ms ease;
   }
-  .press:active {
-    transform: scale(0.97);
+  @media (prefers-reduced-motion: no-preference) {
+    .press:active {
+      transform: scale(0.97);
+    }
   }
 
   .btn {
@@ -233,7 +235,7 @@
     content-visibility: auto;
     contain-intrinsic-size: auto var(--cv-h, 1500px);
   }
-  /* Set before anchor jumps (see Motion) so scroll targets use the real layout. */
+  /* Set before anchor jumps (see PageBehavior) so scroll targets use the real layout. */
   .cv-off .cv-auto {
     content-visibility: visible;
   }
@@ -252,7 +254,6 @@
      data-reveal / ="up"  opacity + 10px rise   (headings, leads, cards)
      ="fade"              opacity only           (long body copy)
      ="clip"              figure "develops" from the top, image settles from 1.015
-     ="scale"             opacity + scale .98
    Stagger with style={stagger(n)}; capped at 5 steps (300ms) so long lists never wait. */
 
 /* Scroll-linked indicators stay hidden unless motion is allowed and the browser supports
@@ -276,9 +277,6 @@
     transform: none;
     transition: opacity 400ms var(--ease-out);
     transition-delay: calc(min(var(--i, 0), 5) * 60ms);
-  }
-  .reveal-armed [data-reveal="scale"] {
-    transform: scale(0.98);
   }
   /* Develop: clip from the top (negative insets so shadows are never cut once shown). */
   .reveal-armed [data-reveal="clip"] {
@@ -433,8 +431,25 @@
 }
 
 @media print {
+  /* Paper is light: print with the light tokens whatever the screen theme. */
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]) {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f4f2ed;
+    --fg: #161512;
+    --muted: #5b5850;
+    --line: #dedad1;
+    --line-strong: #c9c4b9;
+    --accent: #b3320d;
+    color-scheme: light;
+  }
   .reveal-armed [data-reveal],
-  .reveal-armed [data-reveal] [data-follow] {
+  .reveal-armed [data-reveal] [data-follow],
+  .reveal-armed .rule-draw,
+  .reveal-armed .incident-line::before,
+  .reveal-armed [data-reveal="clip"] img {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
@@ -496,6 +511,17 @@
   transition:
     opacity 300ms var(--ease-out),
     scale 300ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spy-dot {
+    scale: 1;
+  }
+  /* Hover nudges on arrows (contact links, case cards) are movement too. */
+  .group:hover .group-hover\:translate-x-0\.5,
+  .group:hover .group-hover\:-translate-y-0\.5,
+  .group:hover .group-hover\:translate-y-0\.5 {
+    translate: none;
+  }
 }
 [aria-current] > .spy-dot {
   opacity: 1;
@@ -726,7 +752,7 @@
 }
 
 /* Horizontal rails: no scrollbar on touch (swipe), a thin one for mouse users; the edge fades
-   to hint there's more. Dragging with a mouse is handled in Motion. */
+   to hint there's more. Dragging with a mouse is handled in PageBehavior. */
 .scroller {
   scrollbar-width: none;
   overscroll-behavior-x: contain;
@@ -752,6 +778,13 @@
   -webkit-user-drag: none;
   user-select: none;
 }
+.rail[data-dragging] {
+  user-select: none;
+}
 .rail-hint {
   transition: opacity 200ms ease;
+}
+/* Once the rail has been scrolled to its end, the hint has done its job. */
+.rail-wrap:has(.rail[data-end]) .rail-hint {
+  opacity: 0;
 }

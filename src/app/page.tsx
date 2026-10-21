@@ -55,7 +55,7 @@ function JsonLd() {
         sameAs: [site.github, site.linkedin],
         // Single source: the stack list in site.ts.
         knowsAbout: [...stack.map((t) => t.name), "Row-level security", "Payment webhooks", "AI-assisted software development"],
-        award: ["5th of ~75 teams, Smart India Hackathon internal round"],
+        award: [`${facts.sih}, Smart India Hackathon internal round`],
       },
       {
         "@type": "Organization",

@@ -164,7 +164,8 @@ export function ZenZ() {
               movies and sports are paid.
             </p>
             <p>
-              Demand came first: <strong>65+ students joined the waitlist</strong> before launch.
+              Demand came first: <strong>{facts.zenz.waitlist} students joined the waitlist</strong> before
+              launch.
             </p>
           </Body>
         </Chapter>
@@ -231,13 +232,13 @@ export function ZenZ() {
             <p>
               Supabase gives me Postgres, auth, realtime and serverless functions in one place, which
               is the right trade for a solo founder. Access control lives in the database:{" "}
-              <strong>every one of the 28 tables has row-level security</strong>, so the access rules
+              <strong>every one of the {facts.zenz.tables} tables has row-level security</strong>, so the access rules
               hold even if the app has a bug. Anything that touches money runs in Edge
               Functions on the server, never in the client.
             </p>
             <p>
-              The schema grew through <strong>102 SQL migrations</strong> and{" "}
-              <strong>41 Postgres functions</strong>. Three pg_cron jobs keep it moving: notifications
+              The schema grew through <strong>{facts.zenz.migrations} SQL migrations</strong> and{" "}
+              <strong>{facts.zenz.dbFunctions} Postgres functions</strong>. {facts.zenz.cronJobs} pg_cron jobs keep it moving: notifications
               flush and venues are revealed every minute, and slots roll over hourly. Free cafés and
               dinners are sealed by a database trigger, so the client can&rsquo;t fake a ₹0 price.
               Profile photos are protected by RLS and a view that leaves the photo column out, in a
@@ -254,9 +255,8 @@ export function ZenZ() {
           <Lead>Real students, real money.</Lead>
           <Body>
             <p>
-              <span className="whitespace-nowrap">Zen-Z</span> is live on the Play Store. It reached <strong>150+ users in its first two days</strong>,
-              has taken <strong>₹33K+</strong> in revenue so far, and I pitched it to the judging panel at
-              JNU&rsquo;s Shark Tank in September 2026.
+              <span className="whitespace-nowrap">Zen-Z</span> is live on Google Play, and I pitched it
+              to the judging panel at JNU&rsquo;s Shark Tank in September 2026.
             </p>
           </Body>
         </Chapter>
@@ -300,24 +300,24 @@ function Surface({
 }
 
 function Results() {
+  const z = facts.zenz;
   const metrics = [
-    { v: "150+", l: "users in the first 2 days after launch" },
-    { v: "₹33K+", l: "total revenue so far" },
-    { v: "65+", l: "students on the waitlist before launch" },
+    { v: z.users, l: "users in the first 2 days after launch" },
+    { v: z.revenue, l: "total revenue so far" },
+    { v: z.waitlist, l: "students on the waitlist before launch" },
     {
-      v: "140K+",
+      v: z.igViews,
       l: (
         <>
           views on{" "}
           <a href={projects.zenz.instagram} target="_blank" rel="noopener" className="link text-fg">
             Instagram<span className="sr-only"> (opens in new tab)</span>
           </a>{" "}
-          · 550+ followers
+          · {z.igFollowers} followers
         </>
       ),
     },
   ];
-  const z = facts.zenz;
   const build = [
     `${z.appScreens} app screens`,
     `${z.tables} tables · RLS on all`,
@@ -331,7 +331,7 @@ function Results() {
     "Moved payments from Razorpay to PayU mid-build.",
     "Got past a Play Store rejection by building a reviewer sign-in path.",
     "Ships to iOS as a PWA, tested on BrowserStack; the native app updates over the air with EAS Update.",
-    `${z.pgtapAssertions} pgTAP assertions run in CI against a real hosted Postgres. Writing them found and fixed 3 RLS and authorization bugs, and another test caught a function that anyone with the public key could call to delete any account.`,
+    `${z.pgtapAssertions} pgTAP assertions run in CI against a real hosted Postgres. Writing them found and fixed ${z.rlsBugsFound} RLS and authorization bugs, and another test caught a function that anyone with the public key could call to delete any account.`,
   ];
   return (
     <div className="space-y-4">

@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/section-heading";
-import { site } from "@/lib/site";
+import { facts, site } from "@/lib/site";
 import { nb } from "@/lib/nobreak";
 import { stagger } from "@/lib/stagger";
 import portrait from "@/assets/about/portrait.jpg";
 
-const facts = [
+const details = [
   { term: "Based in", value: "Jaipur, India (IST, UTC+5:30)" },
   { term: "Now", value: "Founder & CTO, Zen-Z" },
   { term: "Studying", value: site.education.line },
-  { term: "Recognition", value: "SIH internal round: 5th of ~75 teams. Pitched at JNU Shark Tank" },
+  { term: "Recognition", value: `SIH internal round: ${facts.sih}. Pitched at JNU Shark Tank` },
 ];
 
 export function About() {
@@ -63,7 +63,7 @@ export function About() {
             </div>
 
             <dl data-reveal style={stagger(2)} className="mt-10 divide-y divide-line border-y border-line">
-              {facts.map((f) => (
+              {details.map((f) => (
                 <div key={f.term} className="grid grid-cols-[7.5rem_1fr] gap-4 py-3.5 text-[0.9375rem]">
                   <dt className="label pt-0.5">{f.term}</dt>
                   <dd>{nb(f.value)}</dd>

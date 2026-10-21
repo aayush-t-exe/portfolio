@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { Body } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
+import { facts } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 
 /**
@@ -43,7 +44,7 @@ async function logEvent(p, outcome) {
 const timeline = [
   { t: "Paid", d: "A student's real UPI payment succeeds.", tone: "fg" },
   { t: "No webhook, no trace", d: "PayU never calls back, and nothing records that it didn't.", tone: "accent" },
-  { t: "Same-day fix", d: "14 files, shipped on 16 Sep.", tone: "fg" },
+  { t: "Same-day fix", d: `${facts.zenz.incidentFiles} files, shipped on 16 Sep.`, tone: "fg" },
   { t: "Every call logged", d: "Plus a queue that surfaces anything stuck.", tone: "fg" },
 ] as const;
 
@@ -102,8 +103,8 @@ export function Incident() {
 
       {/* Four-node timeline: vertical on mobile, a row on desktop. */}
       <ol data-reveal className="incident-line relative mt-10 grid gap-6 sm:grid-cols-4 sm:gap-4">
-        {timeline.map((n, i) => (
-          <li key={n.t} className="relative pl-6 sm:pt-6 sm:pl-0" style={stagger(i)}>
+        {timeline.map((n) => (
+          <li key={n.t} className="relative pl-6 sm:pt-6 sm:pl-0">
             <span
               aria-hidden
               className={`absolute top-1.5 left-0 size-[9px] rounded-full ring-4 ring-bg sm:top-0 ${

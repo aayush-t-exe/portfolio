@@ -7,22 +7,21 @@
  * vanish in dark mode).
  */
 export const stackIcons = {
-  typescript: { title: "TypeScript", hex: "#3178C6" },
-  react: { title: "React", hex: "#61DAFB" },
-  expo: { title: "Expo", hex: null },
-  nextdotjs: { title: "Next.js", hex: null },
-  tailwindcss: { title: "Tailwind CSS", hex: "#06B6D4" },
-  supabase: { title: "Supabase", hex: "#3FCF8E" },
-  postgresql: { title: "PostgreSQL", hex: "#4169E1" },
-  deno: { title: "Deno", hex: null },
-  sentry: { title: "Sentry", hex: "#362D59" },
-  vercel: { title: "Vercel", hex: null },
-  githubactions: { title: "GitHub Actions", hex: "#2088FF" },
-  vitest: { title: "Vitest", hex: "#00FF74" },
-  jest: { title: "Jest", hex: "#C21325" },
-  claude: { title: "Claude", hex: "#D97757" },
-  cursor: { title: "Cursor", hex: null },
-  brevo: { title: "Brevo", hex: "#0B996E" },
+  typescript: { hex: "#3178C6" },
+  expo: { hex: null },
+  nextdotjs: { hex: null },
+  tailwindcss: { hex: "#06B6D4" },
+  supabase: { hex: "#3FCF8E" },
+  postgresql: { hex: "#4169E1" },
+  deno: { hex: null },
+  sentry: { hex: "#362D59" },
+  vercel: { hex: null },
+  githubactions: { hex: "#2088FF" },
+  vitest: { hex: "#00FF74" },
+  jest: { hex: "#C21325" },
+  claude: { hex: "#D97757" },
+  cursor: { hex: null },
+  brevo: { hex: "#0B996E" },
 } as const;
 
 export type StackIcon = keyof typeof stackIcons;

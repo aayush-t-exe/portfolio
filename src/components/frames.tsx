@@ -82,7 +82,7 @@ export function BrowserFrame({
 
 /**
  * A row of phone screens as a horizontal snap scroller at every width: phones stay a
- * legible 230px instead of shrinking to fit the column. Mouse users can drag (see Motion),
+ * legible 230px instead of shrinking to fit the column. Mouse users can drag (see PageBehavior),
  * use the thin scrollbar, or shift+wheel. `numbered` adds step labels (for flows);
  * otherwise alternate screens are offset.
  */
@@ -98,7 +98,7 @@ export function PhoneRail({
   numbered?: boolean;
 }) {
   return (
-    <div className="relative">
+    <div className="rail-wrap relative">
       <p aria-hidden className="mb-3 flex justify-end font-mono text-xs text-muted">
         <span className="rail-hint">drag &rarr;</span>
       </p>
