@@ -6,8 +6,8 @@ import { useEffect } from "react";
 const EASE_IN_OUT = "cubic-bezier(0.77, 0, 0.175, 1)";
 
 /**
- * The page's only motion island (renders nothing). Everything visual lives in CSS; this
- * component just flips attributes and runs one WAAPI sequence:
+ * The page's only client island (renders nothing). Everything visual lives in CSS; this
+ * component flips attributes, delegates a few clicks and runs one WAAPI sequence:
  *
  * 1. Reveal: `[data-reveal]` gets `data-shown` the first time it enters the viewport.
  *    Setting `data-reveal-ready` tells the pre-paint failsafe in layout.tsx that we're alive.
@@ -18,17 +18,24 @@ const EASE_IN_OUT = "cubic-bezier(0.77, 0, 0.175, 1)";
  *    `[data-pulse]` tracks, twice, when the diagram first comes into view.
  * 4. Phone rails: mouse users can drag them; the edge fade goes once the end is reached.
  *    Layout is only read inside scroll/pointer events, never at mount (no forced reflow).
+ * 5. Scroll-spy: the nav link for the section crossing the reading band gets aria-current.
+ * 6. Delegated clicks: the theme toggle ([data-theme-toggle], light → dark → system) and
+ *    copy-email buttons ([data-copy-email]). Both are server-rendered; only this hydrates.
  *
  * It lives in the root layout (which persists across client navigations), so it re-scans
  * whenever the path changes.
  */
-export function Motion() {
+export function PageBehavior() {
   const pathname = usePathname();
 
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute("data-reveal-ready", "");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // A saved theme overrides the OS; keep the browser chrome colour in step with it.
+    const saved = root.dataset.theme as keyof typeof THEME_COLOR | undefined;
+    if (saved) document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", THEME_COLOR[saved]));
 
     // Arriving on a hash: everything above the target is already "seen".
     if (location.hash) showAbove(document.getElementById(decodeURIComponent(location.hash.slice(1))));
@@ -57,23 +64,51 @@ export function Motion() {
     );
     document.querySelectorAll("[data-pulse]").forEach((el) => pulse.observe(el));
 
+    // Scroll-spy over the nav's sections. Sections don't overlap, so at most one is in the
+    // thin band; when none is (hero, proof strip), nothing is current.
+    const spyLinks = [...document.querySelectorAll<HTMLAnchorElement>("a[data-spy]")];
+    const inBand = new Set<string>();
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) inBand.add(entry.target.id);
+          else inBand.delete(entry.target.id);
+        }
+        for (const a of spyLinks) {
+          if (inBand.has(a.dataset.spy!)) a.setAttribute("aria-current", "location");
+          else a.removeAttribute("aria-current");
+        }
+      },
+      { rootMargin: "-35% 0px -60% 0px" },
+    );
+    spyLinks.forEach((a) => {
+      const section = document.getElementById(a.dataset.spy!);
+      if (section) spy.observe(section);
+    });
+
     const onClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      const toggle = target?.closest?.("[data-theme-toggle]");
+      if (toggle) return cycleTheme(reduce);
+      const copy = target?.closest?.<HTMLElement>("[data-copy-email]");
+      if (copy) return void copyEmail(copy);
+
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      const link = (e.target as Element | null)?.closest?.("a[href*='#']");
+      const link = target?.closest?.("a[href*='#']");
       if (!(link instanceof HTMLAnchorElement)) return;
       if (link.origin !== location.origin || link.pathname !== location.pathname || !link.hash) return;
-      const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
-      if (!target) return;
+      const section = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      if (!section) return;
 
       e.preventDefault();
       root.classList.add("cv-off");
-      showAbove(target);
+      showAbove(section);
       requestAnimationFrame(() => {
-        target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        section.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
         if (location.hash !== link.hash) history.pushState(null, "", link.hash);
         // Match native anchor behaviour: the next Tab continues from the section.
-        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-        target.focus({ preventScroll: true });
+        if (!section.hasAttribute("tabindex")) section.setAttribute("tabindex", "-1");
+        section.focus({ preventScroll: true });
       });
     };
     document.addEventListener("click", onClick);
@@ -82,6 +117,7 @@ export function Motion() {
     return () => {
       reveal.disconnect();
       pulse.disconnect();
+      spy.disconnect();
       document.removeEventListener("click", onClick);
       cleanRails.forEach((clean) => clean());
     };
@@ -158,4 +194,54 @@ function dragToScroll(rail: HTMLElement) {
     rail.removeEventListener("pointerup", onUp);
     rail.removeEventListener("pointercancel", onUp);
   };
+}
+
+type ThemePref = "light" | "dark" | "system";
+const THEME_COLOR = { light: "#f4f2ed", dark: "#0e0e0c" } as const;
+
+/** light → dark → system → light. "system" clears the override and follows the OS. */
+function cycleTheme(reduce: boolean) {
+  const root = document.documentElement;
+  const current = (root.dataset.themePref as ThemePref | undefined) ?? "system";
+  const next: ThemePref = current === "light" ? "dark" : current === "dark" ? "system" : "light";
+  const apply = () => {
+    root.dataset.themePref = next;
+    if (next === "system") delete root.dataset.theme;
+    else root.dataset.theme = next;
+    // Keep the mobile browser chrome in step with what's on screen.
+    const resolved = next === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : next;
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((m) => m.setAttribute("content", next === "system" ? (m.media.includes("dark") ? THEME_COLOR.dark : THEME_COLOR.light) : THEME_COLOR[resolved]));
+    try {
+      if (next === "system") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", next);
+    } catch {}
+  };
+  if (!reduce && "startViewTransition" in document) document.startViewTransition(apply);
+  else apply();
+}
+
+const copyTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
+
+async function copyEmail(button: HTMLElement) {
+  const email = button.dataset.copyEmail!;
+  try {
+    await navigator.clipboard.writeText(email);
+  } catch {
+    // Clipboard can be blocked (insecure context, permissions). Fall back to mailto.
+    window.location.href = `mailto:${email}`;
+    return;
+  }
+  const status = button.nextElementSibling;
+  button.setAttribute("data-copied", "");
+  if (status) status.textContent = "Email address copied to clipboard";
+  clearTimeout(copyTimers.get(button));
+  copyTimers.set(
+    button,
+    setTimeout(() => {
+      button.removeAttribute("data-copied");
+      if (status) status.textContent = "";
+    }, 1800),
+  );
 }

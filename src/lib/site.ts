@@ -18,10 +18,12 @@ export const site = {
   url: rawUrl.replace(/\/$/, ""),
   name: "Aayush Thakur",
   shortName: "Aayush",
-  role: "Founder-engineer",
   title: "Aayush Thakur: Founder-engineer who ships real products fast",
+  /** ≤155 characters, strongest hook first (search snippets truncate). */
   description:
-    "Founder-engineer from Jaipur, India. Aayush Thakur built Zen-Z solo, a live campus social app with 150+ users in its first 2 days and ₹33K+ revenue (React Native, Next.js, Supabase, PayU), and works AI-native with Claude Code and Cursor.",
+    "Built Zen-Z solo: a live campus app with 150+ users in 2 days and ₹33K+ revenue. Aayush Thakur, founder-engineer who ships fast with AI. Jaipur, India.",
+  /** Stable URL for structured data (doesn't change with build hashes). */
+  image: "/aayush.jpg",
   location: "Jaipur, India",
   timezone: "IST (UTC+5:30)",
   status: "Open to work · Jaipur (IST)",
@@ -38,7 +40,6 @@ export const site = {
     schoolUrl: "https://www.jnujaipur.ac.in",
     /** The one wording used everywhere. */
     line: "B.Tech, Computer Science · Jaipur National University · graduating May 2028",
-    graduation: "May 2028",
   },
   /** Bump when content changes meaningfully; used by the sitemap. */
   updated: "2026-10-21",
@@ -57,7 +58,6 @@ export const projects = {
   prelims: {
     name: "PrelimsDaily",
     url: "https://github.com/aayush-t-exe/prelims-daily",
-    urlLabel: "github.com/aayush-t-exe/prelims-daily",
   },
 } as const;
 
@@ -77,8 +77,6 @@ export const facts = {
     claudeCommits: 152,
     commitDays: 33,
     appScreens: 20,
-    adminScreens: 11,
-    marketingPages: 10,
     tables: 28,
     migrations: 102,
     dbFunctions: 41,

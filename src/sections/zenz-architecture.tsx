@@ -8,7 +8,7 @@ export function ZenZArchitecture() {
   return (
     <figure data-reveal="clip" style={{ "--clip-r": "16px" } as CSSProperties} aria-labelledby="arch-caption">
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
-        <div className="grid gap-2 lg:grid-cols-[1fr_6.5rem_1.3fr_6.5rem_0.9fr] lg:gap-0">
+        <div className="grid gap-2 lg:grid-cols-[1fr_8rem_1.3fr_8rem_0.9fr] lg:gap-0">
           <Column title="Clients">
             <Node name="Mobile + web app" detail="React Native (Expo), TypeScript" foot="20 app screens · Android, iOS (PWA), web" />
             <Node name="Admin panel" detail="Next.js" foot="Matching board · moderation · analytics" />
@@ -105,7 +105,7 @@ function Node({
         {name}
       </p>
       {detail ? <p className="mt-0.5 text-[0.8125rem] leading-snug text-muted">{detail}</p> : null}
-      {foot ? <p className="mt-1.5 font-mono text-[10.5px] leading-snug text-muted">{foot}</p> : null}
+      {foot ? <p className="mt-1.5 font-mono text-xs leading-snug text-muted">{foot}</p> : null}
     </div>
   );
 }
@@ -131,7 +131,7 @@ function Connector({ labels, accent }: { labels: string[]; accent?: boolean }) {
         {labels.map((l) => (
           <span
             key={l}
-            className={`rounded-full border bg-surface px-2 py-0.5 text-center font-mono text-[10px] leading-tight whitespace-nowrap ${
+            className={`rounded-full border bg-surface px-2 py-0.5 text-center font-mono text-xs leading-tight whitespace-nowrap ${
               accent ? "border-accent/50 text-fg" : "border-line text-muted"
             }`}
           >

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Motion } from "@/components/motion";
+import { PageBehavior } from "@/components/page-behavior";
 import { openGraph } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -90,7 +90,7 @@ export const viewport: Viewport = {
  * hidden. The failsafe only ever touches `reveal-armed`. A URL hash renders every section up
  * front (`cv-off`) so the initial anchor scroll lands where it should.
  */
-const prePaint = `(function(){var d=document.documentElement;d.classList.add('js','reveal-armed');if(location.hash)d.classList.add('cv-off');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.dataset.theme=t}catch(e){}setTimeout(function(){if(!d.hasAttribute('data-reveal-ready'))d.classList.remove('reveal-armed')},4000)})()`;
+const prePaint = `(function(){var d=document.documentElement;d.classList.add('js','reveal-armed');if(location.hash)d.classList.add('cv-off');var p='system';try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){d.dataset.theme=t;p=t}}catch(e){}d.dataset.themePref=p;setTimeout(function(){if(!d.hasAttribute('data-reveal-ready'))d.classList.remove('reveal-armed')},4000)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -115,7 +115,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
-        <Motion />
+        <PageBehavior />
       </body>
     </html>
   );

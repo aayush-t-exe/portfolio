@@ -29,7 +29,7 @@ export function CodeBlock({
       <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
         <span className="font-mono text-xs text-[#cfcac0]">{filename}</span>
         {badge ? (
-          <span className="rounded-full border border-white/15 px-2 py-0.5 font-mono text-[10px] tracking-wide text-[#b6b0a5] uppercase">
+          <span className="rounded-full border border-white/15 px-2 py-0.5 font-mono text-xs tracking-wide text-[#b6b0a5] uppercase">
             {badge}
           </span>
         ) : null}

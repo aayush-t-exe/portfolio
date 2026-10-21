@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { openGraph } from "@/lib/metadata";
-import { facts, projects, site } from "@/lib/site";
-import portrait from "@/assets/about/portrait.jpg";
+import { facts, projects, site, stack } from "@/lib/site";
 import { About } from "@/sections/about";
 import { Contact } from "@/sections/contact";
 import { Hero } from "@/sections/hero";
@@ -43,10 +42,10 @@ function JsonLd() {
         familyName: "Thakur",
         url: site.url,
         email: `mailto:${site.email}`,
-        image: `${site.url}${portrait.src}`,
+        image: `${site.url}${site.image}`,
         jobTitle: "Founder & CTO",
         description: site.description,
-        worksFor: { "@type": "Organization", name: projects.zenz.name, url: projects.zenz.url },
+        worksFor: { "@id": `${site.url}/#zen-z-org` },
         affiliation: {
           "@type": "CollegeOrUniversity",
           name: site.education.school,
@@ -54,19 +53,17 @@ function JsonLd() {
         },
         address: { "@type": "PostalAddress", addressLocality: "Jaipur", addressRegion: "Rajasthan", addressCountry: "IN" },
         sameAs: [site.github, site.linkedin],
-        knowsAbout: [
-          "React Native",
-          "Expo",
-          "Next.js",
-          "TypeScript",
-          "Supabase",
-          "PostgreSQL",
-          "Row-level security",
-          "Payment webhooks",
-          "AI-assisted software development",
-          "Claude Code",
-        ],
+        // Single source: the stack list in site.ts.
+        knowsAbout: [...stack.map((t) => t.name), "Row-level security", "Payment webhooks", "AI-assisted software development"],
         award: ["5th of ~75 teams, Smart India Hackathon internal round"],
+      },
+      {
+        "@type": "Organization",
+        "@id": `${site.url}/#zen-z-org`,
+        name: projects.zenz.name,
+        url: projects.zenz.url,
+        founder: { "@id": person },
+        sameAs: [projects.zenz.playStoreUrl, projects.zenz.instagram, projects.zenz.sourceUrl],
       },
       {
         "@type": "WebSite",
@@ -91,7 +88,11 @@ function JsonLd() {
         name: projects.zenz.name,
         url: projects.zenz.url,
         applicationCategory: "SocialNetworkingApplication",
-        operatingSystem: "Android, Web",
+        operatingSystem: "Android, iOS (PWA), Web",
+        installUrl: projects.zenz.playStoreUrl,
+        downloadUrl: projects.zenz.playStoreUrl,
+        sameAs: [projects.zenz.playStoreUrl, projects.zenz.sourceUrl],
+        publisher: { "@id": `${site.url}/#zen-z-org` },
         description:
           "A campus social app that matches college students into small groups of strangers for cafés, dinners, movies and sports. Built with React Native (Expo), Next.js and Supabase, with PayU payments verified server-side.",
         creator: { "@id": person },

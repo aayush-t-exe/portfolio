@@ -284,7 +284,7 @@ function Surface({
         <span className="grid size-7 place-items-center rounded-full border border-line-strong font-mono text-xs">
           {n}
         </span>
-        <span className="font-mono text-[11px] text-muted">{stack}</span>
+        <span className="font-mono text-xs text-muted">{stack}</span>
       </div>
       <p className="mt-6 text-xl font-medium tracking-[-0.02em]">{name}</p>
       <ul className="mt-3 space-y-2 text-[0.9375rem] leading-snug text-muted">

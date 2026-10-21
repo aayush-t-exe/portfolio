@@ -467,23 +467,65 @@
   }
 }
 
-/* Theme-specific content, swapped purely in CSS so the SSR markup is identical for everyone. */
-.theme-icon-sun {
+/* Server-rendered controls whose state lives on attributes (see PageBehavior). */
+/* Theme toggle: show the icon and label for the current preference. */
+.tt {
   display: none;
 }
-:root[data-theme="dark"] .theme-icon-sun {
+:root[data-theme-pref="light"] .tt-light,
+:root[data-theme-pref="dark"] .tt-dark,
+:root[data-theme-pref="system"] .tt-system {
   display: block;
 }
-:root[data-theme="dark"] .theme-icon-moon {
-  display: none;
+/* Copy email: copy icon swaps to a check, with a short blur to bridge the two. */
+.ce-check,
+[data-copied] .ce-copy {
+  opacity: 0;
+  transform: scale(0.75);
+  filter: blur(2px);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-icon-sun {
-    display: block;
-  }
-  :root:not([data-theme="light"]) .theme-icon-moon {
-    display: none;
-  }
+[data-copied] .ce-check {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+/* Scroll-spy dot under the current nav link. */
+.spy-dot {
+  opacity: 0;
+  scale: 0.5;
+  transition:
+    opacity 300ms var(--ease-out),
+    scale 300ms var(--ease-out);
+}
+[aria-current] > .spy-dot {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Phone status bar, drawn by CSS so each frame adds one node, not five. Sized in
+   container units so it scales with the phone. */
+.status-bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.8%;
+  padding: 1% 11% 0;
+}
+.status-bar::before {
+  content: "9:41";
+  font-size: 4cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.status-bar::after {
+  content: "";
+  width: 11cqw;
+  height: 2.4cqw;
+  background: currentColor;
+  opacity: 0.8;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 10'%3E%3Crect x='0' y='2' width='14' height='6' rx='1.5'/%3E%3Ccircle cx='21' cy='5' r='3'/%3E%3Crect x='28.5' y='1.5' width='17' height='7' rx='2' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* Header avatar: a small lift on hover (fine pointers only), softer colour in dark mode. */
@@ -622,7 +664,12 @@
   opacity: 0.3;
   filter: grayscale(1);
 }
-.tool-glyph,
+/* Glyphs are masks, so they take any colour: muted by default, brand colour on hover. */
+.tool-glyph {
+  background: var(--muted);
+  mask: var(--glyph) center / contain no-repeat;
+  transition: background-color 160ms ease;
+}
 .tool-chip {
   transition:
     color 160ms ease,
@@ -634,7 +681,7 @@
   }
   /* The only place brand colours appear. */
   .tool:hover .tool-glyph {
-    color: var(--brand, var(--fg));
+    background: var(--brand, var(--fg));
   }
   .tool:hover .tool-chip {
     color: var(--accent);

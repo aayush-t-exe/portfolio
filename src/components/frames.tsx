@@ -45,17 +45,9 @@ export function PhoneFrame({
   );
 }
 
+/** One element: the time and the signal/battery glyphs are CSS pseudo-elements (.status-bar). */
 function StatusBar() {
-  return (
-    <div aria-hidden className="flex h-[5.8%] shrink-0 items-center justify-between px-[11%] pt-[1%]">
-      <span className="text-[4cqw] leading-none font-semibold tracking-tight">9:41</span>
-      <span className="flex items-center gap-[1.2cqw]">
-        <i className="h-[2.2cqw] w-[3.6cqw] rounded-[0.5cqw] bg-current opacity-80" />
-        <i className="size-[2.2cqw] rounded-full bg-current opacity-80" />
-        <i className="h-[2.2cqw] w-[4.6cqw] rounded-[0.7cqw] border border-current opacity-80" />
-      </span>
-    </div>
-  );
+  return <div aria-hidden className="status-bar" />;
 }
 
 /** Minimal browser chrome for desktop screenshots. The box takes the image's own ratio. */
@@ -79,7 +71,7 @@ export function BrowserFrame({
           <i className="size-2.5 rounded-full bg-line-strong" />
           <i className="size-2.5 rounded-full bg-line-strong" />
         </span>
-        <span className="truncate font-mono text-[11px] text-muted">{title}</span>
+        <span className="truncate font-mono text-xs text-muted">{title}</span>
       </div>
       <div className="browser-dim relative bg-white" style={{ aspectRatio: ratio }}>
         <Image src={shot.image} alt={shot.alt} sizes={sizes} className="size-full object-cover object-top" />

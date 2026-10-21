@@ -128,7 +128,7 @@ function EvidenceCommit() {
         Fix review findings: dismissTo navigation, serialized reminder scheduling, resilient hydration,
         stricter sanitize, per-day reminder copy, XP chip lifecycle, fresh-first daily fill
       </blockquote>
-      <figcaption className="mt-2 font-mono text-[11px] text-muted">
+      <figcaption className="mt-2 font-mono text-xs text-muted">
         PrelimsDaily: one review pass, seven fixes, before shipping.
       </figcaption>
     </figure>

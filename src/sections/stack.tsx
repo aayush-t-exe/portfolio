@@ -61,7 +61,7 @@ export function Stack() {
                   ) : (
                     <span className="truncate">{f.label}</span>
                   )}
-                  <span className="font-mono text-xs opacity-70 tabular-nums">{count(f.id)}</span>
+                  <span className="font-mono text-xs tabular-nums">{count(f.id)}</span>
                 </label>
               ))}
             </div>
@@ -91,9 +91,11 @@ export function Stack() {
                           style={brandStyle(t.icon)}
                         >
                           {t.icon ? (
-                            <svg aria-hidden width="20" height="20" className="tool-glyph shrink-0 text-muted">
-                              <use href={`/stack-icons.svg#${t.icon}`} />
-                            </svg>
+                            <span
+                              aria-hidden
+                              className="tool-glyph size-5 shrink-0"
+                              style={{ "--glyph": `url(/stack-icons/${t.icon}.svg)` } as CSSProperties}
+                            />
                           ) : (
                             <span
                               aria-hidden

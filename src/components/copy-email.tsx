@@ -1,8 +1,11 @@
-"use client";
-
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Check, Copy } from "@/components/icons";
 
+/**
+ * Copy-to-clipboard button. A server component: PageBehavior handles the click
+ * (delegated on [data-copy-email]), sets `data-copied` for the icon swap (CSS) and writes
+ * the announcement into the live region that follows the button.
+ */
 export function CopyEmail({
   email,
   className = "",
@@ -12,53 +15,23 @@ export function CopyEmail({
   className?: string;
   children?: ReactNode;
 }) {
-  const [copied, setCopied] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(() => () => clearTimeout(timer.current), []);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch {
-      // Clipboard can be blocked (insecure context, permissions). Fall back to mailto.
-      window.location.href = `mailto:${email}`;
-      return;
-    }
-    setCopied(true);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setCopied(false), 1800);
-  }
-
   return (
     <>
       <button
         type="button"
-        onClick={copy}
+        data-copy-email={email}
         className={`press group inline-flex items-center gap-2 ${className}`}
         aria-label={`Copy email address ${email}`}
       >
         {children ?? <span>{email}</span>}
         <span className="relative grid size-4 place-items-center" aria-hidden>
-          <Copy
-            size={15}
-            className={`absolute transition-[opacity,filter,transform] duration-200 ease-out ${
-              copied ? "scale-75 opacity-0 blur-[2px]" : "opacity-100"
-            }`}
-          />
-          <Check
-            size={15}
-            className={`absolute text-accent transition-[opacity,filter,transform] duration-200 ease-out ${
-              copied ? "opacity-100" : "scale-75 opacity-0 blur-[2px]"
-            }`}
-          />
+          <Copy size={15} className="ce-copy absolute transition-[opacity,filter,transform] duration-200 ease-out" />
+          <Check size={15} className="ce-check absolute text-accent transition-[opacity,filter,transform] duration-200 ease-out" />
         </span>
       </button>
       {/* Outside the button: a button's children are presentational, so a live region inside
           it isn't reliably announced. */}
-      <span role="status" aria-live="polite" className="sr-only">
-        {copied ? "Email address copied to clipboard" : ""}
-      </span>
+      <span role="status" aria-live="polite" className="sr-only" />
     </>
   );
 }
