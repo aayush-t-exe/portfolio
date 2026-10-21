@@ -74,7 +74,7 @@ export function Work() {
               <span aria-hidden className="size-1.5 rounded-full bg-accent" />
               Incident · 16 Sep 2026
             </p>
-            <h3 id="incident-card" className="mt-5 text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.05] font-semibold tracking-[-0.035em]">
+            <h3 id="incident-card" className="font-display mt-5 text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.05] tracking-[-0.035em]">
               A student paid. The app said unpaid.
             </h3>
             <p className="mt-4 leading-relaxed text-muted">

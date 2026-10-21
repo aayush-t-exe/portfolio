@@ -9,9 +9,9 @@ import "./globals.css";
 
 /*
  * Self-hosted, subset fonts (src/assets/fonts/web): only the characters this site uses
- * (Latin, Latin-1, punctuation, ₹ and arrows). Geist and Geist Mono are variable, so one
- * file each covers every weight. Three preloaded files, ~60 kB total, versus four files and
- * ~86 kB with the Google Fonts subsets (one of them discovered late, which delayed paint).
+ * (Latin, Latin-1, punctuation, ₹ and arrows). Geist (body) and Geist Mono (numbers, code)
+ * are variable, so one file each covers every weight; Schibsted Grotesk (headlines) is one
+ * static SemiBold. Three preloaded files, ~66 kB total.
  */
 const geist = localFont({
   src: "../assets/fonts/web/geist.woff2",
@@ -27,14 +27,13 @@ const geistMono = localFont({
   display: "swap",
   adjustFontFallback: false,
 });
-// The serif is only ever used in italic for accent words.
-const instrument = localFont({
-  src: "../assets/fonts/web/instrument-serif-italic.woff2",
-  weight: "400",
-  style: "italic",
-  variable: "--font-instrument",
+// Headlines only, always at 600.
+const display = localFont({
+  src: "../assets/fonts/web/schibsted-grotesk-semibold.woff2",
+  weight: "600",
+  variable: "--font-schibsted",
   display: "swap",
-  adjustFontFallback: "Times New Roman",
+  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
@@ -98,7 +97,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${instrument.variable} antialiased`}
+      className={`${geist.variable} ${geistMono.variable} ${display.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: prePaint }} />

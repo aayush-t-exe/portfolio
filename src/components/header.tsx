@@ -8,7 +8,7 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="press -ml-1 rounded-md px-1 text-[0.9375rem] font-semibold tracking-[-0.02em]">
+        <Link href="/" className="font-display press -ml-1 rounded-md px-1 text-base tracking-[-0.02em]">
           {site.name}
         </Link>
 

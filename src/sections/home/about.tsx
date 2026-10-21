@@ -136,14 +136,14 @@ export function About() {
       </section>
 
       {/* Full-bleed closing CTA. */}
-      <section aria-labelledby="cta-title" className="bg-accent text-on-accent">
+      <section aria-labelledby="cta-title" className="bg-band text-on-band">
         <div className="container-page flex flex-col gap-6 py-14 sm:flex-row sm:items-center sm:justify-between md:py-20">
-          <h2 id="cta-title" className="max-w-[20ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.02] font-semibold tracking-[-0.04em]">
+          <h2 id="cta-title" className="font-display max-w-[20ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.02] tracking-[-0.04em]">
             Building something? I&rsquo;d like to help.
           </h2>
           <a
             href={`mailto:${site.email}`}
-            className="press inline-flex h-12 shrink-0 items-center gap-2 self-start rounded-full bg-on-accent px-6 font-medium text-accent sm:self-auto"
+            className="press inline-flex h-12 shrink-0 items-center gap-2 self-start rounded-full bg-on-band px-6 font-medium text-band sm:self-auto"
           >
             Email me
             <ArrowRight size={16} />

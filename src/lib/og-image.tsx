@@ -24,6 +24,7 @@ export function renderOgImage(variant: Variant) {
     { name: "Geist", data: file("fonts/Geist-Regular.ttf"), weight: 400 as const, style: "normal" as const },
     { name: "Geist", data: file("fonts/Geist-Medium.ttf"), weight: 500 as const, style: "normal" as const },
     { name: "Geist Mono", data: file("fonts/GeistMono-Regular.ttf"), weight: 400 as const, style: "normal" as const },
+    { name: "Schibsted", data: file("fonts/SchibstedGrotesk-SemiBold.ttf"), weight: 600 as const, style: "normal" as const },
   ];
   const body = variant === "home" ? <Home /> : <Case variant={variant} />;
   return new ImageResponse(body, { ...ogSize, fonts });
@@ -64,7 +65,7 @@ function Home() {
             <div style={{ fontFamily: "Geist Mono", fontSize: 18, color: muted }}>Founder-engineer · Jaipur, IST · Open to work</div>
           </div>
         </div>
-        <div style={{ display: "flex", fontSize: 66, fontWeight: 500, letterSpacing: "-0.045em", lineHeight: 1.02 }}>
+        <div style={{ display: "flex", fontFamily: "Schibsted", fontSize: 64, fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1.02 }}>
           I built Zen-Z solo: a live campus app with paying users.
         </div>
         <div
@@ -127,7 +128,7 @@ function Case({ variant }: { variant: Exclude<Variant, "home"> }) {
           Case study · {site.name}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div style={{ fontSize: 116, fontWeight: 500, letterSpacing: "-0.05em", lineHeight: 0.95 }}>{c.name}</div>
+          <div style={{ fontFamily: "Schibsted", fontSize: 112, fontWeight: 600, letterSpacing: "-0.045em", lineHeight: 0.95 }}>{c.name}</div>
           <div style={{ fontSize: 34, color: "#c9c5bc", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{c.line}</div>
         </div>
         <div

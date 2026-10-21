@@ -271,19 +271,23 @@ function Results() {
       ),
     },
   ];
-  const build = [
-    `${z.tables} tables · RLS on all`,
-    `${z.migrations} migrations`,
-    `${z.dbFunctions} Postgres functions`,
-    `${z.edgeFunctions} Edge Functions`,
-    `${z.cronJobs} pg_cron jobs`,
-    `${z.ciJobs}-job CI · ${z.testSuites} test suites`,
-    `${z.commits} commits · ${z.claudeCommits} with Claude`,
+  // Receipts: label left, number right (tabular mono), like a ledger.
+  const build: Array<[string, number]> = [
+    ["Tables, row-level security on every one", z.tables],
+    ["SQL migrations", z.migrations],
+    ["Postgres functions", z.dbFunctions],
+    ["Edge Functions", z.edgeFunctions],
+    ["pg_cron jobs", z.cronJobs],
+    ["CI jobs", z.ciJobs],
+    ["Test suites in CI", z.testSuites],
+    ["pgTAP assertions", z.pgtapAssertions],
+    ["Commits", z.commits],
+    ["Co-authored with Claude", z.claudeCommits],
   ];
   const along = [
     "Moved payments from Razorpay to PayU mid-build.",
     "Got past a Play Store rejection by building a reviewer sign-in path.",
-    `${z.pgtapAssertions} pgTAP assertions run in CI against a real hosted Postgres. Writing them found and fixed ${z.rlsBugsFound} RLS and authorization bugs.`,
+    `The pgTAP tests run in CI against a real hosted Postgres. Writing them found and fixed ${z.rlsBugsFound} RLS and authorization bugs.`,
   ];
   return (
     <div className="space-y-4">
@@ -295,13 +299,16 @@ function Results() {
           </div>
         ))}
       </dl>
-      <div className="flex flex-wrap items-center gap-2 rounded-[14px] border border-dashed border-line-strong p-4">
-        <span className="mr-2 text-sm font-medium">Under the hood</span>
-        {build.map((b) => (
-          <span key={b} className="rounded-full border border-line bg-surface px-3 py-1 font-mono text-xs">
-            {b}
-          </span>
-        ))}
+      <div className="rounded-[14px] border border-line p-5 sm:p-6">
+        <p className="text-sm font-medium">Under the hood</p>
+        <dl className="mt-3 grid gap-x-10 sm:grid-cols-2">
+          {build.map(([label, n]) => (
+            <div key={label} className="flex items-baseline justify-between gap-4 border-b border-line py-2.5 text-[0.9375rem]">
+              <dt className="text-muted">{label}</dt>
+              <dd className="num text-fg">{n}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
       <div className="rounded-[14px] border border-line p-5 sm:p-6">
         <p className="text-sm font-medium">Along the way</p>

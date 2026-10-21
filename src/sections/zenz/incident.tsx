@@ -78,7 +78,7 @@ export function Incident() {
           Fixed the same day
         </span>
       </div>
-      <p className="mt-5 max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.625rem)] leading-[1.08] font-semibold tracking-[-0.035em]">
+      <p className="font-display mt-5 max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.625rem)] leading-[1.08] tracking-[-0.035em]">
         A student paid. The app said <span className="text-accent">unpaid.</span>
       </p>
       <Body>

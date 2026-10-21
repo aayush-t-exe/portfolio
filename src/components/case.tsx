@@ -161,7 +161,7 @@ export function Body({ children, className = "" }: { children: ReactNode; classN
 /** End of a case page: where to go next. */
 export function NextLinks({ links }: { links: Array<{ href: string; label: string; note: string }> }) {
   return (
-    <nav aria-label="More" className="container-page mt-24 grid gap-4 border-t border-line pt-10 sm:grid-cols-2 md:mt-32">
+    <nav aria-label="More" className="container-page mt-24 mb-16 grid gap-4 sm:grid-cols-2 md:mt-32 md:mb-24">
       {links.map((l) => (
         <Link
           key={l.href}

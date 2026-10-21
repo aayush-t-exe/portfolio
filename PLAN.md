@@ -27,6 +27,19 @@ mono "01 ——" labels).
 5. **Bugs:** header backdrop dropping out mid-page; the mobile admin caption; overflow, tab
    stops and image `sizes` re-checked.
 
+**Type (Phase 3, decided with screenshots of the hero and work cards):** headlines in
+**Schibsted Grotesk SemiBold**, body in Geist, numbers and code in Geist Mono. Tested against
+Geist-only and Hanken Grotesk. Geist-only is the look the brief calls the default; Hanken reads as
+generic Helvetica. Schibsted's sharp terminals, single-storey-feeling `a`, spurred `G` and flared
+`I` give the H1 a voice without a second "accent" typeface. Only the 600 weight is loaded (one
+static subset, 20.6 kB, replacing Instrument Serif's 14.5 kB). Instrument Serif is gone.
+
+**Accent:** Zen-Z's own red instead of vermilion (screenshots of both, light and dark). It ties
+the site's single accent to the product's icon and badges inside the stages, and it breaks the
+paper + vermilion + serif-italic look rameskum.com and others share. `#C8100F` in light (5.3:1 on
+paper), `#FF4A3D` in dark (5.8:1 on ink). The closing CTA band is the same deep red in both
+themes (white text, 5.9:1), so it doesn't glare in dark mode.
+
 **Bolder option considered:** a single narrow column (Samuel Kraft, Paco, Delba). Rejected for
 the hero: at 640px a column can't show the face, the ask and a large product visual in the first
 desktop screen. Taken from them instead: uniform dark stages, quiet type, short copy.
