@@ -52,6 +52,8 @@ export const projects = {
     urlLabel: "zen-z.site",
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.campussocial.app",
     sourceUrl: "https://github.com/aayush-t-exe/Zen-Z",
+    /** Public commit log: every Claude co-authored commit carries a Co-Authored-By trailer. */
+    commitsUrl: "https://github.com/aayush-t-exe/Zen-Z/commits/main",
     instagram: "https://www.instagram.com/zen_z.app",
     instagramHandle: "@zen_z.app",
   },
@@ -60,6 +62,15 @@ export const projects = {
     url: "https://github.com/aayush-t-exe/prelims-daily",
   },
 } as const;
+
+/** Internal routes. Cards, nav, sitemap, llms.txt and JSON-LD all read these. */
+export const routes = {
+  home: "/",
+  zenz: "/work/zen-z",
+  prelims: "/work/prelimsdaily",
+  stack: "/stack",
+} as const;
+
 
 /**
  * Numbers quoted on the site. Sources: Aayush (users, revenue), the resume (waitlist,
@@ -94,6 +105,25 @@ export const facts = {
   prelims: {
     tests: 72,
     suites: 5,
+  },
+} as const;
+
+/** Per-page titles and descriptions (≤155 characters, strongest hook first). */
+export const pages = {
+  zenz: {
+    title: "Zen-Z case study: a campus app built solo",
+    description:
+      "How Aayush Thakur built Zen-Z solo: React Native app, Next.js admin, Supabase with RLS on every table, PayU payments, and a same-day payment incident fix.",
+  },
+  prelims: {
+    title: "PrelimsDaily case study: a tested app in one day",
+    description:
+      `PrelimsDaily, a UPSC daily-practice app built in one day by Aayush Thakur: offline streaks, adaptive reminders, deterministic daily sets and ${facts.prelims.tests} unit tests.`,
+  },
+  stack: {
+    title: "Stack: the tools, and where they shipped",
+    description:
+      "The tools Aayush Thakur ships with, by layer, and which product each one shipped in: Zen-Z, PrelimsDaily or this site. TypeScript, Expo, Supabase and more.",
   },
 } as const;
 

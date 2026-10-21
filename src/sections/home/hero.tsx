@@ -32,7 +32,7 @@ export function Hero() {
           {/* Like the H1, the intro paints immediately: it's the LCP element on mobile. */}
           <p className="mt-7 max-w-[34rem] text-lg leading-relaxed text-muted sm:text-xl sm:leading-relaxed">
             I&rsquo;m Aayush, a founder-engineer. I built{" "}
-            <a href="#zen-z" className="link whitespace-nowrap text-fg">
+            <a href="/work/zen-z" className="link whitespace-nowrap text-fg">
               Zen-Z
             </a>{" "}
             on my own (the app, admin panel, backend and payments), and it reached{" "}

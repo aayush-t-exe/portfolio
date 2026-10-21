@@ -63,9 +63,10 @@ export function PageBehavior() {
     );
     document.querySelectorAll("[data-pulse]").forEach((el) => pulse.observe(el));
 
-    // Scroll-spy over the nav's sections. Sections don't overlap, so at most one is in the
-    // thin band; when none is (hero, proof strip), nothing is current.
-    const spyLinks = [...document.querySelectorAll<HTMLAnchorElement>("a[data-spy]")];
+    // Scroll-spy over the nav's sections, on the home page only (elsewhere the links leave the
+    // page). Sections don't overlap, so at most one is in the thin band; when none is (the
+    // hero), nothing is current.
+    const spyLinks = pathname === "/" ? [...document.querySelectorAll<HTMLAnchorElement>("a[data-spy]")] : [];
     const inBand = new Set<string>();
     const spy = new IntersectionObserver(
       (entries) => {

@@ -1,8 +1,8 @@
+import Link from "next/link";
 import type { CSSProperties } from "react";
-import { SectionHeading } from "@/components/section-heading";
+import { ArrowLeft } from "@/components/icons";
 import { stackIcons, type StackIcon } from "@/components/stack-icons";
 import { coursework, projectNames, stack, stackLayers, type Project } from "@/lib/site";
-import { stagger } from "@/lib/stagger";
 
 const filters: Array<{ id: "all" | Project; label: string; short?: string }> = [
   { id: "all", label: "All" },
@@ -19,18 +19,26 @@ const filters: Array<{ id: "all" | Project; label: string; short?: string }> = [
 export function Stack() {
   const count = (id: "all" | Project) => (id === "all" ? stack.length : stack.filter((t) => t.usedIn.includes(id)).length);
   return (
-    <section id="stack" aria-labelledby="stack-title" className="stack cv-auto border-t border-line py-20 [--cv-h:2400px] md:py-32">
+    <section aria-labelledby="stack-title" className="stack pt-8 md:pt-12">
       <div className="container-page">
-        <SectionHeading
-          index="03"
-          label="Stack · what I reach for"
-          headingId="stack-title"
-          title={
-            <>
-              The stack, and where it <span className="serif-em">shipped.</span>
-            </>
-          }
-        />
+        <Link
+          href="/#work"
+          className="press -ml-2 inline-flex h-9 items-center gap-1.5 rounded-full px-2 text-sm text-muted hover:text-fg"
+        >
+          <ArrowLeft size={15} />
+          All work
+        </Link>
+        <div className="mt-8 grid gap-6 md:mt-12 md:grid-cols-12 md:gap-8">
+          <p className="text-sm text-muted md:col-span-3 md:pt-3">What I reach for</p>
+          <div className="md:col-span-9">
+            <h1 id="stack-title" className="max-w-[18ch] text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.045em]">
+              The stack, and where it shipped.
+            </h1>
+            <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-muted">
+              Every tool here shipped in Zen-Z, PrelimsDaily or this site. Pick one to see which.
+            </p>
+          </div>
+        </div>
 
         <div className="mt-12 md:mt-16 md:grid md:grid-cols-12 md:gap-8">
           <div className="md:col-span-9 md:col-start-4">
@@ -70,13 +78,11 @@ export function Stack() {
             </div>
 
             <div className="mt-8 border-t border-line">
-              {stackLayers.map((layer, li) => {
+              {stackLayers.map((layer) => {
                 const tools = stack.filter((t) => t.layer === layer);
                 return (
                   <div
                     key={layer}
-                    data-reveal
-                    style={stagger(li)}
                     className="grid gap-3 border-b border-line py-5 md:grid-cols-[10rem_1fr] md:gap-6"
                   >
                     <h3 className="label flex items-baseline gap-2 pt-1 md:block">

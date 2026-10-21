@@ -1,15 +1,13 @@
 const links = [
   { id: "work", label: "Work", className: "" },
-  { id: "process", label: "Process", className: "hidden md:inline-flex" },
-  { id: "stack", label: "Stack", className: "hidden lg:inline-flex" },
   { id: "about", label: "About", className: "hidden sm:inline-flex" },
   { id: "contact", label: "Contact", className: "" },
 ] as const;
 
 /**
- * Anchor nav. The quiet scroll-spy (aria-current on the section in the reading band) is
- * run by PageBehavior; the dot is styled from aria-current in CSS. "/#id" (not "#id") so
- * the links also work from other routes, like the 404.
+ * Anchor nav into the home page. The quiet scroll-spy (aria-current on the section in the
+ * reading band) runs on the home page only (PageBehavior); the dot is styled from aria-current
+ * in CSS. "/#id" (not "#id") so the links also work from the case pages and the 404.
  */
 export function NavLinks() {
   return (

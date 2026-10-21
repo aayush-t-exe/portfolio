@@ -2,6 +2,35 @@
 
 Owner: Aayush Thakur · Built with Claude Code · Started 2026-10-21
 
+## v3: restructure (from S:\Projects\Portfolio-v3\BRIEF.md, 2026-10-21)
+
+**Verdict carried over from the brief:** good craft, wrong structure. v2's home page was 16,957px
+on desktop (18.8 screens), 24,297px on mobile (28.8 screens) and 2,794 words, and its first screen
+looked like the 2026 AI-editorial template (Geist + one Instrument Serif italic word, paper,
+mono "01 ——" labels).
+
+**Plan**
+1. **Routes:** a short `/` plus `/work/zen-z`, `/work/prelimsdaily` and `/stack`. Each case has its
+   own metadata, OG image and JSON-LD; the sitemap and llms.txt list them all.
+2. **Home, top to bottom:** hero (byline photo, a concrete H1, the ask, one proof line, a dark
+   Zen-Z "stage") → three work cards (Zen-Z, PrelimsDaily, the incident teaser) → how I build
+   with AI → about + contact (FIG. 01 portrait, looking for, work-with-me menu, live Jaipur
+   time) → a full-bleed closing CTA → the footer's build receipt (the one signature element).
+   Targets: ≤ ~4,500px desktop, ≤ ~9 mobile screens, ≤ ~600 words, every number once.
+3. **Visual system:** retire the serif-italic signature, a grotesk display tested against one
+   alternative, tabular mono numbers, far fewer mono labels, no "01 ——" on the home page, dark
+   product stages inside the light page, one photo grade.
+4. **Motion, about half:** no reading bar, no image settle, no text reveals; only figures and
+   cards reveal (300–400ms, ≤ 40ms stagger). The hero stage enters once. The status dot pulses
+   three times and stops. Scroll-spy only on `/`, chapter progress only on case pages. New: the
+   card → case-page morph (React `<ViewTransition>` + `next/link`, built in, no dependency).
+5. **Bugs:** header backdrop dropping out mid-page; the mobile admin caption; overflow, tab
+   stops and image `sizes` re-checked.
+
+**Bolder option considered:** a single narrow column (Samuel Kraft, Paco, Delba). Rejected for
+the hero: at 640px a column can't show the face, the ask and a large product visual in the first
+desktop screen. Taken from them instead: uniform dark stages, quiet type, short copy.
+
 ## 1. Goal
 
 One page that makes a design-literate startup founder think *"this person ships, and has taste"* within

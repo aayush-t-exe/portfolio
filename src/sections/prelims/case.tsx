@@ -1,7 +1,8 @@
-import { Body, CaseHeader, Chapter, Lead } from "@/components/case";
-import { PhoneRail } from "@/components/frames";
+import { Body, CaseHeader, CasePage, CaseToc, Chapter, Lead, NextLinks, type TocItem } from "@/components/case";
+import { Caption, PhoneRail } from "@/components/frames";
 import { ArrowUpRight, GitHub } from "@/components/icons";
-import { facts, projects } from "@/lib/site";
+import { PrelimsMedia } from "@/components/stage";
+import { facts, projects, routes } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
 import today from "@/assets/prelims/today.jpg";
 import quiz from "@/assets/prelims/quiz.jpg";
@@ -10,6 +11,12 @@ import profile from "@/assets/prelims/profile.jpg";
 import reminders from "@/assets/prelims/reminders.jpg";
 
 const prelims = projects.prelims;
+
+const toc: TocItem[] = [
+  { id: "brief", label: "Brief" },
+  { id: "decisions", label: "Decisions" },
+  { id: "quality", label: "Quality" },
+];
 
 const screens = [
   {
@@ -67,14 +74,12 @@ const decisions = [
   },
 ];
 
-export function PrelimsDaily() {
+export function PrelimsCase() {
   return (
-    <article id="prelimsdaily" aria-labelledby="prelims-title" className="cv-auto [--cv-h:4200px]">
+    <CasePage toc={toc}>
       <CaseHeader
-        index="02"
-        eyebrow="Built in one day"
+        eyebrow="Case study · Built in one day"
         name="PrelimsDaily"
-        headingId="prelims-title"
         tagline="A 10-minute daily habit for UPSC Prelims, from empty repo to tested app in a day."
         tldr={[
           { term: "Problem", value: "UPSC aspirants don't fail for lack of material, but for lack of consistency." },
@@ -89,7 +94,6 @@ export function PrelimsDaily() {
           { term: "Timeline", value: "1 day · Oct 2026" },
           { term: "Platforms", value: "Android, iOS, web (Expo)" },
           { term: "Stack", value: "Expo, TypeScript, Zustand, Reanimated" },
-          { term: "Outcome", value: `Shipped with ${facts.prelims.tests} passing tests` },
         ]}
         actions={
           <a href={prelims.url} target="_blank" rel="noopener" className="btn btn-primary press">
@@ -99,35 +103,46 @@ export function PrelimsDaily() {
             <span className="sr-only"> (opens in new tab)</span>
           </a>
         }
+        media={
+          <figure>
+            <PrelimsMedia eager sizes="(min-width: 1280px) 300px, 26vw" />
+            <Caption>Today, a quiz question with its explanation, and a result.</Caption>
+          </figure>
+        }
       />
 
-      {/* Gallery: a staggered row on desktop, a swipeable rail on touch */}
-      <div className="mt-14 md:mt-20">
-        <PhoneRail label="PrelimsDaily screenshots" items={screens} tone="light" />
-      </div>
+      <CaseToc items={toc} />
 
-      <div className="mt-16 space-y-16 md:mt-28 md:space-y-24">
-        <Chapter title="The brief">
+      <div className="container-page mt-14 space-y-16 md:mt-20 md:space-y-24">
+        <Chapter
+          id="brief"
+          title="The brief"
+          wide={
+            <figure>
+              <PhoneRail label="PrelimsDaily screenshots" items={screens} tone="light" />
+            </figure>
+          }
+        >
           <Lead>
-            &ldquo;Most aspirants don&rsquo;t fail for lack of material. They fail for lack of
-            consistency.&rdquo;
+            &ldquo;Most aspirants don&rsquo;t fail for lack of material. They fail for lack of consistency.&rdquo;
           </Lead>
           <Body>
             <p>
-              I built PrelimsDaily in <strong>a single day</strong> as part of a startup application:
-              one focused question set a day, <strong>streaks with freezes</strong>, a daily target
-              ring, XP and levels, and <strong>reminders that adapt to your streak</strong>. It runs
-              fully offline on Android, iOS and the web.
+              I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set
+              a day, <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and{" "}
+              <strong>reminders that adapt to your streak</strong>. It runs fully offline on Android, iOS and the web.
             </p>
             <p>
-              Fast didn&rsquo;t mean sloppy. The rules live in pure, unit-tested functions, state is
-              persisted with a versioned schema that falls back safely if anything is malformed, and a
-              root error boundary means a render crash shows a Retry screen, never a white screen.
+              Fast didn&rsquo;t mean sloppy. The rules live in pure, unit-tested functions, state is persisted with a versioned
+              schema that falls back safely if anything is malformed, and a root error boundary means a render crash shows a
+              Retry screen, never a white screen.
             </p>
           </Body>
         </Chapter>
 
-        <Chapter title="Decisions"
+        <Chapter
+          id="decisions"
+          title="Decisions"
           wide={
             <ol className="grid gap-4 sm:grid-cols-2">
               {decisions.map((d, i) => (
@@ -135,7 +150,7 @@ export function PrelimsDaily() {
                   <p className="text-xl font-medium tracking-[-0.02em]">{d.title}</p>
                   <p className="mt-2 leading-relaxed text-muted">{d.body}</p>
                   <p className="mt-auto pt-5 text-sm leading-relaxed">
-                    <span className="font-mono text-xs text-accent uppercase">Trade-off </span>
+                    <span className="font-medium text-accent">Trade-off: </span>
                     <span className="text-muted">{d.tradeoff}</span>
                   </p>
                 </li>
@@ -146,21 +161,27 @@ export function PrelimsDaily() {
           <Lead>Small app, real engineering. Every trade-off is written down in the README.</Lead>
         </Chapter>
 
-        <Chapter title="Quality">
-          <div data-reveal className="grid gap-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-12">
-            <p className="text-[clamp(4rem,10vw,7.5rem)] leading-[0.85] font-medium tracking-[-0.06em] tabular-nums">
+        <Chapter id="quality" title="Quality">
+          <div className="grid gap-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-12">
+            <p className="num text-[clamp(4rem,10vw,7.5rem)] leading-[0.85]">
               {facts.prelims.tests}
-              <span className="serif-em ml-2 text-[0.42em] tracking-normal text-muted">tests</span>
+              <span className="ml-3 font-sans text-[0.3em] font-medium tracking-normal text-muted">tests</span>
             </p>
             <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
-              Unit tests in {facts.prelims.suites} suites, covering local-date maths, streak
-              transitions (continue, freeze, reset, earning freezes), XP and level curves, the daily
-              set&rsquo;s determinism, weak-subject weighting and recency rules, and loading saved
-              state safely. Strict TypeScript and lint on top.
+              Unit tests in {facts.prelims.suites} suites, covering local-date maths, streak transitions (continue, freeze,
+              reset, earning freezes), XP and level curves, the daily set&rsquo;s determinism, weak-subject weighting and
+              recency rules, and loading saved state safely. Strict TypeScript and lint on top.
             </p>
           </div>
         </Chapter>
       </div>
-    </article>
+
+      <NextLinks
+        links={[
+          { href: routes.zenz, label: "Zen-Z", note: "Previous case study" },
+          { href: routes.stack, label: "The stack, and where it shipped", note: "Tools" },
+        ]}
+      />
+    </CasePage>
   );
 }

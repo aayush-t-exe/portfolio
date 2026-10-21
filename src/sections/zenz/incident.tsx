@@ -1,8 +1,6 @@
-import type { CSSProperties } from "react";
 import { Body } from "@/components/case";
 import { CodeBlock } from "@/components/code-block";
 import { facts } from "@/lib/site";
-import { stagger } from "@/lib/stagger";
 
 /**
  * The Zen-Z payment incident, told as it happened (dates and details from the repo:
@@ -72,7 +70,7 @@ const after = [
 export function Incident() {
   return (
     <div>
-      <div data-reveal className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-accent-soft px-2.5 py-1 font-mono text-xs font-medium text-accent uppercase">
           Post-launch incident · 16 Sep 2026
         </span>
@@ -80,24 +78,19 @@ export function Incident() {
           Fixed the same day
         </span>
       </div>
-      <p
-        data-reveal
-        style={stagger(1)}
-        className="mt-5 max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.625rem)] leading-[1.08] font-medium tracking-[-0.035em]"
-      >
-        A student paid. The app said <span className="serif-em text-accent">unpaid.</span>
+      <p className="mt-5 max-w-[22ch] text-[clamp(1.75rem,3.6vw,2.625rem)] leading-[1.08] font-semibold tracking-[-0.035em]">
+        A student paid. The app said <span className="text-accent">unpaid.</span>
       </p>
       <Body>
         <p>
-          The groundwork was already careful. PayU&rsquo;s public docs give a webhook hash formula that
-          is wrong for Payment Links, so on 29 Aug I worked out the real one (all ten udf fields) from a
-          live ₹1 transaction and confirmed it byte for byte. Bookings were only confirmed by a signed,
+          The groundwork was careful. PayU&rsquo;s public docs give the wrong webhook hash for Payment Links, so on 29 Aug I
+          worked out the real one (all ten udf fields) from a live ₹1 transaction. Bookings were only confirmed by a signed,
           server-verified webhook.
         </p>
         <p>
           Then, on 16 Sep, a student&rsquo;s real UPI payment succeeded, but{" "}
-          <strong>PayU&rsquo;s webhook never arrived, and nothing recorded whether it had.</strong>{" "}
-          The booking sat as unpaid, with no trail to prove otherwise.
+          <strong>PayU&rsquo;s webhook never arrived, and nothing recorded whether it had.</strong> The booking sat as unpaid,
+          with no trail to prove otherwise.
         </p>
       </Body>
 
@@ -120,7 +113,7 @@ export function Incident() {
       {/* Before / after */}
       <div data-reveal className="mt-10 grid overflow-hidden rounded-[14px] border border-line sm:grid-cols-2">
         <div className="bg-surface-2/60 p-5 sm:p-6">
-          <p className="label">Before</p>
+          <p className="text-sm font-medium text-muted">Before</p>
           <ul className="mt-3 space-y-2.5 text-[0.9375rem] leading-relaxed text-muted">
             {before.map((b) => (
               <li key={b} className="flex gap-2.5">
@@ -131,7 +124,7 @@ export function Incident() {
           </ul>
         </div>
         <div className="border-t border-line bg-surface p-5 sm:border-t-0 sm:border-l sm:p-6">
-          <p className="label text-accent">After</p>
+          <p className="text-sm font-medium text-accent">After</p>
           <ul className="mt-3 space-y-2.5 text-[0.9375rem] leading-relaxed text-muted">
             {after.map((a, i) => (
               <li key={i} className="flex gap-2.5">
@@ -145,17 +138,13 @@ export function Incident() {
 
       <Body className="mt-8">
         <p>
-          <strong>A week later (23 Sep):</strong> PayU Payment Links never redirect back to the app, so
-          checkout now opens in its own tab and the booking re-checks itself when the student returns.
-          A paid booking resolves without anyone touching it.
-        </p>
-        <p>
-          <strong>The race:</strong> if a student cancels and then pays on a stale tab, the booking is
-          not confirmed. It&rsquo;s logged as needing a manual refund instead.
+          <strong>A week later:</strong> Payment Links never redirect back to the app, so checkout now opens in its own tab and
+          the booking re-checks itself when the student returns. If a student cancels and then pays on a stale tab, the booking
+          isn&rsquo;t confirmed; it&rsquo;s logged for a manual refund.
         </p>
       </Body>
 
-      <div data-reveal="clip" style={{ "--clip-r": "14px" } as CSSProperties} className="mt-8">
+      <div data-reveal className="mt-8">
         <CodeBlock
           code={VERIFY_SKETCH}
           filename="payu-webhook/index.ts"
@@ -164,11 +153,10 @@ export function Incident() {
         />
       </div>
 
-      <p data-reveal className="mt-6 max-w-[62ch] border-l-2 border-accent pl-4 text-[1.0625rem] leading-relaxed">
+      <p className="mt-6 max-w-[62ch] border-l-2 border-accent pl-4 text-[1.0625rem] leading-relaxed">
         <span className="font-medium">The guarantee now:</span>{" "}
         <span className="text-muted">
-          no booking is confirmed without a verified payment, and every payment question can be answered
-          from the logs.
+          no booking is confirmed without a verified payment, and every payment question can be answered from the logs.
         </span>
       </p>
     </div>

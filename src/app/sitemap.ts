@@ -1,9 +1,18 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site";
+import { routes, site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const page = (path: string, priority: number) => ({
+    url: path === "/" ? site.url : `${site.url}${path}`,
+    lastModified: site.updated,
+    changeFrequency: "monthly" as const,
+    priority,
+  });
   return [
-    { url: site.url, lastModified: site.updated, changeFrequency: "monthly", priority: 1 },
-    { url: `${site.url}/llms.txt`, lastModified: site.updated, changeFrequency: "monthly", priority: 0.5 },
+    page(routes.home, 1),
+    page(routes.zenz, 0.9),
+    page(routes.prelims, 0.8),
+    page(routes.stack, 0.5),
+    page("/llms.txt", 0.4),
   ];
 }

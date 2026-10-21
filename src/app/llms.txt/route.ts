@@ -1,4 +1,4 @@
-import { coursework, facts, projectNames, projects, site, stack, stackLayers } from "@/lib/site";
+import { coursework, facts, projectNames, projects, routes, site, stack, stackLayers } from "@/lib/site";
 
 /**
  * llms.txt (https://llmstxt.org): a plain-text brief for AI search and answer engines.
@@ -24,7 +24,10 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 
 ## Links
 
-- [Portfolio](${site.url}): case studies for Zen-Z and PrelimsDaily, how ${site.shortName} works with AI, stack and contact
+- [Portfolio](${site.url}): who ${site.shortName} is, the work, how ${site.shortName} builds with AI, and contact
+- [Zen-Z case study](${site.url}${routes.zenz}): problem, what was built, architecture, the payment incident, results
+- [PrelimsDaily case study](${site.url}${routes.prelims}): the one-day build, its decisions and tests
+- [Stack](${site.url}${routes.stack}): every tool, by layer, and which product it shipped in
 - [Resume (PDF)](${site.url}${site.resume}): one-page full-stack resume
 - [GitHub](${site.github}): source code, including Zen-Z and PrelimsDaily
 - [LinkedIn](${site.linkedin}): professional profile
@@ -43,6 +46,8 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 
 ## Zen-Z (case study 1)
 
+Full case study: ${site.url}${routes.zenz}
+
 [Zen-Z](${projects.zenz.url}) matches college students into small groups of strangers (4–5 people; sports up to 14) for cafés, dinners, movies and sports. Cafés and dinners are free to book (venues pay a commission); movies and sports are paid. Live on [Google Play](${projects.zenz.playStoreUrl}) and the web, and on iOS as a PWA.
 
 - Results: ${z.users} users ${z.usersWindow} after launch; ${z.revenue} total revenue; ${z.waitlist} students on the waitlist before launch; [Instagram ${projects.zenz.instagramHandle}](${projects.zenz.instagram}) with ${z.igFollowers} followers and ${z.igViews} views. Pitched at Jaipur National University's Shark Tank (Sep 2026).
@@ -52,6 +57,8 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 
 ## PrelimsDaily (case study 2)
 
+Full case study: ${site.url}${routes.prelims}
+
 [PrelimsDaily](${projects.prelims.url}) is a React Native + TypeScript daily-practice app for UPSC Prelims, built in a single day for a startup application: streaks with freezes, a daily target ring, XP and levels, review, and reminders that skip finished days. Works fully offline. ${p.tests} unit tests in ${p.suites} suites. Decisions include local calendar dates instead of UTC, a date-seeded deterministic daily set, and reminders scheduled as seven one-off notifications.
 
 ## Other
@@ -59,6 +66,8 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 - Smart India Hackathon (SIH) internal round: ${facts.sih}.
 
 ## Stack
+
+With filters by product: ${site.url}${routes.stack}
 
 ${stackLines}
 - Also (coursework): ${coursework.join(", ")}

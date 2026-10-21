@@ -13,12 +13,15 @@ export function PhoneFrame({
   shot,
   tone,
   sizes = "(min-width: 1024px) 240px, 60vw",
+  eager,
   className = "",
 }: {
   shot: Shot;
   /** The app's UI: "light" (PrelimsDaily) or "dark" (Zen-Z). */
   tone: "light" | "dark";
   sizes?: string;
+  /** Above the fold: load now, at high priority. */
+  eager?: boolean;
   className?: string;
 }) {
   return (
@@ -37,6 +40,7 @@ export function PhoneFrame({
             alt={shot.alt}
             sizes={sizes}
             draggable={false}
+            {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
             className="size-full object-cover object-top"
           />
         </div>
@@ -50,31 +54,45 @@ function StatusBar() {
   return <div aria-hidden className="status-bar" />;
 }
 
-/** Minimal browser chrome for desktop screenshots. The box takes the image's own ratio. */
+/**
+ * Minimal browser chrome for desktop screenshots. The box takes the image's own ratio. The
+ * chrome is light whatever the theme (the admin UI is light); in dark mode the whole frame is
+ * dimmed so it doesn't glare.
+ */
 export function BrowserFrame({
   shot,
   title,
   sizes = "(min-width: 1024px) 760px, 92vw",
+  eager,
   className = "",
 }: {
   shot: Shot;
   title: string;
   sizes?: string;
+  eager?: boolean;
   className?: string;
 }) {
   const ratio = `${shot.image.width} / ${shot.image.height}`;
   return (
-    <div className={`card overflow-hidden rounded-[14px] p-0 ${className}`}>
-      <div className="flex h-9 items-center gap-3 border-b border-line bg-surface px-3.5">
-        <span aria-hidden className="flex gap-1.5">
-          <i className="size-2.5 rounded-full bg-line-strong" />
-          <i className="size-2.5 rounded-full bg-line-strong" />
-          <i className="size-2.5 rounded-full bg-line-strong" />
+    <div
+      className={`browser-dim overflow-hidden rounded-[8px] bg-white shadow-[0_30px_60px_-30px_rgb(0_0_0/0.6),0_0_0_1px_rgb(255_255_255/0.1)] sm:rounded-[12px] ${className}`}
+    >
+      <div className="flex h-5 items-center gap-2 border-b border-black/10 bg-[#f1f0ec] px-2 sm:h-8 sm:gap-3 sm:px-3">
+        <span aria-hidden className="flex gap-1 sm:gap-1.5">
+          <i className="size-1.5 rounded-full bg-black/15 sm:size-2.5" />
+          <i className="size-1.5 rounded-full bg-black/15 sm:size-2.5" />
+          <i className="size-1.5 rounded-full bg-black/15 sm:size-2.5" />
         </span>
-        <span className="truncate font-mono text-xs text-muted">{title}</span>
+        <span className="truncate font-mono text-[8px] text-[#5b5850] sm:text-xs">{title}</span>
       </div>
-      <div className="browser-dim relative bg-white" style={{ aspectRatio: ratio }}>
-        <Image src={shot.image} alt={shot.alt} sizes={sizes} className="size-full object-cover object-top" />
+      <div className="relative" style={{ aspectRatio: ratio }}>
+        <Image
+          src={shot.image}
+          alt={shot.alt}
+          sizes={sizes}
+          {...(eager ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+          className="size-full object-cover object-top"
+        />
       </div>
     </div>
   );

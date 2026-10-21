@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { facts } from "@/lib/site";
 
 const z = facts.zenz;
@@ -9,7 +9,7 @@ const z = facts.zenz;
  */
 export function ZenZArchitecture() {
   return (
-    <figure data-reveal="clip" style={{ "--clip-r": "16px" } as CSSProperties} aria-labelledby="arch-caption">
+    <figure data-reveal aria-labelledby="arch-caption">
       <div className="card overflow-hidden p-3 sm:p-5 lg:p-6">
         <div className="grid gap-2 lg:grid-cols-[1fr_8rem_1.3fr_8rem_0.9fr] lg:gap-0">
           <Column title="Clients">
