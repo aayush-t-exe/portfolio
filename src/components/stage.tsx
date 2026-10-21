@@ -14,7 +14,7 @@ import result from "@/assets/prelims/result.jpg";
  * Product "stages" (after Samuel Kraft's project panels): the same near-black panel in both
  * themes, so the products' own UI carries the colour, and the light page gets contrast.
  */
-export function Stage({ children, className = "" }: { children: ReactNode; className?: string }) {
+function Stage({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`stage relative overflow-hidden rounded-[22px] ${className}`}>{children}</div>;
 }
 

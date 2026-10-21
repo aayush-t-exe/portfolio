@@ -7,7 +7,6 @@ import { facts } from "@/lib/site";
  * commits 69cfaa4, ba11be2, e2e8bdf; migrations 0096-0098; pgTAP test 019).
  */
 const VERIFY_SKETCH = `
-// supabase/functions/payu-webhook: a simplified sketch of the real handler
 Deno.serve(async (req) => {
   const p = Object.fromEntries(await req.formData());
 
@@ -23,15 +22,14 @@ Deno.serve(async (req) => {
   // Constant-time compare: a bad signature confirms nothing.
   if (!timingSafeEqual(expected, p.hash)) return reject(p, "invalid_signature");
 
-  // Cancelled, then paid on a stale tab? Not confirmed:
-  // logged as "payment_race_manual_refund_needed".
+  // Cancelled, then paid on a stale tab? Logged, not confirmed.
   const outcome = await settleBooking(p);
 
   await logEvent(p, outcome);
   return ok();
 });
 
-// Every call is logged with its outcome. Best-effort: never changes the response.
+// Best-effort: logging never changes the response.
 async function logEvent(p, outcome) {
   try {
     await db.from("payment_webhook_events").insert({ txnid: p.txnid, outcome });
@@ -40,15 +38,14 @@ async function logEvent(p, outcome) {
 `;
 
 const timeline = [
-  { t: "Paid", d: "A student's real UPI payment succeeds.", tone: "fg" },
-  { t: "No webhook, no trace", d: "PayU never calls back, and nothing records that it didn't.", tone: "accent" },
-  { t: "Same-day fix", d: `${facts.zenz.incidentFiles} files, shipped on 16 Sep.`, tone: "fg" },
-  { t: "Every call logged", d: "Plus a queue that surfaces anything stuck.", tone: "fg" },
+  { t: "Paid", d: "A real UPI payment succeeds.", tone: "fg" },
+  { t: "No webhook, no trace", d: "PayU never calls back. Nothing notices.", tone: "accent" },
+  { t: "Same-day fix", d: `${facts.zenz.incidentFiles} files, shipped on ${facts.zenz.incidentDay}.`, tone: "fg" },
+  { t: "Every call logged", d: "And a queue for anything stuck.", tone: "fg" },
 ] as const;
 
 const before = [
-  "A booking's paid state rested on one webhook arriving.",
-  "No record of which webhook calls came in, or what happened to them.",
+  "A booking's paid state rested on one webhook arriving, with no record of the calls.",
   "Fixing a stuck booking meant hand-run SQL.",
 ];
 
@@ -62,9 +59,8 @@ const after = [
   </>,
   <>
     An admin-only <code className="font-mono text-[0.85em] text-fg">admin_mark_booking_paid()</code> RPC, covered by a
-    pgTAP test.
+    pgTAP test, and a WhatsApp support link on the payment screen.
   </>,
-  <>A WhatsApp support link on the payment screen, and a &ldquo;Payments to check&rdquo; count on the dashboard.</>,
 ];
 
 export function Incident() {
@@ -72,7 +68,7 @@ export function Incident() {
     <div>
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-accent-soft px-2.5 py-1 font-mono text-xs font-medium text-accent uppercase">
-          Post-launch incident · 16 Sep 2026
+          Post-launch incident · {facts.zenz.incidentDate}
         </span>
         <span className="rounded-full border border-line px-2.5 py-1 font-mono text-xs text-muted uppercase">
           Fixed the same day
@@ -83,12 +79,11 @@ export function Incident() {
       </p>
       <Body>
         <p>
-          The groundwork was careful. PayU&rsquo;s public docs give the wrong webhook hash for Payment Links, so on 29 Aug I
-          worked out the real one (all ten udf fields) from a live ₹1 transaction. Bookings were only confirmed by a signed,
-          server-verified webhook.
+          The groundwork was careful: PayU&rsquo;s docs give the wrong webhook hash for Payment Links, so on {facts.zenz.hashFixDay} I worked
+          out the real one from a live ₹1 transaction. Only a signed, server-verified webhook confirmed a booking.
         </p>
         <p>
-          Then, on 16 Sep, a student&rsquo;s real UPI payment succeeded, but{" "}
+          Then, on {facts.zenz.incidentDay}, a student&rsquo;s real UPI payment succeeded, but{" "}
           <strong>PayU&rsquo;s webhook never arrived, and nothing recorded whether it had.</strong> The booking sat as unpaid,
           with no trail to prove otherwise.
         </p>
@@ -138,9 +133,9 @@ export function Incident() {
 
       <Body className="mt-8">
         <p>
-          <strong>A week later:</strong> Payment Links never redirect back to the app, so checkout now opens in its own tab and
-          the booking re-checks itself when the student returns. If a student cancels and then pays on a stale tab, the booking
-          isn&rsquo;t confirmed; it&rsquo;s logged for a manual refund.
+          <strong>A week later:</strong> checkout opens in its own tab and the booking re-checks itself when the student
+          returns (Payment Links never redirect back). Cancel-then-pay on a stale tab is logged for a manual refund, not
+          confirmed.
         </p>
       </Body>
 

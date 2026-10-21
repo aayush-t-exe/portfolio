@@ -56,8 +56,9 @@ export function Footer() {
               {builtOn ? (
                 <>
                   ,{" "}
-                  <time data-ago dateTime={build.time}>
-                    on {builtOn}
+                  <time dateTime={build.time} title={`on ${builtOn}`}>
+                    <span data-ago-fallback>on {builtOn}</span>
+                    <span data-ago hidden />
                   </time>
                 </>
               ) : null}

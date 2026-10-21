@@ -19,7 +19,7 @@ const filters: Array<{ id: "all" | Project; label: string; short?: string }> = [
 export function Stack() {
   const count = (id: "all" | Project) => (id === "all" ? stack.length : stack.filter((t) => t.usedIn.includes(id)).length);
   return (
-    <section aria-labelledby="stack-title" className="stack pt-8 md:pt-12">
+    <section aria-labelledby="stack-title" className="stack pt-8 pb-20 md:pt-12 md:pb-28">
       <div className="container-page">
         <Link
           href="/#work"

@@ -78,7 +78,15 @@ export const routes = {
 export const facts = {
   zenz: {
     users: "150+",
+    usersDays: "2 days",
     usersWindow: "in its first 2 days",
+    /** Founded / building since. */
+    since: "Jul 2026",
+    sharkTank: "Sep 2026",
+    /** The payment incident and the earlier webhook-hash work (repo: commits 69cfaa4, ba11be2). */
+    incidentDate: "16 Sep 2026",
+    incidentDay: "16 Sep",
+    hashFixDay: "29 Aug",
     revenue: "₹33K+",
     waitlist: "65+",
     igFollowers: "550+",
@@ -104,6 +112,8 @@ export const facts = {
   prelims: {
     tests: 72,
     suites: 5,
+    buildTime: "1 day",
+    built: "Oct 2026",
   },
 } as const;
 

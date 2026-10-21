@@ -62,7 +62,7 @@ export function ZenZArchitecture() {
         updates over the air with EAS Update, and errors are reported to Sentry.
       </p>
       <figcaption id="arch-caption" className="mt-3 font-mono text-xs leading-relaxed text-muted">
-        Fig. 1: Zen-Z architecture. Everything in this diagram was designed and built by one person.
+        Fig. 1: Zen-Z architecture. Everything here except the third-party services (Supabase, PayU, Brevo, Expo, Sentry) was designed and built by one person.
       </figcaption>
     </figure>
   );

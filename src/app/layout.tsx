@@ -89,10 +89,9 @@ export const viewport: Viewport = {
  * that JS runs (`js`, used by the theme toggle and never removed) and arms the scroll
  * reveal (`reveal-armed`). Failsafe: if the app bundle hasn't started the reveal observer
  * within 4s (blocked, failed, ancient browser), disarm the reveal so no content stays
- * hidden. The failsafe only ever touches `reveal-armed`. A URL hash renders every section up
- * front (`cv-off`) so the initial anchor scroll lands where it should.
+ * hidden. The failsafe only ever touches `reveal-armed`.
  */
-const prePaint = `(function(){var d=document.documentElement;d.classList.add('js','reveal-armed');if(location.hash)d.classList.add('cv-off');var p='system';try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){d.dataset.theme=t;p=t}}catch(e){}d.dataset.themePref=p;setTimeout(function(){if(!d.hasAttribute('data-reveal-ready'))d.classList.remove('reveal-armed')},4000)})()`;
+const prePaint = `(function(){var d=document.documentElement;d.classList.add('js','reveal-armed');var p='system';try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){d.dataset.theme=t;p=t}}catch(e){}d.dataset.themePref=p;setTimeout(function(){if(!d.hasAttribute('data-reveal-ready'))d.classList.remove('reveal-armed')},4000)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

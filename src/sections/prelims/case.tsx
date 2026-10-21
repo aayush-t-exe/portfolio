@@ -1,12 +1,9 @@
 import { Body, CaseHeader, CasePage, CaseToc, Chapter, Lead, NextLinks, type TocItem } from "@/components/case";
-import { Caption, PhoneRail } from "@/components/frames";
+import { Caption, PhoneFrame } from "@/components/frames";
 import { ArrowUpRight, GitHub } from "@/components/icons";
 import { PrelimsMedia } from "@/components/stage";
 import { facts, projects, routes } from "@/lib/site";
 import { stagger } from "@/lib/stagger";
-import today from "@/assets/prelims/today.jpg";
-import quiz from "@/assets/prelims/quiz.jpg";
-import result from "@/assets/prelims/result.jpg";
 import profile from "@/assets/prelims/profile.jpg";
 import reminders from "@/assets/prelims/reminders.jpg";
 
@@ -18,25 +15,8 @@ const toc: TocItem[] = [
   { id: "quality", label: "Quality" },
 ];
 
+/** The two screens the lead stage doesn't show (it has Today, Quiz and Result). */
 const screens = [
-  {
-    image: today,
-    title: "Today",
-    caption: "Streak flame, daily target ring, week dots and weak-area chips.",
-    alt: "PrelimsDaily Today screen: a one-day streak, a completed 5 of 5 target ring, week dots, level 3 progress and weak areas Economy 56% and Polity 57%",
-  },
-  {
-    image: quiz,
-    title: "Quiz",
-    caption: "Statement-style UPSC questions with instant feedback and an explanation.",
-    alt: "PrelimsDaily quiz screen: a statement-based question on Financial Emergency with the correct answer highlighted and an explanation below",
-  },
-  {
-    image: result,
-    title: "Result",
-    caption: "Animated score ring with count-up XP and streak.",
-    alt: "PrelimsDaily result screen: a 60% score ring, 3 of 5 correct, plus 40 XP earned and a one-day streak",
-  },
   {
     image: profile,
     title: "Profile",
@@ -78,7 +58,7 @@ export function PrelimsCase() {
   return (
     <CasePage toc={toc}>
       <CaseHeader
-        eyebrow="Case study · Built in one day"
+        eyebrow={`Case study · Built in ${facts.prelims.buildTime}`}
         name="PrelimsDaily"
         tagline="A 10-minute daily habit for UPSC Prelims, from empty repo to tested app in a day."
         tldr={[
@@ -91,7 +71,7 @@ export function PrelimsCase() {
         ]}
         meta={[
           { term: "Role", value: "Solo: product, design, code" },
-          { term: "Timeline", value: "1 day · Oct 2026" },
+          { term: "Timeline", value: `${facts.prelims.buildTime} · ${facts.prelims.built}` },
           { term: "Platforms", value: "Android, iOS, web (Expo)" },
           { term: "Stack", value: "Expo, TypeScript, Zustand, Reanimated" },
         ]}
@@ -106,7 +86,7 @@ export function PrelimsCase() {
         media={
           <figure>
             <PrelimsMedia eager sizes="(min-width: 1280px) 300px, 26vw" />
-            <Caption>Today, a quiz question with its explanation, and a result.</Caption>
+            <Caption>Today (streak, daily target ring, weak areas), a statement-style quiz question with its explanation, and the result ring.</Caption>
           </figure>
         }
       />
@@ -118,9 +98,19 @@ export function PrelimsCase() {
           id="brief"
           title="The brief"
           wide={
-            <figure>
-              <PhoneRail label="PrelimsDaily screenshots" items={screens} tone="light" />
-            </figure>
+            <ul className="grid max-w-[34rem] grid-cols-2 gap-4 sm:gap-6 md:ml-[25%]">
+              {screens.map((s) => (
+                <li key={s.title} data-reveal>
+                  <figure>
+                    <PhoneFrame shot={s} tone="light" sizes="(min-width: 640px) 260px, 44vw" />
+                    <figcaption className="mt-4">
+                      <span className="block text-sm font-medium">{s.title}</span>
+                      <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{s.caption}</span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
           }
         >
           <Lead>
@@ -147,7 +137,7 @@ export function PrelimsCase() {
             <ol className="grid gap-4 sm:grid-cols-2">
               {decisions.map((d, i) => (
                 <li key={d.title} data-reveal style={stagger(i % 2)} className="card flex flex-col p-5 sm:p-7">
-                  <p className="text-xl font-medium tracking-[-0.02em]">{d.title}</p>
+                  <h3 className="text-xl font-medium tracking-[-0.02em]">{d.title}</h3>
                   <p className="mt-2 leading-relaxed text-muted">{d.body}</p>
                   <p className="mt-auto pt-5 text-sm leading-relaxed">
                     <span className="font-medium text-accent">Trade-off: </span>

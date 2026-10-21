@@ -6,7 +6,7 @@ import { facts, pages, projects, routes, site, stack } from "@/lib/site";
  */
 const id = (hash: string, path: string = routes.home) => `${site.url}${path === "/" ? "/" : path}#${hash}`;
 
-export const ids = {
+const ids = {
   person: id("person"),
   org: id("zen-z-org"),
   website: id("website"),
@@ -78,7 +78,7 @@ const prelimsCode = {
   codeRepository: projects.prelims.url,
   programmingLanguage: "TypeScript",
   runtimePlatform: "React Native (Expo)",
-  description: `A React Native + TypeScript UPSC Prelims daily-practice app with streaks, reminders, Reanimated animations and ${facts.prelims.tests} unit tests, built in a single day.`,
+  description: `A React Native + TypeScript UPSC Prelims daily-practice app with streaks, reminders, Reanimated animations and ${facts.prelims.tests} unit tests, built in ${facts.prelims.buildTime}.`,
   creator: { "@id": ids.person },
   author: { "@id": ids.person },
 };
@@ -96,7 +96,7 @@ function subPage(path: string, name: string, description: string, about: object[
       inLanguage: "en",
       isPartOf: { "@id": ids.website },
       author: { "@id": ids.person },
-      about: about.map((a) => ({ "@id": (a as { "@id": string })["@id"] })),
+      ...(about.length ? { about: about.map((a) => ({ "@id": (a as { "@id": string })["@id"] })) } : {}),
       dateModified: site.updated,
       breadcrumb: { "@id": `${url}#breadcrumb` },
     },
@@ -110,7 +110,7 @@ function subPage(path: string, name: string, description: string, about: object[
     },
     // Slim copies of the entities the page points at, so each page validates on its own.
     { "@type": "Person", "@id": ids.person, name: site.name, url: site.url, sameAs: person.sameAs },
-    { "@type": "Organization", "@id": ids.org, name: org.name, url: org.url },
+    ...(JSON.stringify(about).includes(ids.org) ? [{ "@type": "Organization", "@id": ids.org, name: org.name, url: org.url }] : []),
     ...about,
   ];
 }

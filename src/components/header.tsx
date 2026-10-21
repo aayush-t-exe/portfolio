@@ -17,9 +17,7 @@ export function Header() {
           <ThemeToggle />
           <a href={site.resume} className="btn btn-ghost press hidden h-9 px-3.5 text-sm md:inline-flex" download>
             Resume
-            <span aria-hidden className="font-mono text-xs text-muted">
-              PDF
-            </span>
+            <span className="font-mono text-xs text-muted">PDF</span>
           </a>
         </div>
       </div>

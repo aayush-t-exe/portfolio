@@ -15,7 +15,7 @@ const options = [
 
 const details = [
   { term: "Studying", value: site.education.line },
-  { term: "Based in", value: `Jaipur, India · ${site.timezone}` },
+  { term: "Based in", value: "Jaipur, India" },
   { term: "Recognition", value: `Smart India Hackathon internal round: ${facts.sih}` },
 ];
 
@@ -56,8 +56,8 @@ export function About() {
             </h2>
             <div className="mt-6 max-w-[58ch] space-y-4 text-lg leading-relaxed text-muted">
               <p>
-                I&rsquo;m a third-year Computer Science student at Jaipur National University, and most of what I know I
-                learned by shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me payments, row-level security
+                I study Computer Science at Jaipur National University, but most of what I know I learned by
+                shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me payments, row-level security
                 and what real users do to an app after launch.
               </p>
               <p>
@@ -97,7 +97,7 @@ export function About() {
                 ))}
               </ul>
               <p className="mt-6 text-[0.9375rem] leading-relaxed text-muted">
-                Jaipur, IST (UTC+5:30)
+                Jaipur, {site.timezone}
                 <span data-clock-line hidden>
                   {" "}
                   · it&rsquo;s <time data-clock className="font-mono text-fg tabular-nums" /> here

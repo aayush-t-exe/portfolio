@@ -13,6 +13,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page(routes.zenz, 0.9),
     page(routes.prelims, 0.8),
     page(routes.stack, 0.5),
-    page("/llms.txt", 0.4),
   ];
 }

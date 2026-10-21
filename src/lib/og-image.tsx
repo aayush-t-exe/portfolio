@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { facts, site } from "@/lib/site";
+import { facts, site, stack } from "@/lib/site";
 
 /** Shared renderer for every route's opengraph-image and twitter-image (1200 × 630). */
 
@@ -17,7 +17,7 @@ const muted = "#5b5850";
 const line = "#dedad1";
 const stage = "#121211";
 
-type Variant = "home" | "zenz" | "prelims";
+type Variant = "home" | "zenz" | "prelims" | "stack";
 
 export function renderOgImage(variant: Variant) {
   const fonts = [
@@ -56,7 +56,7 @@ function Home() {
   const z = facts.zenz;
   return (
     <div style={{ width: "100%", height: "100%", display: "flex", background: paper, color: ink, fontFamily: "Geist" }}>
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "60px 0 56px 68px", width: 720 }}>
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "60px 44px 56px 68px", width: 720 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- next/og renders plain <img>. */}
           <img src={dataUri("about/byline.jpg")} width={72} height={72} style={{ borderRadius: 16 }} alt="" />
@@ -65,25 +65,23 @@ function Home() {
             <div style={{ fontFamily: "Geist Mono", fontSize: 18, color: muted }}>Founder-engineer · Jaipur, IST · Open to work</div>
           </div>
         </div>
-        <div style={{ display: "flex", fontFamily: "Schibsted", fontSize: 64, fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1.02 }}>
+        <div style={{ display: "flex", fontFamily: "Schibsted", fontSize: 60, fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1.04 }}>
           I built Zen-Z solo: a live campus app with paying users.
         </div>
         <div
           style={{
             display: "flex",
-            gap: 26,
+            gap: 20,
             fontFamily: "Geist Mono",
-            fontSize: 20,
+            fontSize: 16,
             color: muted,
             borderTop: `1px solid ${line}`,
             paddingTop: 24,
           }}
         >
-          <span style={{ color: ink }}>{z.users} users in 2 days</span>
-          <span>{z.revenue} revenue</span>
-          <span>
-            {z.claudeCommits}/{z.commits} commits with Claude
-          </span>
+          <span style={{ color: ink }}>{`${z.users} users in ${z.usersDays}`}</span>
+          <span>{`${z.revenue} revenue`}</span>
+          <span>{`${z.claudeCommits}/${z.commits} commits with Claude`}</span>
         </div>
       </div>
       <div style={{ display: "flex", flex: 1, padding: "40px 40px 40px 8px" }}>
@@ -100,7 +98,7 @@ const cases = {
   zenz: {
     name: "Zen-Z",
     line: "A campus app built solo: React Native, Next.js admin, Supabase and PayU.",
-    proof: `${facts.zenz.users} users in 2 days · ${facts.zenz.tables} tables, RLS on all · live on Google Play`,
+    proof: `${facts.zenz.users} users in ${facts.zenz.usersDays} · RLS on all ${facts.zenz.tables} tables`,
     phones: [
       { src: "zenz/flow-6-pay.jpg", width: 220, top: 120, left: 210 },
       { src: "zenz/home.jpg", width: 250, top: 60, left: 20 },
@@ -117,6 +115,13 @@ const cases = {
     ],
     light: true,
   },
+  stack: {
+    name: "Stack",
+    line: "Every tool, by layer, and the product it shipped in.",
+    proof: `${stack.length} tools · Zen-Z, PrelimsDaily and this site`,
+    phones: [],
+    light: false,
+  },
 };
 
 function Case({ variant }: { variant: Exclude<Variant, "home"> }) {
@@ -125,7 +130,7 @@ function Case({ variant }: { variant: Exclude<Variant, "home"> }) {
     <div style={{ width: "100%", height: "100%", display: "flex", background: stage, color: "#f1efe9", fontFamily: "Geist" }}>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "60px 0 56px 68px", width: 700 }}>
         <div style={{ display: "flex", fontFamily: "Geist Mono", fontSize: 20, color: "#a39f96" }}>
-          Case study · {site.name}
+          {variant === "stack" ? site.name : `Case study · ${site.name}`}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ fontFamily: "Schibsted", fontSize: 112, fontWeight: 600, letterSpacing: "-0.045em", lineHeight: 0.95 }}>{c.name}</div>

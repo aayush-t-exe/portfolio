@@ -1,77 +1,81 @@
 # aayush-portfolio
 
-The personal site of **Aayush Thakur**, a founder-engineer who ships real products fast with AI.
-It's one fast, static page with two case studies (Zen-Z and PrelimsDaily), how I work with AI,
-and a way to reach me.
+The personal site of **Aayush Thakur**, who built Zen-Z, a live campus app with paying users,
+solo. A short home page (who, the work, how I build with AI, how to reach me) plus a case study
+per product and a stack page.
 
-Built with Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS v4. It was designed
-and built with Claude Code, starting from a written plan ([PLAN.md](PLAN.md)).
+Built with Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS v4. Designed and built
+with Claude Code from a written plan ([PLAN.md](PLAN.md)).
+
+## Routes
+
+| Route | What's there |
+| --- | --- |
+| `/` | Hero (photo byline, the ask, four proof receipts, a Zen-Z stage), three work cards, how I build with AI, about + contact, closing CTA |
+| `/work/zen-z` | The Zen-Z case: problem, what I built, architecture, the payment incident, results. Sticky table of contents with chapter progress |
+| `/work/prelimsdaily` | The PrelimsDaily case: the one-day brief, decisions, 72 tests |
+| `/stack` | Every tool by layer, filterable by the product it shipped in |
+| `/llms.txt` | A plain-text brief for AI search, generated from `site.ts` |
+
+Each route has its own title, description, canonical URL, Open Graph/Twitter image (the two case
+pages render their own) and JSON-LD.
 
 ## Highlights
 
-- **Static by default, one client island.** Every route is prerendered at build time. The only
-  client component is `PageBehavior`, which renders nothing: it handles scroll reveal, anchor
-  jumps, scroll-spy, the theme toggle, copy-email and rail dragging through attributes and
-  event delegation. The nav, toggle and buttons themselves are server components.
-- **Three runtime dependencies:** `next`, `react` and `react-dom`. No animation library, no
-  theme library and no syntax highlighter. The code sample is highlighted at build time by a
-  ~40-line tokenizer in `src/lib/highlight.ts`.
-- **Light and dark themes** that follow the OS until you choose one; the toggle cycles light →
-  dark → follow system. A pre-paint inline script applies the saved choice, so there's no
-  flash, and the toggle crossfades with the View Transitions API.
-- **Motion with restraint, CSS first.** Reveals (rise, fade, clip "develop"), a ship-log spine
-  that draws on load, hairlines that draw, chapter progress and a reading bar on scroll
-  timelines, and one WAAPI sequence: a dot that travels the payment loop in the architecture
-  diagram. The H1 and intro (the LCP candidates) never fade in. `prefers-reduced-motion` keeps
-  200ms fades and drops everything else.
-- **Stack ledger** with a CSS-only project filter (radio inputs and `:has()`), and brand glyphs
-  from [Simple Icons](https://simpleicons.org) (CC0) as CSS masks that load only when the
-  section renders.
-- **Fonts:** Geist, Geist Mono and Instrument Serif Italic, self-hosted and subset to exactly
-  the characters the site uses (about 60 kB in total, all preloaded, with metric-matched
-  fallbacks so there's no layout shift).
-- **SEO and AI search:** full metadata, canonical URL, generated Open Graph and Twitter images,
-  `sitemap.xml`, `robots.txt`, a JSON-LD graph (`Person`, `Organization`, `WebSite`,
-  `ProfilePage`, `SoftwareApplication`, `SoftwareSourceCode`) and
-  [`/llms.txt`](https://llmstxt.org), a route generated from `site.ts`.
-- **Accessibility:** semantic landmarks, one H1 and an ordered heading outline, a skip link,
-  visible focus rings, keyboard-scrollable regions, and text contrast of at least 4.5:1 in
-  both themes.
+- **Static, one client island.** Every route is prerendered. The only client component is
+  `PageBehavior` (renders nothing): figure reveals, anchor jumps, home-page scroll-spy, the theme
+  toggle, copy-email, rail dragging, the payment-loop dot and the footer's live values.
+- **Three runtime dependencies:** `next`, `react`, `react-dom`. No animation, theme or
+  highlighting library.
+- **The signature: a build receipt in the footer**, true values only. Jaipur's local time
+  (computed in the browser), Zen-Z on Google Play, the framework, the JS this page actually
+  loaded (from Resource Timing), and the commit plus how long ago it was built. On Vercel it says
+  "deployed" and links the commit; locally it says "built" and marks uncommitted changes.
+- **Card → case morph.** A work card's stage and the case page's lead image are the same
+  component under one React `<ViewTransition>` name, so following a card morphs it into place
+  (320ms, ease-out). With reduced motion it's a cross-fade.
+- **Motion kept small:** figures and cards reveal once (350ms), the hero stage enters once, the
+  status dot pulses three times, case pages show chapter progress on scroll timelines. Text never
+  animates; the H1 (the LCP element) paints immediately.
+- **Type:** Schibsted Grotesk SemiBold for headlines, Geist for text, Geist Mono for numbers and
+  code. Self-hosted, subset to the characters the site uses, about 66 kB in total.
+- **Themes:** light and dark follow the OS until you choose; the toggle cycles light → dark →
+  system, with no flash (pre-paint script). Product stages are dark in both themes.
+- **Accessibility:** landmarks, one H1 per page and an ordered outline, skip link, visible focus,
+  keyboard-scrollable rails, 4.5:1 text contrast in both themes.
 
 ## Project structure
 
 ```
 src/
-  app/            layout (fonts, metadata, theme script), page, OG/Twitter images,
-                  icons, sitemap, robots, manifest, llms.txt, 404
-  sections/       one file per page section (hero, work, zenz + incident + architecture,
-                  prelims, process, stack, about, contact)
-  components/     page-behavior (the one client island), frames (phone, browser, rail),
-                  case-study layout, code block, header, nav, theme toggle, icons
-  lib/            site.ts (facts, links, stack), metadata.ts, highlight.ts
-  assets/         screenshots (zenz, prelims), app icons, portrait, avatar, fonts
-public/
-  Aayush_Thakur_Resume.pdf, aayush.jpg (stable image for structured data),
-  stack-icons/ (Simple Icons, CC0)
+  app/                 layout (fonts, metadata, theme script), home, work/zen-z, work/prelimsdaily,
+                       stack, OG/Twitter images, icons, sitemap, robots, manifest, llms.txt, 404
+  sections/home/       hero, work cards, how I build with AI, about + contact + closing CTA
+  sections/zenz/       the Zen-Z case, its architecture diagram and the incident
+  sections/prelims/    the PrelimsDaily case
+  sections/stack.tsx   the stack ledger
+  components/          page-behavior (the client island), stage (product stages + morph),
+                       case (case page layout, TOC, chapters), frames, footer (build receipt),
+                       header, nav, theme toggle, copy email, code block, icons
+  lib/                 site.ts (facts, links, routes, stack), jsonld.tsx, metadata.ts,
+                       og-image.tsx, highlight.ts
 ```
 
-All facts (every number on the page), links, the stack list and the site URL live in
-[`src/lib/site.ts`](src/lib/site.ts). Sections, JSON-LD and llms.txt read from it.
+Every number on the site, every link, the routes and the stack live in
+[`src/lib/site.ts`](src/lib/site.ts). Pages, JSON-LD, OG images and llms.txt read from it.
 
-## Images
+## Photos (easy to swap)
 
-All screenshots are imported statically from `src/assets/`, so Next.js knows their size
-(no layout shift) and serves AVIF/WebP at the right width.
+- `src/assets/about/byline.jpg`: the hero byline photo. Square, head and shoulders (currently a
+  320px crop of the portrait).
+- `src/assets/about/portrait.jpg`: the FIG. 01 portrait in About. 4:5.
+- `public/aayush.jpg`: the stable image used in structured data.
 
-- `src/assets/zenz/`: the admin dashboard band, the app home screen, the six booking-flow
-  screens, the app icon and the case-index card.
-- `src/assets/prelims/`: PrelimsDaily screens, app icon and case-index card.
-- `src/assets/about/`: the 4:5 portrait and the 192px header avatar cropped from it.
+Replace a file with the same name and ratio and rebuild. The grade (−10% saturation, slightly
+warm) is applied in CSS (`.photo`), so new photos match without editing.
 
-Phone screenshots are stored **with the device status bar cropped off** (about the top 5%).
-The frame draws a clean one in the app's colours, which keeps notification icons and data
-counters off the site. To swap a screen, replace the file with the same name and keep the same
-crop.
+Phone screenshots in `src/assets/zenz` and `src/assets/prelims` are stored with the device status
+bar cropped off; the frame draws a clean one.
 
 ## Run it
 
@@ -83,21 +87,22 @@ npm run start      # serve the production build
 npm run lint
 ```
 
-`NEXT_PUBLIC_SITE_URL` sets the canonical origin used by canonical URLs, the sitemap, OG tags,
-JSON-LD and llms.txt. If it's unset, Vercel's production domain is used, then
-`https://aayushthakur.vercel.app`.
+## Deploy (GitHub + Vercel)
 
-## Deploy
-
-Import the repository into [Vercel](https://vercel.com/new). It needs no build configuration
-because Vercel detects Next.js. Every push to `main` then deploys automatically.
-
-**Set `NEXT_PUBLIC_SITE_URL` in Vercel** (Project → Settings → Environment Variables, e.g.
-`https://aayushthakur.vercel.app` or your custom domain), then redeploy, so every canonical URL
-and share card points at the right domain.
+1. Create an empty GitHub repository (no README), then push this one:
+   `git remote add origin https://github.com/<you>/<repo>.git` and `git push -u origin main`.
+2. On [vercel.com/new](https://vercel.com/new), import that repository. Vercel detects Next.js;
+   keep the defaults and deploy.
+3. Project → Settings → Environment Variables: add `NEXT_PUBLIC_SITE_URL` (your production URL,
+   e.g. `https://aayushthakur.vercel.app` or a custom domain) for Production, then redeploy.
+   It's the canonical origin for canonical URLs, the sitemap, OG tags, JSON-LD and llms.txt
+   (fallbacks: Vercel's production domain, then `https://aayushthakur.vercel.app`).
+4. The footer's commit link and "deployed" label come from Vercel's system variables
+   (`VERCEL_GIT_COMMIT_SHA`, `VERCEL_GIT_REPO_OWNER`, `VERCEL_GIT_REPO_SLUG`), which Vercel sets
+   automatically for Git deployments.
 
 ## Credits
 
-Geist and Geist Mono by Vercel, and Instrument Serif by Instrument, all under the SIL Open
-Font License. Brand glyphs from Simple Icons (CC0). PrelimsDaily screenshots are from
+Geist and Geist Mono by Vercel, Schibsted Grotesk by Schibsted, all under the SIL Open Font
+License. Brand glyphs from Simple Icons (CC0). PrelimsDaily screenshots are from
 [aayush-t-exe/prelims-daily](https://github.com/aayush-t-exe/prelims-daily).

@@ -9,7 +9,7 @@ import byline from "@/assets/about/byline.jpg";
 const z = facts.zenz;
 const proof: Array<{ value: ReactNode; label: string; href?: string }> = [
   { value: "Live", label: "on Google Play", href: projects.zenz.playStoreUrl },
-  { value: z.users, label: "users in 2 days" },
+  { value: z.users, label: `users in ${z.usersDays}` },
   {
     value: (
       <>

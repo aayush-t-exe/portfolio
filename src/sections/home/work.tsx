@@ -55,7 +55,7 @@ export function Work() {
             <Link href={routes.prelims} aria-hidden tabIndex={-1} className="stage-link block">
               <PrelimsMedia sizes="(min-width: 1024px) 180px, 26vw" />
             </Link>
-            <Chips className="mt-6" items={["Built in 1 day", `${facts.prelims.tests} tests`, "Public repo"]} />
+            <Chips className="mt-6" items={[`Built in ${facts.prelims.buildTime}`, `${facts.prelims.tests} tests`, "Public repo"]} />
             <h3 id="prelims-card" className="h3 mt-4">
               PrelimsDaily
             </h3>
@@ -72,7 +72,7 @@ export function Work() {
           >
             <p className="flex items-center gap-2 font-mono text-xs text-accent uppercase">
               <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-              Incident · 16 Sep 2026
+              Incident · {facts.zenz.incidentDate}
             </p>
             <h3 id="incident-card" className="font-display mt-5 text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.05] tracking-[-0.035em]">
               A student paid. The app said unpaid.
@@ -95,7 +95,7 @@ export function Work() {
 
 function Chips({ items, className = "" }: { items: string[]; className?: string }) {
   return (
-    <ul aria-label="Status" className={`flex flex-wrap gap-1.5 ${className}`}>
+    <ul aria-label="Highlights" className={`flex flex-wrap gap-1.5 ${className}`}>
       {items.map((c, i) => (
         <li key={c} className="chip">
           {i === 0 ? <span aria-hidden className="size-1.5 rounded-full bg-accent" /> : null}

@@ -1,6 +1,6 @@
 import { ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "PrelimsDaily case study by Aayush Thakur: a tested app built in one day";
+export const alt = "PrelimsDaily case study by Aayush Thakur: a tested app built in a day";
 export const size = ogSize;
 export const contentType = "image/png";
 

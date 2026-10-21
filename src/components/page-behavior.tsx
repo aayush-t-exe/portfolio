@@ -11,9 +11,9 @@ const EASE_IN_OUT = "cubic-bezier(0.77, 0, 0.175, 1)";
  *
  * 1. Reveal: `[data-reveal]` gets `data-shown` the first time it enters the viewport.
  *    Setting `data-reveal-ready` tells the pre-paint failsafe in layout.tsx that we're alive.
- * 2. Anchor jumps: sections use `content-visibility: auto`, so a native jump lands
- *    off-target. For same-page anchor clicks we render everything (`html.cv-off`), mark
- *    content above the target as already shown, then scroll ourselves.
+ * 2. Anchor jumps: same-page anchor clicks mark the figures above the target as already shown
+ *    (so nothing above it is mid-reveal), scroll smoothly (instantly with reduced motion) and
+ *    move focus to the target, like a native jump.
  * 3. The payment loop: a dot travels "create order →" and back "← signed webhook" along
  *    `[data-pulse]` tracks, twice, when the diagram first comes into view.
  * 4. Phone rails: mouse users can drag them; the edge fade goes once the end is reached.
@@ -67,8 +67,8 @@ export function PageBehavior() {
     document.querySelectorAll("[data-pulse]").forEach((el) => pulse.observe(el));
 
     // Scroll-spy over the nav's sections, on the home page only (elsewhere the links leave the
-    // page). Sections don't overlap, so at most one is in the thin band; when none is (the
-    // hero), nothing is current.
+    // page). #contact sits inside #about, so when both are in the thin band the later link
+    // wins; when none is (the hero), nothing is current.
     const spyLinks = pathname === "/" ? [...document.querySelectorAll<HTMLAnchorElement>("a[data-spy]")] : [];
     const inBand = new Set<string>();
     const spy = new IntersectionObserver(
@@ -77,8 +77,9 @@ export function PageBehavior() {
           if (entry.isIntersecting) inBand.add(entry.target.id);
           else inBand.delete(entry.target.id);
         }
+        const current = spyLinks.findLast((a) => inBand.has(a.dataset.spy!));
         for (const a of spyLinks) {
-          if (inBand.has(a.dataset.spy!)) a.setAttribute("aria-current", "location");
+          if (a === current) a.setAttribute("aria-current", "location");
           else a.removeAttribute("aria-current");
         }
       },
@@ -104,7 +105,6 @@ export function PageBehavior() {
       if (!section) return;
 
       e.preventDefault();
-      root.classList.add("cv-off");
       showAbove(section);
       requestAnimationFrame(() => {
         section.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
@@ -158,17 +158,23 @@ function startClock() {
   return () => clearTimeout(timer);
 }
 
-/** "on 21 Oct 2026" → "3 hours ago" (the absolute date moves to the tooltip). */
+/**
+ * "on 21 Oct 2026" → "3 hours ago". Written into an empty span React never fills, with the
+ * server-rendered date hidden, so React's own text is never touched.
+ */
 function relativeTimes() {
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-  document.querySelectorAll<HTMLTimeElement>("time[data-ago]").forEach((el) => {
-    const then = Date.parse(el.dateTime);
+  document.querySelectorAll<HTMLElement>("[data-ago]").forEach((out) => {
+    const time = out.closest("time");
+    const then = time ? Date.parse(time.dateTime) : NaN;
     if (Number.isNaN(then)) return;
     const s = Math.max(0, (Date.now() - then) / 1000);
     const [value, unit]: [number, Intl.RelativeTimeFormatUnit] =
       s < 3600 ? [Math.round(s / 60), "minute"] : s < 86_400 ? [Math.round(s / 3600), "hour"] : [Math.round(s / 86_400), "day"];
-    if (!el.title) el.title = el.textContent?.trim() ?? "";
-    el.textContent = rtf.format(-value, unit);
+    out.textContent = rtf.format(-value, unit);
+    out.hidden = false;
+    const fallback = time!.querySelector<HTMLElement>("[data-ago-fallback]");
+    if (fallback) fallback.hidden = true;
   });
 }
 

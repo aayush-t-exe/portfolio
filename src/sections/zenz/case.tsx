@@ -30,14 +30,14 @@ const flow = [
     step: "01",
     image: game,
     title: "Pick a game",
-    caption: "Choose what you're in the mood for.",
+    caption: "Whatever you're in the mood for.",
     alt: "Zen-Z booking, pick a game: Box Cricket, Football, 8-Ball Pool and Pickleball with prices and durations",
   },
   {
     step: "02",
     image: slot,
     title: "Pick a slot",
-    caption: "One fixed weekly time, so groups can form.",
+    caption: "One weekly time, so groups form.",
     alt: "Zen-Z booking, pick a slot: a fixed weekly slot, Sunday 11th at 5:00 pm, selected",
   },
   {
@@ -58,7 +58,7 @@ const flow = [
     step: "05",
     image: plan,
     title: "Confirm the plan",
-    caption: "Every choice on one screen.",
+    caption: "Every choice, one screen.",
     alt: "Zen-Z booking summary: Cafés, Sunday 11th at 5:00 pm, group of 4–5 mixed, under ₹200, with a Save my seat button",
   },
   {
@@ -87,9 +87,9 @@ export function ZenZCase() {
         ]}
         meta={[
           { term: "Role", value: "Founder & CTO, sole engineer" },
-          { term: "Timeline", value: "Jul 2026 – now" },
+          { term: "Timeline", value: `${z.since} – now` },
           { term: "Platforms", value: "Android, iOS (PWA), web, admin" },
-          { term: "Stack", value: "React Native, Next.js, Supabase, PayU" },
+          { term: "Stack", value: "React Native, Next.js, Supabase" },
         ]}
         actions={
           <>
@@ -153,45 +153,35 @@ export function ZenZCase() {
                   n="A"
                   name="The student app"
                   stack="React Native (Expo)"
-                  points={[
-                    `Android, iOS (PWA) and web from one codebase, ${z.appScreens} screens`,
-                    "Realtime group chat and push notifications",
-                  ]}
+                  points={[`Android, iOS (PWA) and web from one codebase, ${z.appScreens} screens`]}
                 />
                 <Surface
                   n="B"
                   name="The admin panel"
                   stack="Next.js"
-                  points={["A drag-and-drop board to hand-match every group", "Moderation queue and analytics"]}
+                  points={["A drag-and-drop board to hand-match every group"]}
                 />
                 <Surface
                   n="C"
                   name="The backend"
                   stack="Supabase · Deno"
-                  points={[`${z.tables} tables, row-level security on every one`, "PayU orders created on the server"]}
+                  points={["Postgres, auth, realtime chat and PayU payments"]}
                   className="sm:col-span-2 lg:col-span-1"
                 />
               </div>
             </div>
           }
         >
-          <Lead>Three products, one engineer. I built every surface and I run them in production.</Lead>
-          <Body>
-            <p>
-              I owned the whole system: product decisions, data model, mobile app, internal tools, payments, CI and releases,
-              across <strong>{z.commits} commits</strong>.
-            </p>
-          </Body>
+          <Lead>Three products, one engineer: product decisions, data model, app, internal tools, payments, CI and releases.</Lead>
         </Chapter>
 
         <Chapter id="architecture" title="Architecture" wide={<ZenZArchitecture />}>
           <Lead>Boring, proven parts, wired so that the database enforces the rules.</Lead>
           <Body>
             <p>
-              Supabase gives one engineer Postgres, auth, realtime and serverless functions in one place. Access control lives in
-              the database: <strong>row-level security on all {z.tables} tables</strong>, so the rules hold even if the app has a
-              bug. Anything that touches money runs in Edge Functions, never in the client, and a database trigger seals free
-              bookings so the client can&rsquo;t fake a ₹0 price.
+              Access rules live in the database (<strong>row-level security on all {z.tables} tables</strong>), so they hold
+              even if the app has a bug. Money only moves in Edge Functions, and a trigger seals free bookings so the client
+              can&rsquo;t fake a ₹0 price.
             </p>
           </Body>
         </Chapter>
@@ -205,7 +195,7 @@ export function ZenZCase() {
           <Body>
             <p>
               <span className="whitespace-nowrap">Zen-Z</span> is live on Google Play, and I pitched it to the judging panel at
-              JNU&rsquo;s Shark Tank in September 2026.
+              JNU&rsquo;s Shark Tank ({z.sharkTank}).
             </p>
           </Body>
         </Chapter>
@@ -240,7 +230,7 @@ function Surface({
         <span className="grid size-7 place-items-center rounded-full border border-line-strong font-mono text-xs">{n}</span>
         <span className="font-mono text-xs text-muted">{stack}</span>
       </div>
-      <p className="mt-6 text-xl font-medium tracking-[-0.02em]">{name}</p>
+      <h3 className="mt-6 text-xl font-medium tracking-[-0.02em]">{name}</h3>
       <ul className="mt-3 space-y-2 text-[0.9375rem] leading-snug text-muted">
         {points.map((p) => (
           <li key={p} className="flex gap-2.5">
@@ -255,7 +245,7 @@ function Surface({
 
 function Results() {
   const metrics = [
-    { v: z.users, l: "users in the first 2 days after launch" },
+    { v: z.users, l: `users in the first ${z.usersDays} after launch` },
     { v: z.revenue, l: "total revenue so far" },
     { v: z.waitlist, l: "students on the waitlist before launch" },
     {
@@ -286,8 +276,8 @@ function Results() {
   ];
   const along = [
     "Moved payments from Razorpay to PayU mid-build.",
-    "Got past a Play Store rejection by building a reviewer sign-in path.",
-    `The pgTAP tests run in CI against a real hosted Postgres. Writing them found and fixed ${z.rlsBugsFound} RLS and authorization bugs.`,
+    "Got past a Play Store rejection with a reviewer sign-in path.",
+    `Writing the pgTAP tests found and fixed ${z.rlsBugsFound} RLS and authorization bugs.`,
   ];
   return (
     <div className="space-y-4">
