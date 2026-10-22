@@ -147,3 +147,64 @@ export function setupHeroPointer(): Cleanup | void {
     gsap.set(stickers, { clearProps: "transform" });
   };
 }
+
+/** Work index: a preview card follows the cursor; its strip slides to the hovered row. */
+export function setupWorkPreview(): Cleanup | void {
+  const list = document.querySelector<HTMLElement>("[data-work-list]");
+  const card = document.querySelector<HTMLElement>("[data-work-preview]");
+  const strip = card?.querySelector<HTMLElement>("[data-work-strip]");
+  if (!list || !card || !strip) return;
+  const rows = [...list.querySelectorAll<HTMLElement>("[data-work-row]")];
+  gsap.set(card, { xPercent: -50, yPercent: -50, scale: 0.4, autoAlpha: 0 });
+  const xTo = gsap.quickTo(card, "x", { duration: 0.7, ease: "power3" });
+  const yTo = gsap.quickTo(card, "y", { duration: 0.7, ease: "power3" });
+  const show = (i: number) => {
+    gsap.to(card, { scale: 1, autoAlpha: 1, duration: 0.45, ease: "power3.out", overwrite: "auto" });
+    gsap.to(strip, { yPercent: -100 * i, duration: 0.7, ease: "power3.inOut", overwrite: "auto" });
+  };
+  const hide = () => gsap.to(card, { scale: 0.4, autoAlpha: 0, duration: 0.35, ease: "power3.in", overwrite: "auto" });
+  const move = (e: PointerEvent) => {
+    xTo(e.clientX);
+    yTo(e.clientY);
+  };
+  const offs = rows.map((row, i) => {
+    const enter = () => show(i);
+    const focus = () => {
+      // Keyboard: place the card beside the focused row.
+      const r = row.getBoundingClientRect();
+      gsap.set(card, { x: r.left + r.width * 0.62, y: r.top + r.height / 2 });
+      show(i);
+    };
+    row.addEventListener("pointerenter", enter);
+    row.addEventListener("focus", focus);
+    row.addEventListener("blur", hide);
+    return () => {
+      row.removeEventListener("pointerenter", enter);
+      row.removeEventListener("focus", focus);
+      row.removeEventListener("blur", hide);
+    };
+  });
+  list.addEventListener("pointerleave", hide);
+  window.addEventListener("pointermove", move, { passive: true });
+  return () => {
+    offs.forEach((o) => o());
+    list.removeEventListener("pointerleave", hide);
+    window.removeEventListener("pointermove", move);
+    gsap.set([card, strip], { clearProps: "all" });
+  };
+}
+
+/** PrelimsDaily: each sticky card shrinks and dims as the next one slides over it. */
+export function setupStack(): Cleanup | void {
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-stack-card]")];
+  if (cards.length < 2 || getComputedStyle(cards[0]).position !== "sticky") return;
+  cards.slice(0, -1).forEach((card, i) => {
+    gsap.to(card, {
+      scale: 0.92,
+      filter: "brightness(0.55)",
+      ease: "none",
+      scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top 20%", scrub: true },
+    });
+  });
+  return () => gsap.set(cards, { clearProps: "transform,filter" });
+}

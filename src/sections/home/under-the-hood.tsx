@@ -28,7 +28,7 @@ const beats = [
 export function UnderTheHood() {
   return (
     <section id="build" data-section="03 — Under the hood" aria-labelledby="build-title" className="on-paper relative overflow-clip">
-      <span aria-hidden data-curve className="absolute inset-x-[-10%] top-0 z-10 h-[9vw] origin-top rounded-b-[50%_100%] bg-ink" />
+      <span aria-hidden data-curve className="absolute inset-x-0 top-0 z-10 h-[9vw] origin-top rounded-b-[50%_100%] bg-ink" />
 
       <div className="container-page relative pt-[calc(9vw+4rem)] pb-24 md:pb-32">
         <div className="grid gap-6 md:grid-cols-12 md:items-end">

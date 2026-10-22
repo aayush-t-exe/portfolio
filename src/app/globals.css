@@ -963,3 +963,230 @@ html.intro {
     stroke-dashoffset: 0;
   }
 }
+
+/* ───────────────────────────── 04 Work index ───────────────────────────── */
+.work-preview {
+  opacity: 0;
+  visibility: hidden;
+}
+@media (hover: hover) and (pointer: fine) {
+  .work-list:has(.work-row:hover) .work-row:not(:hover) {
+    opacity: 0.35;
+  }
+  .work-row {
+    transition: opacity 400ms ease;
+  }
+}
+
+/* ───────────────────────────── 06 Stack orbit ───────────────────────────── */
+.orbit-core,
+.orbit-track {
+  display: none;
+}
+.orbit-ring {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.orbit-ring + .orbit-ring {
+  margin-top: 0.5rem;
+}
+.orbit-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 500;
+}
+.orbit-upright {
+  display: block;
+  height: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--ink-2);
+}
+.orbit-tip {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+@media (min-width: 1024px) {
+  .orbit {
+    container-type: inline-size;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 44rem;
+    margin-left: auto;
+  }
+  .orbit-core {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24cqw;
+    translate: -50% -50%;
+  }
+  .orbit-track {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px dashed var(--line-strong);
+    border-radius: 999px;
+    translate: -50% -50%;
+  }
+  .orbit-track-inner {
+    width: 60cqw;
+    height: 60cqw;
+  }
+  .orbit-track-outer {
+    width: 94cqw;
+    height: 94cqw;
+    border-style: solid;
+    border-color: var(--line);
+  }
+  .orbit-ring {
+    display: block;
+    position: absolute;
+    inset: 0;
+    margin: 0 !important;
+    --r: 30cqw;
+    --t: 80s;
+  }
+  .orbit-outer {
+    --r: 47cqw;
+    --t: 120s;
+  }
+  .orbit-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)));
+  }
+  .orbit-upright {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    translate: -50% -50%;
+    white-space: nowrap;
+  }
+  .orbit-pill {
+    height: 2.5rem;
+    padding-inline: 0.9rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: rgb(20 18 16 / 0.85);
+    backdrop-filter: blur(6px);
+    font-size: 0.875rem;
+    cursor: default;
+    transition: border-color 200ms ease, background-color 200ms ease;
+  }
+  .orbit-upright:hover .orbit-pill,
+  .orbit-pill:focus-visible {
+    border-color: var(--red);
+    background: var(--ink-3);
+  }
+  .orbit-tip {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    z-index: 5;
+    width: max-content;
+    max-width: 15rem;
+    padding: 0.6rem 0.8rem;
+    translate: -50% 4px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--ink-3);
+    white-space: normal;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, translate 300ms var(--ease-expo);
+  }
+  .orbit-upright:hover .orbit-tip,
+  .orbit-upright:focus-within .orbit-tip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+  .orbit-upright:hover,
+  .orbit-upright:focus-within {
+    z-index: 5;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .orbit-ring {
+      animation: spin var(--t) linear infinite;
+    }
+    .orbit-upright {
+      animation: spin var(--t) linear infinite reverse;
+    }
+    .orbit:hover :is(.orbit-ring, .orbit-upright),
+    .orbit:focus-within :is(.orbit-ring, .orbit-upright) {
+      animation-play-state: paused;
+    }
+  }
+}
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* ───────────────────────────── 07 About timeline ───────────────────────────── */
+.tl-line {
+  position: absolute;
+  top: 0.75rem;
+  bottom: 0.5rem;
+  left: 5px;
+  width: 2px;
+  background: var(--paper-line);
+}
+.tl-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform-origin: 50% 0;
+}
+@media (min-width: 640px) {
+  .tl-line {
+    top: 5px;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 2px;
+  }
+  .tl-line::after {
+    transform-origin: 0 50%;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tl {
+      view-timeline: --tl block;
+    }
+    .tl-line::after {
+      animation: tl-fill-y linear both;
+      animation-timeline: --tl;
+      animation-range: entry 40% cover 55%;
+    }
+    @media (min-width: 640px) {
+      .tl-line::after {
+        animation-name: tl-fill-x;
+      }
+    }
+  }
+}
+@keyframes tl-fill-y {
+  from { transform: scaleY(0); }
+}
+@keyframes tl-fill-x {
+  from { transform: scaleX(0); }
+}

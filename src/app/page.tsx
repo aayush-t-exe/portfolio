@@ -4,10 +4,12 @@ import { JsonLd, graphs } from "@/lib/jsonld";
 import { openGraph } from "@/lib/metadata";
 import { About } from "@/sections/home/about";
 import { Hero } from "@/sections/home/hero";
+import { PrelimsStack } from "@/sections/home/prelims-stack";
+import { StackOrbit } from "@/sections/home/stack-orbit";
 import { TechMarquee } from "@/sections/home/tech-marquee";
 import { UnderTheHood } from "@/sections/home/under-the-hood";
+import { WorkIndex } from "@/sections/home/work-index";
 import { ZenzShowcase } from "@/sections/home/zenz-showcase";
-import { Work } from "@/sections/home/work";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -23,7 +25,9 @@ export default function Home() {
       <TechMarquee />
       <ZenzShowcase />
       <UnderTheHood />
-      <Work />
+      <WorkIndex />
+      <PrelimsStack />
+      <StackOrbit />
       <About />
     </>
   );

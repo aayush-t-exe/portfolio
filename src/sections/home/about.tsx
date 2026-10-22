@@ -1,155 +1,114 @@
 import Image from "next/image";
-import { CopyEmail } from "@/components/copy-email";
-import { ArrowRight, Download, GitHub, LinkedIn, Mail } from "@/components/icons";
-import { facts, site } from "@/lib/site";
-import portrait from "@/assets/about/portrait.jpg";
+import type { ReactNode } from "react";
+import { Portrait } from "@/components/ui/portrait";
+import { facts, projects, site } from "@/lib/site";
+import star from "@/assets/v4/art/star-side.webp";
+import gathering from "@/assets/v4/art/onboarding-gathering.webp";
 
-const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
+const z = facts.zenz;
 
-/** Work-with-me menu: each option opens an email with the subject filled in. */
-const options = [
-  { label: "Internship", detail: "Remote, part-time, can start now", subject: "Internship" },
-  { label: "Freelance build", detail: "Next.js · React Native · Supabase", subject: "Freelance build" },
-  { label: "Just say hi", detail: "Questions, ideas, feedback", subject: "Hi Aayush" },
+/** True achievements only (site.ts and the resume). */
+const badges: Array<{ top: string; big: string; foot: ReactNode; tone: string; tilt: string }> = [
+  { top: "JNU Shark Tank", big: "Pitched", foot: `Zen-Z, to a judging panel · ${z.sharkTank}`, tone: "bg-red text-white", tilt: "-rotate-[3deg]" },
+  { top: "Smart India Hackathon", big: "5th", foot: "of ~75 teams, internal round", tone: "bg-ink text-fg", tilt: "rotate-[2deg]" },
+  { top: "Zen-Z launch", big: z.users, foot: `users ${z.usersWindow}`, tone: "bg-[#f6f1e6] text-paper-ink ring-1 ring-paper-line", tilt: "-rotate-[1.5deg]" },
+  {
+    top: "Instagram",
+    big: z.igViews,
+    foot: (
+      <>
+        views · {z.igFollowers} followers on{" "}
+        <a href={projects.zenz.instagram} target="_blank" rel="noopener" className="link">
+          {projects.zenz.instagramHandle}
+          <span className="sr-only"> (opens in new tab)</span>
+        </a>
+      </>
+    ),
+    tone: "bg-paper-ink text-fg",
+    tilt: "rotate-[3deg]",
+  },
+  { top: "Before launch", big: z.waitlist, foot: "students on the waitlist", tone: "bg-[#ffd8c9] text-paper-ink", tilt: "-rotate-[2deg]" },
 ];
 
-const details = [
-  { term: "Studying", value: site.education.line },
-  { term: "Based in", value: "Jaipur, India" },
-  { term: "Recognition", value: `Smart India Hackathon internal round: ${facts.sih}` },
+const timeline = [
+  { when: z.since, what: "Started Zen-Z" },
+  { when: z.launched, what: `Launched on Google Play: ${z.users} users in ${z.usersDays}, then the Shark Tank pitch` },
+  { when: facts.prelims.built, what: `Built PrelimsDaily in ${facts.prelims.buildTime}` },
+  { when: "Now", what: "Open to internships" },
 ];
 
 /**
- * About and contact, merged: who (portrait, bio, facts), then how to work together. The local
- * time is filled in client-side by PageBehavior ([data-clock]); without JS it stays hidden.
+ * 07 About (cream): the stylised portrait, a short bio, achievements as sticker cards, and a
+ * founder timeline whose line fills as it scrolls past (CSS scroll timeline). The section ends
+ * in a curved edge that flattens into the black footer.
  */
 export function About() {
   return (
-    <>
-      <section id="about" aria-labelledby="about-title" className="scroll-mt-20 py-20 md:py-28">
-        <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-10">
-          {/* FIG. 01: a captioned photo frame. Swap the photo by replacing src/assets/about/portrait.jpg (4:5). */}
-          <figure data-reveal className="w-full max-w-[340px] lg:col-span-4">
-            <div className="rounded-[18px] border border-line bg-surface p-2.5 shadow-[var(--shadow)]">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[10px] bg-surface-2">
-                <Image
-                  src={portrait}
-                  alt="Aayush Thakur smiling, arms crossed, in a blue shirt against green hills"
-                  fill
-                  sizes="(min-width: 1024px) 320px, 80vw"
-                  className="photo object-cover"
-                />
-                <span className="absolute top-2.5 left-2.5 rounded-[5px] bg-black/55 px-1.5 py-0.5 font-mono text-[0.6875rem] text-white backdrop-blur-sm">
-                  FIG. 01
-                </span>
-              </div>
-              <figcaption className="flex justify-between gap-3 px-1 pt-2.5 pb-0.5 font-mono text-xs text-muted">
-                <span>{site.name}</span>
-                <span>Founder &amp; CTO, Zen-Z</span>
-              </figcaption>
-            </div>
-          </figure>
+    <section id="about" data-section="07 — About" aria-labelledby="about-title" className="on-paper relative">
+      <span aria-hidden data-curve className="absolute inset-x-0 top-0 z-10 h-[9vw] origin-top rounded-b-[50%_100%] bg-ink" />
 
-          <div className="lg:col-span-7 lg:col-start-6">
-            <h2 id="about-title" className="h2">
-              About
+      <div className="container-page relative pt-[calc(9vw+4rem)] pb-24 md:pb-28">
+        <div className="grid gap-12 md:grid-cols-12 md:gap-10">
+          <div className="relative self-start md:col-span-5 lg:col-span-4">
+            <Portrait className="aspect-[4/5] w-full max-w-[24rem] rounded-[28px]" sizes="(min-width: 768px) 30vw, 90vw" />
+            <span className="absolute -bottom-5 left-5 rotate-[-4deg] rounded-full bg-paper-ink px-4 py-2 text-[0.875rem] font-medium text-fg shadow-lg">
+              Founder &amp; CTO, Zen-Z
+            </span>
+            <Image src={star} alt="" aria-hidden sizes="80px" className="absolute -top-6 right-[8%] w-16 rotate-12 md:right-[-2%]" data-parallax="0.3" />
+          </div>
+
+          <div className="md:col-span-7 lg:col-span-7 lg:col-start-6">
+            <p className="label">
+              <span className="text-red">07</span> — About
+            </p>
+            <h2 id="about-title" className="h2 mt-5" data-split>
+              Hi, I&rsquo;m Aayush.
             </h2>
-            <div className="mt-6 max-w-[58ch] space-y-4 text-lg leading-relaxed text-muted">
+            <div className="mt-6 max-w-[54ch] space-y-4 text-[1.125rem] leading-relaxed text-paper-muted [&_strong]:font-medium [&_strong]:text-paper-ink">
               <p>
-                I study Computer Science at Jaipur National University, but most of what I know I learned by
-                shipping. <span className="whitespace-nowrap">Zen-Z</span> taught me payments, row-level security
-                and what real users do to an app after launch.
+                I&rsquo;m a third-year <strong>B.Tech CSE student at Jaipur National University</strong> (graduating{" "}
+                {site.education.grad}, CGPA {site.education.cgpa}), and the{" "}
+                <strong>founder of Zen-Z</strong>. I built all of it myself: the Android and web app, the admin dashboard the
+                team uses to match every group, and the Supabase backend with payments.
               </p>
               <p>
-                I like owning a problem end to end: deciding what to build, picking the trade-off, writing the code, and
-                being the one who gets the message when it breaks.
+                I like owning a problem end to end, from the data model to the message I get when something breaks. Now I&rsquo;m
+                looking for an internship where I can do that with a team.
               </p>
             </div>
-            <dl className="mt-8 divide-y divide-line border-y border-line">
-              {details.map((d) => (
-                <div key={d.term} className="grid gap-1 py-3 text-[0.9375rem] sm:grid-cols-[8rem_1fr] sm:gap-4">
-                  <dt className="text-muted">{d.term}</dt>
-                  <dd>{d.value}</dd>
-                </div>
-              ))}
-            </dl>
 
-            <div id="contact" className="scroll-mt-24 pt-14">
-              <h2 className="h2">Work with me</h2>
-              <p className="mt-4 max-w-[52ch] leading-relaxed">
-                <span className="text-muted">What I&rsquo;m looking for: </span>
-                {site.lookingFor}
-              </p>
-              <ul className="mt-6 grid gap-2 sm:grid-cols-3">
-                {options.map((o) => (
-                  <li key={o.label}>
-                    <a
-                      href={mailto(o.subject)}
-                      className="card-link press group flex h-full flex-col rounded-[14px] border border-line p-4"
-                    >
-                      <span className="flex items-center justify-between font-medium">
-                        {o.label}
-                        <ArrowRight size={15} className="text-muted transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
-                      </span>
-                      <span className="mt-1 text-sm text-muted">{o.detail}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 text-[0.9375rem] leading-relaxed text-muted">
-                Jaipur, {site.timezone}
-                <span data-clock-line hidden>
-                  {" "}
-                  · it&rsquo;s <time data-clock className="font-mono text-fg tabular-nums" /> here
-                </span>
-                . My evening is a US East Coast morning and a European afternoon.
-              </p>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                <li>
-                  <CopyEmail email={site.email} className="btn btn-ghost h-10 px-4 text-sm">
-                    <Mail size={15} />
-                    <span>{site.email}</span>
-                  </CopyEmail>
+            <ol className="tl relative mt-10 grid gap-5 sm:grid-cols-4 sm:gap-4">
+              <span aria-hidden className="tl-line" />
+              {timeline.map((t) => (
+                <li key={t.what} className="relative pl-7 sm:pt-7 sm:pl-0">
+                  <span aria-hidden className="absolute top-1.5 left-0 size-3 rounded-full bg-red ring-4 ring-paper sm:top-0" />
+                  <p className="font-mono text-xs tracking-[0.06em] text-paper-ink uppercase">{t.when}</p>
+                  <p className="mt-1 text-[0.9375rem] leading-snug text-paper-muted">{t.what}</p>
                 </li>
-                <li>
-                  <a href={site.github} target="_blank" rel="noopener me" className="btn btn-ghost press h-10 px-4 text-sm">
-                    <GitHub size={15} />
-                    GitHub<span className="sr-only"> (opens in new tab)</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={site.linkedin} target="_blank" rel="noopener me" className="btn btn-ghost press h-10 px-4 text-sm">
-                    <LinkedIn size={14} />
-                    LinkedIn<span className="sr-only"> (opens in new tab)</span>
-                  </a>
-                </li>
-                <li>
-                  <a href={site.resume} download className="btn btn-ghost press h-10 px-4 text-sm">
-                    <Download size={15} />
-                    Resume
-                  </a>
-                </li>
-              </ul>
-            </div>
+              ))}
+            </ol>
           </div>
         </div>
-      </section>
 
-      {/* Full-bleed closing CTA. */}
-      <section aria-labelledby="cta-title" className="bg-band text-on-band">
-        <div className="container-page flex flex-col gap-6 py-14 sm:flex-row sm:items-center sm:justify-between md:py-20">
-          <h2 id="cta-title" className="font-display max-w-[20ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.02] tracking-[-0.04em]">
-            Building something? I&rsquo;d like to help.
-          </h2>
-          <a
-            href={`mailto:${site.email}`}
-            className="press inline-flex h-12 shrink-0 items-center gap-2 self-start rounded-full bg-on-band px-6 font-medium text-band sm:self-auto"
-          >
-            Email me
-            <ArrowRight size={16} />
-          </a>
+        <div className="mt-20 md:mt-28">
+          <div className="flex items-end justify-between gap-6">
+            <h3 className="display text-[clamp(1.75rem,3vw,2.75rem)] tracking-[-0.035em]">Along the way</h3>
+            <Image src={gathering} alt="" aria-hidden sizes="140px" className="hidden w-32 -rotate-6 md:block" />
+          </div>
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5" data-fade-group>
+            {badges.map((b) => (
+              <li key={b.top} className={`flex min-h-44 flex-col rounded-[22px] p-5 shadow-[0_18px_40px_-24px_rgb(10_9_8/0.5)] ${b.tone} ${b.tilt}`}>
+                <span className="font-mono text-[0.6875rem] tracking-[0.06em] uppercase opacity-80">{b.top}</span>
+                <span className="num mt-auto pt-6 text-[clamp(2.25rem,3.6vw,3.25rem)] leading-[0.9]">{b.big}</span>
+                <span className="mt-2 text-[0.875rem] leading-snug opacity-85">{b.foot}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Curved edge into the footer. */}
+      <span aria-hidden data-curve className="absolute inset-x-0 top-full z-10 h-[9vw] origin-top rounded-b-[50%_100%] bg-paper" />
+    </section>
   );
 }

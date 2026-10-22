@@ -1,4 +1,4 @@
-import { setupHeroPointer, setupJourney } from "@/motion/home";
+import { setupHeroPointer, setupJourney, setupStack, setupWorkPreview } from "@/motion/home";
 
 type Opts = { fine: boolean; pathname: string };
 type Cleanup = () => void;
@@ -7,8 +7,8 @@ type Cleanup = () => void;
 export function setupPages({ fine, pathname }: Opts): Cleanup {
   const cleanups: Array<Cleanup | void> = [];
   if (pathname === "/") {
-    cleanups.push(setupJourney());
-    if (fine) cleanups.push(setupHeroPointer());
+    cleanups.push(setupJourney(), setupStack());
+    if (fine) cleanups.push(setupHeroPointer(), setupWorkPreview());
   }
   return () => cleanups.forEach((c) => c?.());
 }

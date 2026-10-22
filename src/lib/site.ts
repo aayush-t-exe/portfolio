@@ -42,6 +42,7 @@ export const site = {
     /** The one wording used everywhere. */
     line: "B.Tech, Computer Science · Jaipur National University · graduating May 2028",
     short: "B.Tech CSE · JNU Jaipur · 2028",
+    grad: "2028",
     /** From the resume. [CONFIRM] whether to show it. */
     cgpa: "8.5/10",
   },
