@@ -11,6 +11,7 @@ const ids = {
   org: id("zen-z-org"),
   website: id("website"),
   zenzApp: id("app", routes.zenz),
+  zenzSite: id("zen-z-site", routes.zenz),
   prelimsCode: id("code", routes.prelims),
 };
 
@@ -68,6 +69,16 @@ const zenzApp = {
     "A campus social app that matches college students into small groups of strangers for cafés, dinners, movies and sports. Built with React Native (Expo), Next.js and Supabase, with PayU payments verified server-side.",
   creator: { "@id": ids.person },
   author: { "@id": ids.person },
+};
+
+const zenzSite = {
+  "@type": "WebSite",
+  "@id": ids.zenzSite,
+  name: projects.zenz.urlLabel,
+  url: projects.zenz.url,
+  description: "The Zen-Z marketing site: plans, pricing, FAQ, the iPhone install flow and the legal pages, with a glossy red Z hanging on a cord you can pull.",
+  publisher: { "@id": ids.org },
+  creator: { "@id": ids.person },
 };
 
 const prelimsCode = {
@@ -132,7 +143,7 @@ export const graphs = {
       hasPart: [routes.zenz, routes.prelims].map((p) => ({ "@id": `${site.url}${p}#webpage` })),
     },
   ],
-  zenz: subPage(routes.zenz, pages.zenz.title, pages.zenz.description, [zenzApp]),
+  zenz: subPage(routes.zenz, pages.zenz.title, pages.zenz.description, [zenzApp, zenzSite]),
   prelims: subPage(routes.prelims, pages.prelims.title, pages.prelims.description, [prelimsCode]),
   stack: subPage(routes.stack, pages.stack.title, pages.stack.description, []),
 };

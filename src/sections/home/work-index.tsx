@@ -4,10 +4,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { Phone } from "@/components/ui/phone";
-import { projects, routes } from "@/lib/site";
+import { routes } from "@/lib/site";
 import { screens } from "@/sections/home/zenz-data";
 import admin from "@/assets/zenz/admin-dashboard.webp";
 import zenzSite from "@/assets/v4/brand/zen-z-site.webp";
+import zenzSitePhone from "@/assets/v4/brand/zen-z-site-phone.webp";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
 import today from "@/assets/prelims/today.jpg";
 import quiz from "@/assets/prelims/quiz.jpg";
@@ -57,13 +58,18 @@ const rows: Row[] = [
     name: "zen-z.site",
     role: "Marketing site · design & build",
     year: "2026",
-    href: projects.zenz.url,
-    external: true,
-    bg: "#16132a",
+    href: `${routes.zenz}#website`,
+    bg: "#e9e3d5",
     thumb: { src: zenzSite, fit: "cover" },
     visual: (
-      <div className="grid size-full place-items-center p-[8%]">
-        <Image src={zenzSite} alt="" sizes="360px" className="w-full rounded-lg ring-1 ring-white/10" />
+      <div className="relative size-full">
+        <Image
+          src={zenzSite}
+          alt=""
+          sizes="320px"
+          className="absolute top-[13%] left-[6%] w-[78%] rounded-lg shadow-[0_20px_40px_-16px_rgb(0_0_0/0.45)] ring-1 ring-black/10"
+        />
+        <Phone shots={[{ src: zenzSitePhone, alt: "" }]} sizes="100px" className="absolute right-[5%] bottom-[6%] w-[25%] rotate-[5deg]" />
       </div>
     ),
   },

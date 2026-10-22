@@ -4,6 +4,9 @@ import { Phone } from "@/components/ui/phone";
 import { screens } from "@/sections/home/zenz-data";
 import admin from "@/assets/zenz/admin-dashboard.webp";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
+import zenzSite from "@/assets/v4/brand/zen-z-site.webp";
+import zenzSitePhone from "@/assets/v4/brand/zen-z-site-phone.webp";
+import zenzSiteChat from "@/assets/v4/brand/zen-z-site-phone-chat.webp";
 import today from "@/assets/prelims/today.jpg";
 import quiz from "@/assets/prelims/quiz.jpg";
 import result from "@/assets/prelims/result.jpg";
@@ -45,6 +48,37 @@ export function ZenzLead() {
       <div className="relative -mt-[8%] flex items-end justify-center gap-[7%] sm:absolute sm:right-[4%] sm:bottom-[9%] sm:mt-0 sm:w-[40%] sm:gap-[3%]">
         <Phone eager shots={[screens.plan]} sizes="(min-width: 1408px) 240px, (min-width: 640px) 18vw, 36vw" className="w-[36%] rotate-[-6deg] sm:w-[46%]" />
         <Phone eager shots={[screens.pay]} sizes="(min-width: 1408px) 240px, (min-width: 640px) 18vw, 36vw" className="mb-[5%] w-[36%] rotate-[5deg] sm:mb-[9%] sm:w-[46%]" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * zen-z.site on a cream panel: the desktop hero in a browser frame, two phone screens in front
+ * (over its right edge on wider screens, overlapping its lower edge on phones).
+ */
+export function ZenzSiteMedia() {
+  return (
+    <div className="relative isolate overflow-hidden rounded-[28px] bg-paper px-[4%] pt-[5%] pb-[7%] sm:py-[5%]">
+      <div className="sm:w-[66%]">
+        <Browser
+          src={zenzSite}
+          url="zen-z.site"
+          sizes="(min-width: 1408px) 870px, (min-width: 640px) 62vw, 92vw"
+          alt="zen-z.site on desktop: the headline 'Spend a café evening with 4 people you haven't met', a Get it on Google Play button, a phone and stickers, and the glossy red Z hanging on a cord"
+        />
+      </div>
+      <div className="relative -mt-[8%] flex items-end justify-center gap-[7%] sm:absolute sm:right-[4%] sm:bottom-[8%] sm:mt-0 sm:w-[34%] sm:gap-[4%]">
+        <Phone
+          shots={[{ src: zenzSitePhone, alt: "zen-z.site on a phone: the same headline with a rolling plan, the hanging Z and a Get Zen-Z on iPhone button" }]}
+          sizes="(min-width: 1408px) 210px, (min-width: 640px) 15vw, 36vw"
+          className="w-[36%] rotate-[-5deg] sm:w-[46%]"
+        />
+        <Phone
+          shots={[{ src: zenzSiteChat, alt: "zen-z.site on a phone: step 4 of how it works, 'Chat opens 48h before', with a hand-drawn illustration" }]}
+          sizes="(min-width: 1408px) 210px, (min-width: 640px) 15vw, 36vw"
+          className="mb-[5%] w-[36%] rotate-[5deg] sm:mb-[10%] sm:w-[46%]"
+        />
       </div>
     </div>
   );

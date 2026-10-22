@@ -72,7 +72,7 @@ const variants = {
   zenz: {
     kicker: `Case study · ${site.name}`,
     title: "Zen-Z",
-    line: "A campus app built solo: React Native, Next.js admin, Supabase and PayU.",
+    line: "A campus app built solo: the app, admin, website, Supabase and PayU.",
     stats: [
       [z.users, `users in ${z.usersDays}`],
       [z.revenue, "revenue"],

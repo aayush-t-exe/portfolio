@@ -47,7 +47,7 @@ export const site = {
     cgpa: "8.5/10",
   },
   /** Bump when content changes meaningfully; used by the sitemap. */
-  updated: "2026-10-22",
+  updated: "2026-10-23",
 } as const;
 
 export const projects = {
@@ -76,7 +76,8 @@ export const routes = {
 
 /**
  * Numbers quoted on the site. Sources: Aayush (users, revenue), the resume (waitlist,
- * Instagram), and the repos via git and the code (everything else, as of 2026-10-21).
+ * Instagram), and the repos via git and the code (everything else; campus-social re-checked
+ * against origin/master on 2026-10-23: only the commit count had changed).
  */
 export const facts = {
   zenz: {
@@ -94,7 +95,7 @@ export const facts = {
     waitlist: "65+",
     igFollowers: "550+",
     igViews: "140K+",
-    commits: 183,
+    commits: 190,
     /** First commit (repo). Founded / planning: `since`. */
     firstCommit: "Aug 2026",
     /** Public launch month. [CONFIRM] exact date. */
@@ -112,6 +113,18 @@ export const facts = {
     rlsBugsFound: 3,
     /** Files changed in the same-day incident fix (commit ba11be2). */
     incidentFiles: 14,
+  },
+  /** zen-z.site, the marketing site (campus-social/apps/marketing, PLAN.md §7). */
+  zenzSite: {
+    /** scripts/contract-test.mjs; all pass against https://zen-z.site (checked 2026-10-23). */
+    contractChecks: 27,
+    /** Hand-written verlet rope for the hanging Z (lib/rope.ts: 177 lines, 141 of code). */
+    ropeLines: "~150",
+    /**
+     * Lighthouse on https://zen-z.site/, desktop preset, median of 3 runs (2026-10-23). Mobile
+     * isn't quoted: on this laptop its simulated runs swing too much to give a true number.
+     */
+    lighthouse: { desktop: 98, a11y: 100, bp: 100, seo: 100, source: "median of 3 runs" },
   },
   sih: "5th of ~75 teams",
   prelims: {

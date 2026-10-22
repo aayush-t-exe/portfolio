@@ -1,5 +1,5 @@
 import { Body, CaseHero, CasePage, CaseToc, Chapter, NextLinks, Rail, type TocItem } from "@/components/case";
-import { ZenzLead } from "@/components/case-media";
+import { ZenzLead, ZenzSiteMedia } from "@/components/case-media";
 import { ArrowUpRight } from "@/components/icons";
 import { Phone } from "@/components/ui/phone";
 import { Architecture } from "@/components/zenz-architecture";
@@ -13,6 +13,7 @@ const z = facts.zenz;
 const toc: TocItem[] = [
   { id: "problem", label: "Problem" },
   { id: "built", label: "Built" },
+  { id: "website", label: "Website" },
   { id: "architecture", label: "Architecture" },
   { id: "incident", label: "Incident" },
   { id: "results", label: "Results" },
@@ -26,6 +27,25 @@ const flow = [
   { title: "Choose the group", caption: "Mixed, women only or men only.", shot: screens.group },
   { title: "Confirm the plan", caption: "Review every choice before paying.", shot: screens.plan },
   { title: "Pay to hold the seat", caption: "PayU checkout; only a verified webhook confirms it.", shot: screens.pay },
+];
+
+const zs = facts.zenzSite;
+const lh = zs.lighthouse;
+
+/** zen-z.site in three points. */
+const site = [
+  {
+    name: "A Z you can pull",
+    body: `The red Z hangs on a cord you can drag, with rope physics I wrote by hand (${zs.ropeLines} lines, no 3D library). The server renders a still Z first, so nothing needs JavaScript.`,
+  },
+  {
+    name: "Payments never broke",
+    body: `${zs.contractChecks} contract checks guard the PayU payment-return URL, the iPhone install flow and every legal page. They pass against production.`,
+  },
+  {
+    name: `${lh.desktop} on Lighthouse`,
+    body: `Desktop performance on the live site (${lh.source}), and ${lh.a11y} for accessibility, best practices and SEO.`,
+  },
 ];
 
 const external = { target: "_blank", rel: "noopener" } as const;
@@ -134,8 +154,36 @@ export function ZenZCase() {
         />
 
         <Chapter
-          id="architecture"
+          id="website"
           n={3}
+          label="The website"
+          title="zen-z.site: a Z you can pull."
+          lead="I redesigned the marketing site from scratch: cream paper, Zen-Z red, stickers and doodles."
+          bleed={
+            <div className="container-page mt-12 md:mt-16">
+              <ZenzSiteMedia />
+              <ol className="mt-4 grid gap-4 lg:grid-cols-3">
+                {site.map((s, i) => (
+                  <li key={s.name} className="card flex flex-col p-6" data-fade>
+                    <span className="grid size-8 place-items-center rounded-full bg-red font-mono text-xs text-white">{i + 1}</span>
+                    <h3 className="display mt-6 text-[1.5rem] tracking-[-0.03em]">{s.name}</h3>
+                    <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">{s.body}</p>
+                  </li>
+                ))}
+              </ol>
+              <a href={zenz.url} {...external} className="btn btn-red press mt-10" data-magnetic>
+                <span data-magnetic-label>
+                  Visit {zenz.urlLabel} <ArrowUpRight size={16} />
+                  {newTab}
+                </span>
+              </a>
+            </div>
+          }
+        />
+
+        <Chapter
+          id="architecture"
+          n={4}
           label="Architecture"
           tone="paper"
           title="Boring, proven parts. The database enforces the rules."
@@ -150,11 +198,11 @@ export function ZenZCase() {
           <Architecture className="mt-12 md:mt-16" />
         </Chapter>
 
-        <Chapter id="incident" n={4} label="Incident" title="A paid booking never confirmed. I fixed it the same day.">
+        <Chapter id="incident" n={5}label="Incident" title="A paid booking never confirmed. I fixed it the same day.">
           <Incident />
         </Chapter>
 
-        <Chapter id="results" n={5} label="Results" tone="paper" title="Paying students, live on Play." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
+        <Chapter id="results" n={6}label="Results" tone="paper" title="Paying students, live on Play." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
           <Results />
         </Chapter>
 
