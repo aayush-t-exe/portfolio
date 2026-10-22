@@ -79,7 +79,7 @@ const cards: Array<{ kicker: string; big: string; title: string; body: ReactNode
  */
 export function PrelimsStack() {
   return (
-    <section id="prelims" data-section="05 — PrelimsDaily" aria-labelledby="prelims-title" className="relative pb-24 md:pb-36">
+    <section id="prelims" data-section="05 — PrelimsDaily" aria-labelledby="prelims-title" className="relative pb-20 md:pb-24">
       <div className="container-page">
         <div className="grid gap-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">

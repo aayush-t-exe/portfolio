@@ -120,7 +120,7 @@ export function WorkIndex() {
                     </>
                   ) : null}
                 </span>
-                <span className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-3 text-[0.9375rem] text-muted md:col-span-4 md:mt-0 md:border-0 md:pt-0">
+                <span className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-3 text-[1rem] text-fg/80 md:col-span-4 md:mt-0 md:border-0 md:pt-0">
                   <span>{r.role}</span>
                   <span className="font-mono text-sm tabular-nums">{r.year}</span>
                 </span>

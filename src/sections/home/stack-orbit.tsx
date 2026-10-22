@@ -45,7 +45,7 @@ function Ring({ names, ring }: { names: string[]; ring: "inner" | "outer" }) {
  */
 export function StackOrbit() {
   return (
-    <section id="stack" data-section="06 — Stack" aria-labelledby="stack-title" className="relative overflow-clip py-24 md:py-32">
+    <section id="stack" data-section="06 — Stack" aria-labelledby="stack-title" className="relative overflow-clip pt-16 pb-24 md:pt-20 md:pb-32">
       <div className="container-page grid gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <p className="label">

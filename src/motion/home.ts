@@ -196,7 +196,7 @@ export function setupStack(): Cleanup | void {
   cards.slice(0, -1).forEach((card, i) => {
     gsap.to(card, {
       scale: 0.92,
-      filter: "brightness(0.55)",
+      filter: "brightness(0.78) saturate(0.85)",
       ease: "none",
       scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top 20%", scrub: true },
     });

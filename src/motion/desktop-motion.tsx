@@ -63,13 +63,21 @@ export default function DesktopMotion() {
         window.__lenis?.resize();
       };
       const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 120));
-      const schedule = () => (handle = idle(run, { timeout: 1200 }));
+      let scheduled = false;
+      const schedule = () => {
+        if (scheduled) return;
+        scheduled = true;
+        handle = idle(run, { timeout: 1200 });
+      };
+      // On load, or at the latest 2.5 s in (slow images shouldn't hold the motion back).
+      const fallback = window.setTimeout(schedule, 2500);
       if (document.readyState === "complete") schedule();
       else window.addEventListener("load", schedule, { once: true });
       // Late font swaps change line breaks and heights: measure again.
       document.fonts?.ready.then(() => mm && ScrollTrigger.refresh());
       return () => {
         cancelled = true;
+        window.clearTimeout(fallback);
         (window.cancelIdleCallback ?? window.clearTimeout)(handle);
         window.removeEventListener("load", schedule);
         mm?.revert();
