@@ -21,7 +21,6 @@ const proof: Array<{ value: ReactNode; label: string; href?: string }> = [
     ),
     label: "revenue",
   },
-  { value: `${z.claudeCommits}/${z.commits}`, label: "commits with Claude", href: projects.zenz.commitsUrl },
 ];
 
 /**

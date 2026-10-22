@@ -41,7 +41,6 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 - Location: ${site.location} (${site.timezone}).
 - Education: ${site.education.line}.
 - Status: ${site.status}. Looking for: ${site.lookingFor}
-- Way of working: AI-native. Builds with Claude Code and Cursor, plans before coding, ships fast, and reviews and understands everything that ships. ${z.claudeCommits} of ${z.commits} Zen-Z commits are co-authored with Claude.
 - Contact: [${site.email}](mailto:${site.email})
 
 ## Zen-Z (case study 1)

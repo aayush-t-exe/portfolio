@@ -18,17 +18,18 @@ export const site = {
   url: rawUrl.replace(/\/$/, ""),
   name: "Aayush Thakur",
   shortName: "Aayush",
-  title: "Aayush Thakur: founder-engineer who built Zen-Z solo",
+  title: "Aayush Thakur: built Zen-Z solo, a live campus app",
   /** ≤155 characters, strongest hook first (search snippets truncate). */
   description:
-    "Aayush Thakur built Zen-Z solo: a live campus app with 150+ users in 2 days and ₹33K+ revenue. AI-native founder-engineer in Jaipur, open to work.",
+    "Aayush Thakur built Zen-Z solo: a campus app live on Google Play, 150+ users in 2 days, ₹33K+ revenue. Full-stack and mobile engineer in Jaipur.",
   /** Stable URL for structured data (doesn't change with build hashes). */
   image: "/aayush.jpg",
   location: "Jaipur, India",
   timezone: "IST (UTC+5:30)",
-  status: "Open to work · Jaipur (IST)",
-  lookingFor:
-    "Remote internships in full-stack, AI and product engineering - plus freelance builds (Next.js, React Native, Supabase). Part-time, can start now.",
+  status: "Open to internships · Jaipur (IST)",
+  /** The one ask, used in the contact section, llms.txt and JSON-LD. */
+  lookingFor: "Open to internships: full-stack, mobile and AI/product engineering. Remote or Jaipur. Can start now.",
+  role: "Founder & CTO of Zen-Z · full-stack and mobile engineer",
   email: "aayushthakur8002@gmail.com",
   github: "https://github.com/aayush-t-exe",
   githubHandle: "aayush-t-exe",
@@ -40,9 +41,12 @@ export const site = {
     schoolUrl: "https://www.jnujaipur.ac.in",
     /** The one wording used everywhere. */
     line: "B.Tech, Computer Science · Jaipur National University · graduating May 2028",
+    short: "B.Tech CSE · JNU Jaipur · 2028",
+    /** From the resume. [CONFIRM] whether to show it. */
+    cgpa: "8.5/10",
   },
   /** Bump when content changes meaningfully; used by the sitemap. */
-  updated: "2026-10-21",
+  updated: "2026-10-22",
 } as const;
 
 export const projects = {
@@ -52,8 +56,6 @@ export const projects = {
     urlLabel: "zen-z.site",
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.campussocial.app",
     sourceUrl: "https://github.com/aayush-t-exe/Zen-Z",
-    /** Public commit log: every Claude co-authored commit carries a Co-Authored-By trailer. */
-    commitsUrl: "https://github.com/aayush-t-exe/Zen-Z/commits",
     instagram: "https://www.instagram.com/zen_z.app",
     instagramHandle: "@zen_z.app",
   },
@@ -92,8 +94,10 @@ export const facts = {
     igFollowers: "550+",
     igViews: "140K+",
     commits: 183,
-    claudeCommits: 152,
-    commitDays: 33,
+    /** First commit (repo). Founded / planning: `since`. */
+    firstCommit: "Aug 2026",
+    /** Public launch month. [CONFIRM] exact date. */
+    launched: "Sep 2026",
     appScreens: 20,
     tables: 28,
     migrations: 102,
@@ -141,7 +145,7 @@ export type Project = "Z" | "P" | "S";
 
 export const projectNames: Record<Project, string> = { Z: "Zen-Z", P: "PrelimsDaily", S: "This site" };
 
-export const stackLayers = ["Client", "Data & backend", "Payments & infra", "Quality", "AI workflow"] as const;
+export const stackLayers = ["Client", "Data & backend", "Payments & infra", "Quality", "Tools"] as const;
 
 type Tool = {
   name: string;
@@ -159,6 +163,7 @@ export const stack: Tool[] = [
   { name: "React Native + Expo", layer: "Client", icon: "expo", note: "Zen-Z app and PrelimsDaily", usedIn: ["Z", "P"] },
   { name: "Next.js", layer: "Client", icon: "nextdotjs", note: "admin panel + this site", usedIn: ["Z", "S"] },
   { name: "Tailwind CSS", layer: "Client", icon: "tailwindcss", note: "this site's design tokens", usedIn: ["S"] },
+  { name: "TanStack Query", layer: "Client", icon: "reactquery", note: "server state in the app and admin", usedIn: ["Z"] },
   { name: "Reanimated", layer: "Client", mono: "Re", note: "60fps ring + XP bar", usedIn: ["P"] },
   { name: "Zustand", layer: "Client", mono: "Zu", note: "state with versioned persistence", usedIn: ["P"] },
   { name: "dnd-kit", layer: "Client", mono: "dk", note: "drag-and-drop matching board", usedIn: ["Z"] },
@@ -177,8 +182,10 @@ export const stack: Tool[] = [
   { name: "Vitest", layer: "Quality", icon: "vitest", note: "admin + Edge Function tests", usedIn: ["Z"] },
   { name: "Jest", layer: "Quality", icon: "jest", note: "mobile app tests", usedIn: ["Z", "P"] },
   { name: "pgTAP", layer: "Quality", mono: "pg", note: `${facts.zenz.pgtapAssertions} DB assertions in CI`, usedIn: ["Z"] },
-  { name: "Claude Code", layer: "AI workflow", icon: "claude", note: `co-author on ${facts.zenz.claudeCommits}/${facts.zenz.commits} commits`, usedIn: ["Z", "P", "S"] },
-  { name: "Cursor", layer: "AI workflow", icon: "cursor", note: "editor for day-to-day builds", usedIn: ["Z", "P"] },
+  { name: "Git + GitHub", layer: "Tools", icon: "github", note: "every project, in public", usedIn: ["Z", "P", "S"] },
+  // The only place these two appear on the site: plain tools, no emphasis (shown on /stack only).
+  { name: "Claude Code", layer: "Tools", mono: "Cc", note: "coding assistant", usedIn: ["Z", "P", "S"] },
+  { name: "Cursor", layer: "Tools", mono: "Cu", note: "editor", usedIn: ["Z", "P"] },
 ];
 
 /** Shown muted under the ledger: no shipped evidence, so not in the main list. */

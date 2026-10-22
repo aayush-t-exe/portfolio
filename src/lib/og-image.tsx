@@ -81,7 +81,7 @@ function Home() {
         >
           <span style={{ color: ink }}>{`${z.users} users in ${z.usersDays}`}</span>
           <span>{`${z.revenue} revenue`}</span>
-          <span>{`${z.claudeCommits}/${z.commits} commits with Claude`}</span>
+          <span>Live on Google Play</span>
         </div>
       </div>
       <div style={{ display: "flex", flex: 1, padding: "40px 40px 40px 8px" }}>

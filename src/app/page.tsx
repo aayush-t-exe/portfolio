@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { Intro } from "@/components/site/intro";
 import { JsonLd, graphs } from "@/lib/jsonld";
 import { openGraph } from "@/lib/metadata";
 import { About } from "@/sections/home/about";
-import { Ai } from "@/sections/home/ai";
 import { Hero } from "@/sections/home/hero";
 import { Work } from "@/sections/home/work";
 
@@ -15,9 +15,9 @@ export default function Home() {
   return (
     <>
       <JsonLd graph={graphs.home} />
+      <Intro />
       <Hero />
       <Work />
-      <Ai />
       <About />
     </>
   );

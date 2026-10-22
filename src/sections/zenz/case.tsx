@@ -272,7 +272,6 @@ function Results() {
     ["Test suites in CI", z.testSuites],
     ["pgTAP assertions", z.pgtapAssertions],
     ["Commits", z.commits],
-    ["Co-authored with Claude", z.claudeCommits],
   ];
   const along = [
     "Moved payments from Razorpay to PayU mid-build.",

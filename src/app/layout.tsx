@@ -1,18 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { PageBehavior } from "@/components/page-behavior";
+import { Header } from "@/components/site/header";
+import { SiteFooter } from "@/components/site/footer";
+import { MotionGate } from "@/components/site/motion-gate";
+import { SiteBehavior } from "@/components/site/site-behavior";
 import { openGraph } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import "./globals.css";
 
 /*
- * Self-hosted, subset fonts (src/assets/fonts/web): only the characters this site uses
- * (Latin, Latin-1, punctuation, ₹ and arrows). Geist (body) and Geist Mono (numbers, code)
- * are variable, so one file each covers every weight; Schibsted Grotesk (headlines) is one
- * static SemiBold. ~66 kB total; the two above-the-fold text faces are preloaded.
+ * Self-hosted, subset fonts (src/assets/fonts/web): only the characters this site uses.
+ * Archivo (display) is variable in weight (600–900) and width (75–125%), 33 kB; Geist (body) and
+ * Geist Mono (labels, counters) are variable in weight. Archivo and Geist are preloaded.
  */
+const archivo = localFont({
+  src: "../assets/fonts/web/archivo.woff2",
+  weight: "600 900",
+  variable: "--font-archivo",
+  display: "swap",
+  declarations: [{ prop: "font-stretch", value: "75% 125%" }],
+  adjustFontFallback: "Arial",
+});
 const geist = localFont({
   src: "../assets/fonts/web/geist.woff2",
   weight: "100 900",
@@ -20,8 +28,7 @@ const geist = localFont({
   display: "swap",
   adjustFontFallback: "Arial",
 });
-// Not preloaded: mono only sets small labels and numbers, which swap in harmlessly, and
-// preloads compete with the CSS and the headline font on the critical path.
+// Not preloaded: mono only sets small labels and numbers, which swap in harmlessly.
 const geistMono = localFont({
   src: "../assets/fonts/web/geist-mono.woff2",
   weight: "100 900",
@@ -29,14 +36,6 @@ const geistMono = localFont({
   display: "swap",
   preload: false,
   adjustFontFallback: false,
-});
-// Headlines only, always at 600.
-const display = localFont({
-  src: "../assets/fonts/web/schibsted-grotesk-semibold.woff2",
-  weight: "600",
-  variable: "--font-schibsted",
-  display: "swap",
-  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
@@ -48,19 +47,19 @@ export const metadata: Metadata = {
   creator: site.name,
   keywords: [
     "Aayush Thakur",
-    "founder-engineer",
+    "Zen-Z",
+    "founder",
     "full-stack developer",
+    "mobile developer",
     "React Native developer",
     "Next.js developer",
     "Supabase",
-    "Zen-Z",
     "PrelimsDaily",
-    "AI-native developer",
-    "Claude Code",
+    "internship",
     "Jaipur",
     "India",
   ],
-  // canonical and og:url are set on the home page itself, so the 404 doesn't inherit them.
+  // canonical and og:url are set on each page, so the 404 doesn't inherit them.
   openGraph,
   twitter: {
     card: "summary_large_image",
@@ -77,21 +76,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f2ed" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e0c" },
-  ],
-  colorScheme: "light dark",
+  themeColor: "#0a0908",
+  colorScheme: "dark",
 };
 
 /**
- * Runs before first paint: applies a saved theme (otherwise CSS follows the OS), marks
- * that JS runs (`js`, used by the theme toggle and never removed) and arms the scroll
- * reveal (`reveal-armed`). Failsafe: if the app bundle hasn't started the reveal observer
- * within 4s (blocked, failed, ancient browser), disarm the reveal so no content stays
- * hidden. The failsafe only ever touches `reveal-armed`.
+ * Runs before first paint. Marks that JS runs (`js`). On the home page, the first time in a
+ * session and only when motion is allowed, it sets `intro`: CSS then plays the ≤1.5 s intro over
+ * the already-painted hero. Any key, click, wheel or touch skips it.
  */
-const prePaint = `(function(){var d=document.documentElement;d.classList.add('js','reveal-armed');var p='system';try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){d.dataset.theme=t;p=t}}catch(e){}d.dataset.themePref=p;setTimeout(function(){if(!d.hasAttribute('data-reveal-ready'))d.classList.remove('reveal-armed')},4000)})()`;
+const prePaint = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('intro-seen')){sessionStorage.setItem('intro-seen','1');d.classList.add('intro');var ev=['keydown','pointerdown','wheel','touchstart'],off=function(){ev.forEach(function(e){removeEventListener(e,skip,true)})},skip=function(){d.classList.remove('intro');off()};ev.forEach(function(e){addEventListener(e,skip,{capture:true,passive:true})});setTimeout(off,1800)}}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -99,24 +93,27 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${display.variable} antialiased`}
+      className={`${archivo.variable} ${geist.variable} ${geistMono.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: prePaint }} />
       </head>
-      <body id="top" className="min-h-dvh bg-bg text-fg">
+      <body id="top" className="min-h-dvh bg-ink text-fg">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[300] focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-ink"
         >
           Skip to content
         </a>
+        <div className="progress" aria-hidden />
         <Header />
         <main id="main" tabIndex={-1} className="outline-none">
           {children}
         </main>
-        <Footer />
-        <PageBehavior />
+        <SiteFooter />
+        <div className="grain" aria-hidden />
+        <SiteBehavior />
+        <MotionGate />
       </body>
     </html>
   );
