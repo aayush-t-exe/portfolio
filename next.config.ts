@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   partialPrefetching: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Fewer, better-placed widths than the defaults (15): shorter srcsets in every <img>, and
+    // phone screens on phones land on 384/512 instead of 640.
+    deviceSizes: [512, 640, 828, 1080, 1440, 1920],
+    imageSizes: [64, 96, 160, 256, 384],
   },
   turbopack: {
     rules: {

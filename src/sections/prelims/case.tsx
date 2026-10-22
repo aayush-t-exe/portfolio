@@ -80,69 +80,73 @@ export function PrelimsCase() {
         ]}
       />
 
-      <CaseToc items={toc} />
+      {/* The chapter bar sticks only while the chapters scroll past. */}
+      <div>
+        <CaseToc items={toc} />
 
-      <Chapter
-        id="brief"
-        n={1}
-        label="The brief"
-        title="A habit, not a question bank."
-        lead="Most aspirants don't fail for lack of material. They fail for lack of consistency."
-      >
-        <div className="grid gap-12 lg:grid-cols-12">
-          <Body className="lg:col-span-7">
-            <p>
-              I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set a day,{" "}
-              <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and <strong>reminders that adapt to your
-              streak</strong>. It runs fully offline on Android and the web.
-            </p>
-            <p>
-              The rules live in pure, unit-tested functions, state is persisted with a versioned schema
-              that falls back safely if anything is malformed, and a root error boundary means a render crash shows a Retry screen, never
-              a white screen.
-            </p>
-          </Body>
-          <ul className="grid grid-cols-2 gap-5 lg:col-span-5">
-            {screens.map((s) => (
-              <li key={s.title} data-fade>
-                <Phone shots={[s.shot]} sizes="(min-width: 1024px) 200px, 44vw" />
-                <p className="mt-4 text-sm font-medium">{s.title}</p>
-                <p className="mt-0.5 text-[0.8125rem] leading-snug text-muted">{s.caption}</p>
+        <Chapter
+          id="brief"
+          n={1}
+          label="The brief"
+          title="A habit, not a question bank."
+          lead="Most aspirants don't fail for lack of material. They fail for lack of consistency."
+        >
+          <div className="grid gap-12 lg:grid-cols-12">
+            <Body className="lg:col-span-7">
+              <p>
+                I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set a day,{" "}
+                <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and <strong>reminders that adapt to your
+                streak</strong>. It runs fully offline on Android and the web.
+              </p>
+              <p>
+                The rules live in pure, unit-tested functions, state is persisted with a versioned schema
+                that falls back safely if anything is malformed, and a root error boundary means a render crash shows a Retry screen, never
+                a white screen.
+              </p>
+            </Body>
+            <ul className="grid grid-cols-2 gap-5 lg:col-span-5">
+              {screens.map((s) => (
+                <li key={s.title} data-fade>
+                  <Phone shots={[s.shot]} sizes="(min-width: 1024px) 200px, 44vw" />
+                  <p className="mt-4 text-sm font-medium">{s.title}</p>
+                  <p className="mt-0.5 text-[0.8125rem] leading-snug text-muted">{s.caption}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Chapter>
+
+        <Chapter id="decisions" n={2} label="Decisions" tone="paper" title="Small app, real engineering." lead="Every trade-off is written down in the README.">
+          <ol className="mt-12 grid gap-4 sm:grid-cols-2" data-fade-group>
+            {decisions.map((d, i) => (
+              <li key={d.title} className="flex flex-col rounded-[22px] bg-[#f3eee3] p-6 ring-1 ring-paper-line sm:p-8">
+                <span className="font-mono text-xs text-red-deep">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="display mt-3 text-[1.6rem] leading-[1.05] tracking-[-0.03em]">{d.title}</h3>
+                <p className="mt-3 leading-relaxed text-paper-muted">{d.body}</p>
+                <p className="mt-auto pt-6 text-sm leading-relaxed">
+                  <span className="font-medium text-red-deep">Trade-off: </span>
+                  <span className="text-paper-muted">{d.tradeoff}</span>
+                </p>
               </li>
             ))}
-          </ul>
-        </div>
-      </Chapter>
+          </ol>
+        </Chapter>
 
-      <Chapter id="decisions" n={2} label="Decisions" tone="paper" title="Small app, real engineering." lead="Every trade-off is written down in the README.">
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2" data-fade-group>
-          {decisions.map((d, i) => (
-            <li key={d.title} className="flex flex-col rounded-[22px] bg-[#f3eee3] p-6 ring-1 ring-paper-line sm:p-8">
-              <span className="font-mono text-xs text-red-deep">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="display mt-3 text-[1.6rem] leading-[1.05] tracking-[-0.03em]">{d.title}</h3>
-              <p className="mt-3 leading-relaxed text-paper-muted">{d.body}</p>
-              <p className="mt-auto pt-6 text-sm leading-relaxed">
-                <span className="font-medium text-red-deep">Trade-off: </span>
-                <span className="text-paper-muted">{d.tradeoff}</span>
-              </p>
-            </li>
-          ))}
-        </ol>
-      </Chapter>
+        <Chapter id="quality" n={3} label="Quality" title="72 tests in a one-day build.">
+          <div className="mt-12 grid gap-8 md:grid-cols-[auto_1fr] md:items-end md:gap-14">
+            <p className="num text-[clamp(6rem,16vw,13rem)] leading-[0.8] text-red-text">
+              {p.tests}
+              <span className="ml-3 font-sans text-[0.22em] font-medium tracking-normal text-muted">tests</span>
+            </p>
+            <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
+              Unit tests in {p.suites} suites, covering local-date maths, streak transitions (continue, freeze, reset, earning freezes), XP and
+              level curves, the daily set&rsquo;s determinism, weak-subject weighting and recency rules, and loading saved state safely. Strict
+              TypeScript and lint on top.
+            </p>
+          </div>
+        </Chapter>
 
-      <Chapter id="quality" n={3} label="Quality" title="72 tests in a one-day build.">
-        <div className="mt-12 grid gap-8 md:grid-cols-[auto_1fr] md:items-end md:gap-14">
-          <p className="num text-[clamp(6rem,16vw,13rem)] leading-[0.8] text-red-text">
-            {p.tests}
-            <span className="ml-3 font-sans text-[0.22em] font-medium tracking-normal text-muted">tests</span>
-          </p>
-          <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
-            Unit tests in {p.suites} suites, covering local-date maths, streak transitions (continue, freeze, reset, earning freezes), XP and
-            level curves, the daily set&rsquo;s determinism, weak-subject weighting and recency rules, and loading saved state safely. Strict
-            TypeScript and lint on top.
-          </p>
-        </div>
-      </Chapter>
+      </div>
 
       <NextLinks
         links={[

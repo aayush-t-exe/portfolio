@@ -23,11 +23,12 @@ const beats = [
 /**
  * 03 Under the hood (cream). A curved dark edge flattens as it arrives (Masab-style reveal), then
  * the architecture strip (with the payment loop: an order goes out to PayU, a signed webhook
- * comes back), counters, and the "real money, real fixes" card.
+ * comes back), counters, and the "real money, real fixes" card. It stacks above the Zen-Z
+ * section (z-10), so the stage's glow and the phone's shadow stop at the seam.
  */
 export function UnderTheHood() {
   return (
-    <section id="build" data-section="03 — Under the hood" aria-labelledby="build-title" className="on-paper relative overflow-clip">
+    <section id="build" data-section="03 — Under the hood" aria-labelledby="build-title" className="on-paper relative z-[11] overflow-clip">
       <span aria-hidden data-curve className="absolute inset-x-0 top-0 z-10 h-[9vw] origin-top rounded-b-[50%_100%] bg-ink" />
 
       <div className="container-page relative pt-[calc(9vw+4rem)] pb-24 md:pb-32">

@@ -31,10 +31,9 @@ function Band({ items, dir, className, speed }: { items: Item[]; dir: 1 | -1; cl
       <div className="marquee-track">
         {[0, 1].map((copy) => (
           <ul key={copy} aria-hidden={copy === 1 || undefined} className="flex shrink-0 items-center">
-            {[...items, ...items].map((t, i) => (
+            {items.map((t) => (
               <li
-                key={i}
-                aria-hidden={i >= items.length || undefined}
+                key={t.name}
                 className="display flex items-center gap-3 px-5 text-[clamp(1.5rem,3vw,2.5rem)] leading-none tracking-[-0.03em] md:px-7"
               >
                 {t.icon ? <Glyph icon={t.icon} className="text-[0.8em]" /> : <span aria-hidden className="font-mono text-[0.45em] tracking-normal">₹</span>}
@@ -55,9 +54,9 @@ function Band({ items, dir, className, speed }: { items: Item[]; dir: 1 | -1; cl
  */
 export function TechMarquee() {
   return (
-    <section aria-label="Tools I ship with" className="relative z-[1] -my-6 overflow-clip py-16 md:py-24">
-      <Band items={rowA} dir={1} speed={34} className="relative z-[2] -rotate-[3deg] scale-x-110 bg-red text-white" />
-      <Band items={rowB} dir={-1} speed={40} className="relative -mt-14 rotate-[2.5deg] scale-x-110 bg-paper text-paper-ink md:-mt-16" />
+    <section aria-label="Tools I ship with" className="relative z-[1] -my-6 overflow-clip py-14 md:py-24">
+      <Band items={rowA} dir={1} speed={17} className="relative z-[2] -rotate-[3deg] scale-x-110 bg-red text-white" />
+      <Band items={rowB} dir={-1} speed={20} className="relative -mt-4 rotate-[2.5deg] scale-x-110 bg-paper text-paper-ink md:-mt-16" />
     </section>
   );
 }

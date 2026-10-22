@@ -1,10 +1,11 @@
-import Image from "next/image";
+import Image from "@/components/ui/img";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
 
 /**
  * Home intro: नमस्ते → Hello → the red Z, then the panel lifts with a curved edge. Pure CSS
  * (see .intro in globals.css), shown only when the pre-paint script sets `intro` on <html>
- * (first visit this session, motion allowed). The hero is already painted underneath.
+ * (first visit this session, motion allowed; shorter on phones). The hero is already painted
+ * underneath.
  */
 export function Intro() {
   return (

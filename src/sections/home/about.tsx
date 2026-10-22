@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/img";
 import type { ReactNode } from "react";
 import { Portrait } from "@/components/ui/portrait";
 import { facts, projects, site } from "@/lib/site";
@@ -90,7 +90,7 @@ export function About() {
               <p>
                 I&rsquo;m a third-year <strong>B.Tech CSE student at Jaipur National University</strong> (graduating{" "}
                 {site.education.grad}, CGPA {site.education.cgpa}), and the{" "}
-                <strong>founder of Zen-Z</strong>. I built all of it myself: the Android, iOS and web app, the admin dashboard the
+                <strong>founder of Zen-Z</strong>. I built all of it myself: the Android, iOS (PWA) and web app, the admin dashboard the
                 team uses to match every group, and the Supabase backend with payments.
               </p>
               <p>

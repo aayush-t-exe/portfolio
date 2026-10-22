@@ -92,16 +92,20 @@ export function CaseHero({
   );
 }
 
-/** Sticky chapter nav. Each item's underline fills as its chapter scrolls past (CSS only). */
+/**
+ * Sticky chapter nav, 24px under the header. Put it in a wrapper with the chapters, so it stops
+ * sticking after the last one. Each item's underline fills as its chapter scrolls
+ * past (CSS only); SiteBehavior gives it the cream tone while a cream chapter is under it.
+ */
 export function CaseToc({ items }: { items: TocItem[] }) {
   return (
-    <nav aria-label="On this page" className="case-toc z-40 mt-16 md:sticky md:top-[4.5rem] md:mt-24">
+    <nav aria-label="On this page" className="case-toc z-40 mt-16 md:sticky md:top-[5.25rem] md:mt-24">
       <div className="container-page">
         <ol className="scroller nav-pill flex w-max max-w-full gap-1 overflow-x-auto rounded-full p-1">
           {items.map((t, i) => (
             <li key={t.id} className="shrink-0">
               <a href={`#${t.id}`} className="relative flex h-9 items-center gap-2 overflow-hidden rounded-full px-3.5 text-sm whitespace-nowrap text-muted transition-colors hover:text-fg">
-                <span className="font-mono text-xs text-red-text tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <span className="toc-n font-mono text-xs text-red-text tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 {t.label}
                 <span aria-hidden className="absolute inset-x-3 bottom-1 h-px">
                   <span className="toc-fill absolute inset-0 origin-left" style={{ animationTimeline: timeline(t.id) } as CSSProperties} />
@@ -139,19 +143,22 @@ export function Chapter({
   const paper = tone === "paper";
   return (
     <section
-      id={id}
       aria-labelledby={`${id}-title`}
-      className={`chapter relative scroll-mt-28 py-20 md:py-32 ${paper ? "on-paper" : ""}`}
+      className={`chapter relative py-20 md:pt-40 md:pb-32 ${paper ? "on-paper" : ""}`}
       style={{ viewTimelineName: timeline(id) } as CSSProperties}
       data-section={`${String(n).padStart(2, "0")} — ${label}`}
     >
       <div className="container-page">
-        <p className="label">
-          <span className={paper ? "text-red-deep" : "text-red-text"}>{String(n).padStart(2, "0")}</span> — {label}
-        </p>
-        <h2 id={`${id}-title`} className="h2 mt-5 max-w-[20ch]" data-split>
-          {title}
-        </h2>
+        {/* The anchor. With html's scroll-padding, a jump lands the chapter's top edge at the top of
+            the screen on desktop (the label clears the chapter bar), just under the header on phones. */}
+        <div id={id} className="md:scroll-mt-[4.5rem]">
+          <p className="label">
+            <span className={paper ? "text-red-deep" : "text-red-text"}>{String(n).padStart(2, "0")}</span> — {label}
+          </p>
+          <h2 id={`${id}-title`} className="h2 mt-5 max-w-[20ch]" data-split>
+            {title}
+          </h2>
+        </div>
         {lead ? (
           <p className={`mt-6 max-w-[46ch] text-[clamp(1.2rem,1.9vw,1.6rem)] leading-[1.3] tracking-[-0.015em] ${paper ? "text-paper-ink" : "text-fg"}`}>{lead}</p>
         ) : null}

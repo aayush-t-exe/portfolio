@@ -48,7 +48,7 @@ Everything below is factual and matches the portfolio at ${site.url} and the res
 
 Full case study: ${site.url}${routes.zenz}
 
-[Zen-Z](${projects.zenz.url}) matches college students into small groups of strangers (4–5 people; sports up to 14) for cafés, dinners, movies and sports. Cafés and dinners are free to book (venues pay a commission); movies and sports are paid. Live on [Google Play](${projects.zenz.playStoreUrl}) and the web, and on iOS as a PWA.
+[Zen-Z](${projects.zenz.url}) matches college students into small groups of strangers (4–5 people; sports up to 14) for cafés, dinners, movies and sports. Cafés and dinners are free to book (venues pay a commission); movies and sports are paid. Live on [Google Play](${projects.zenz.playStoreUrl}); runs on Android, iOS (PWA) and web.
 
 - Results: ${z.users} users ${z.usersWindow}; ${z.revenue} total revenue; ${z.waitlist} students on the waitlist before launch; [Instagram ${projects.zenz.instagramHandle}](${projects.zenz.instagram}) with ${z.igFollowers} followers and ${z.igViews} views. Pitched at Jaipur National University's Shark Tank (${z.sharkTank}).
 - Built solo: the student app in React Native (Expo) + TypeScript (${z.appScreens} app screens), a Next.js admin dashboard with a drag-and-drop matching board, and a Supabase backend: ${z.tables} tables with row-level security on every one, ${z.migrations} migrations, ${z.dbFunctions} Postgres functions, ${z.edgeFunctions} Edge Functions and ${z.cronJobs} pg_cron jobs. PayU payments with server-side orders and SHA-512 verified webhooks.

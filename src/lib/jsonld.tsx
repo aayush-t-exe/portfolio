@@ -59,7 +59,7 @@ const zenzApp = {
   name: projects.zenz.name,
   url: projects.zenz.url,
   applicationCategory: "SocialNetworkingApplication",
-  operatingSystem: "Android, iOS (PWA), Web",
+  operatingSystem: "Android, iOS (PWA) and web",
   installUrl: projects.zenz.playStoreUrl,
   downloadUrl: projects.zenz.playStoreUrl,
   sameAs: [projects.zenz.playStoreUrl, projects.zenz.sourceUrl],

@@ -63,7 +63,7 @@ export function ZenZCase() {
         meta={[
           { term: "Role", value: "Founder & CTO, sole engineer" },
           { term: "Timeline", value: `${z.since} – now` },
-          { term: "Platforms", value: "Android, iOS (PWA), web, admin" },
+          { term: "Platforms", value: "Android, iOS (PWA) and web" },
           { term: "Stack", value: "React Native, Next.js, Supabase, PayU" },
         ]}
         media={<ZenzLead />}
@@ -74,87 +74,91 @@ export function ZenZCase() {
         ]}
       />
 
-      <CaseToc items={toc} />
+      {/* The chapter bar sticks only while the chapters scroll past. */}
+      <div>
+        <CaseToc items={toc} />
 
-      <Chapter
-        id="problem"
-        n={1}
-        label="Problem"
-        title="Meeting people shouldn't depend on luck."
-        lead="Or on someone volunteering to organise."
-      >
-        <Body>
-          <p>
-            <span className="whitespace-nowrap">Zen-Z</span> matches college students into <strong>small groups of strangers</strong> (4–5
-            people; sports up to 14) and gives each group a plan: a café, a dinner, a movie or a game. Cafés and dinners are free to
-            book (venues pay a commission); movies and sports are paid. Demand came first: <strong>{z.waitlist} students joined the
-            waitlist</strong> before launch.
-          </p>
-        </Body>
-      </Chapter>
+        <Chapter
+          id="problem"
+          n={1}
+          label="Problem"
+          title="Meeting people shouldn't depend on luck."
+          lead="Or on someone volunteering to organise."
+        >
+          <Body>
+            <p>
+              <span className="whitespace-nowrap">Zen-Z</span> matches college students into <strong>small groups of strangers</strong> (4–5
+              people; sports up to 14) and gives each group a plan: a café, a dinner, a movie or a game. Cafés and dinners are free to
+              book (venues pay a commission); movies and sports are paid. Demand came first: <strong>{z.waitlist} students joined the
+              waitlist</strong> before launch.
+            </p>
+          </Body>
+        </Chapter>
 
-      <Chapter
-        id="built"
-        n={2}
-        label="What I built"
-        title="App, admin, backend. One engineer."
-        lead="Product decisions, data model, app, internal tools, payments, CI and releases."
-        bleed={
-          <>
-            <Rail label="The Zen-Z booking flow, step by step">
-              {flow.map((f, i) => (
-                <li key={f.title} className="w-[68vw] max-w-[17rem] shrink-0 snap-center md:w-[17rem]">
-                  <Phone shots={[f.shot]} sizes="(min-width: 768px) 272px, 68vw" />
-                  <p className="label mt-5 text-red-text">{i < 5 ? String(i + 1).padStart(2, "0") : "Pay"}</p>
-                  <h3 className="display mt-1 text-[1.5rem] tracking-[-0.03em]">{f.title}</h3>
-                  <p className="mt-1 text-[0.9375rem] text-muted">{f.caption}</p>
-                </li>
-              ))}
-            </Rail>
-            <div className="container-page mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { n: "A", name: "The student app", stack: "React Native (Expo)", body: `Android, iOS (PWA) and web from one codebase, ${z.appScreens} screens, realtime group chat, push notifications.` },
-                { n: "B", name: "The admin dashboard", stack: "Next.js", body: "A drag-and-drop board the team uses to hand-match every group, plus moderation and analytics." },
-                { n: "C", name: "The backend", stack: "Supabase · Deno", body: `Postgres with RLS on all ${z.tables} tables, ${z.edgeFunctions} Edge Functions, ${z.cronJobs} cron jobs, PayU payments.` },
-              ].map((s) => (
-                <div key={s.n} className="card flex flex-col p-6" data-fade>
-                  <div className="flex items-center justify-between">
-                    <span className="grid size-8 place-items-center rounded-full bg-red font-mono text-xs text-white">{s.n}</span>
-                    <span className="font-mono text-xs text-muted">{s.stack}</span>
+        <Chapter
+          id="built"
+          n={2}
+          label="What I built"
+          title="App, admin, backend. One engineer."
+          lead="Product decisions, data model, app, internal tools, payments, CI and releases."
+          bleed={
+            <>
+              <Rail label="The Zen-Z booking flow, step by step">
+                {flow.map((f, i) => (
+                  <li key={f.title} className="w-[68vw] max-w-[17rem] shrink-0 snap-center md:w-[17rem]">
+                    <Phone shots={[f.shot]} sizes="(min-width: 768px) 272px, min(68vw, 272px)" />
+                    <p className="label mt-5 text-red-text">{i < 5 ? String(i + 1).padStart(2, "0") : "Pay"}</p>
+                    <h3 className="display mt-1 text-[1.5rem] tracking-[-0.03em]">{f.title}</h3>
+                    <p className="mt-1 text-[0.9375rem] text-muted">{f.caption}</p>
+                  </li>
+                ))}
+              </Rail>
+              <div className="container-page mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { n: "A", name: "The student app", stack: "React Native (Expo)", body: `Android, iOS (PWA) and web from one codebase, ${z.appScreens} screens, realtime group chat, push notifications.` },
+                  { n: "B", name: "The admin dashboard", stack: "Next.js", body: "A drag-and-drop board the team uses to hand-match every group, plus moderation and analytics." },
+                  { n: "C", name: "The backend", stack: "Supabase · Deno", body: `Postgres with RLS on all ${z.tables} tables, ${z.edgeFunctions} Edge Functions, ${z.cronJobs} cron jobs, PayU payments.` },
+                ].map((s) => (
+                  <div key={s.n} className="card flex flex-col p-6" data-fade>
+                    <div className="flex items-center justify-between">
+                      <span className="grid size-8 place-items-center rounded-full bg-red font-mono text-xs text-white">{s.n}</span>
+                      <span className="font-mono text-xs text-muted">{s.stack}</span>
+                    </div>
+                    <h3 className="display mt-6 text-[1.5rem] tracking-[-0.03em]">{s.name}</h3>
+                    <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">{s.body}</p>
                   </div>
-                  <h3 className="display mt-6 text-[1.5rem] tracking-[-0.03em]">{s.name}</h3>
-                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </>
-        }
-      />
+                ))}
+              </div>
+            </>
+          }
+        />
 
-      <Chapter
-        id="architecture"
-        n={3}
-        label="Architecture"
-        tone="paper"
-        title="Boring, proven parts. The database enforces the rules."
-      >
-        <Body>
-          <p>
-            Access rules live in the database (<strong>row-level security on all {z.tables} tables</strong>), so they hold even if the
-            app has a bug. Money only moves in Edge Functions, and a trigger seals free bookings so the client can&rsquo;t fake a ₹0
-            price.
-          </p>
-        </Body>
-        <Architecture className="mt-12 md:mt-16" />
-      </Chapter>
+        <Chapter
+          id="architecture"
+          n={3}
+          label="Architecture"
+          tone="paper"
+          title="Boring, proven parts. The database enforces the rules."
+        >
+          <Body>
+            <p>
+              Access rules live in the database (<strong>row-level security on all {z.tables} tables</strong>), so they hold even if the
+              app has a bug. Money only moves in Edge Functions, and a trigger seals free bookings so the client can&rsquo;t fake a ₹0
+              price.
+            </p>
+          </Body>
+          <Architecture className="mt-12 md:mt-16" />
+        </Chapter>
 
-      <Chapter id="incident" n={4} label="Incident" title="A paid booking never confirmed. I fixed it the same day.">
-        <Incident />
-      </Chapter>
+        <Chapter id="incident" n={4} label="Incident" title="A paid booking never confirmed. I fixed it the same day.">
+          <Incident />
+        </Chapter>
 
-      <Chapter id="results" n={5} label="Results" tone="paper" title="Paying students, live on Play." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
-        <Results />
-      </Chapter>
+        <Chapter id="results" n={5} label="Results" tone="paper" title="Paying students, live on Play." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
+          <Results />
+        </Chapter>
+
+      </div>
 
       <NextLinks
         links={[
@@ -199,23 +203,26 @@ function Results() {
           </div>
         ))}
       </dl>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-[22px] border border-paper-line p-6">
+      <div className="grid gap-4 lg:grid-cols-12">
+        <div className="rounded-[22px] border border-paper-line p-6 lg:col-span-7">
           <p className="label">Under the hood</p>
-          <dl className="mt-3">
+          <dl className="mt-3 sm:grid sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5 sm:gap-x-8">
             {build.map(([label, n]) => (
-              <div key={label} className="flex items-baseline justify-between gap-4 border-b border-paper-line py-2.5 text-[0.9375rem] last:border-0">
+              <div
+                key={label}
+                className="flex items-baseline justify-between gap-4 border-b border-paper-line py-2.5 text-[0.9375rem] last:border-0 sm:[&:nth-child(5)]:border-0"
+              >
                 <dt className="text-paper-muted">{label}</dt>
                 <dd className="num text-lg">{n}</dd>
               </div>
             ))}
           </dl>
         </div>
-        <div className="rounded-[22px] border border-paper-line p-6">
+        <div className="flex flex-col rounded-[22px] border border-paper-line p-6 lg:col-span-5">
           <p className="label">Along the way</p>
-          <ul className="mt-4 space-y-4 text-[1.0625rem] leading-relaxed">
+          <ul className="mt-4 flex flex-1 flex-col justify-between gap-4 text-[1.125rem] leading-relaxed">
             {along.map((t) => (
-              <li key={t} className="flex gap-3">
+              <li key={t} className="flex gap-3 border-t border-paper-line pt-4 first:border-0 first:pt-0">
                 <span aria-hidden className="mt-[0.6em] size-2 shrink-0 rounded-full bg-red" />
                 {t}
               </li>

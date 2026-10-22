@@ -1,7 +1,8 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "@/components/ui/img";
 import { Phone } from "@/components/ui/phone";
 import { screens } from "@/sections/home/zenz-data";
-import admin from "@/assets/zenz/admin-band.png";
+import admin from "@/assets/zenz/admin-dashboard.webp";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
 import today from "@/assets/prelims/today.jpg";
 import quiz from "@/assets/prelims/quiz.jpg";
@@ -22,22 +23,29 @@ export function Browser({ src, alt, url, sizes, priority }: { src: StaticImageDa
   );
 }
 
-/** Zen-Z lead: the live admin dashboard, with the plan and payment screens in front. */
+/**
+ * Zen-Z lead: the whole admin dashboard in a browser frame (its height follows the screenshot, so
+ * nothing is cropped), with the plan and payment screens in front. Phones: the frame on top and
+ * the two phones overlapping its lower edge. Wider: the frame on the left, the phones over its
+ * right edge, where the dashboard has its own margin.
+ */
 export function ZenzLead() {
   return (
-    <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-[radial-gradient(120%_90%_at_70%_20%,#3a0605,#0f0b0a_60%)] ring-1 ring-line sm:aspect-[16/9]">
-      <Image src={zGlossy} alt="" aria-hidden sizes="40vw" className="absolute top-[5%] right-[4%] w-[26%] opacity-60" />
-      <div className="absolute top-[8%] left-[5%] w-[90%] sm:top-1/2 sm:w-[64%] sm:-translate-y-1/2">
+    <div className="relative isolate overflow-hidden rounded-[28px] bg-[radial-gradient(120%_90%_at_70%_20%,#3a0605,#0f0b0a_60%)] px-[4%] pt-[5%] pb-[7%] ring-1 ring-line sm:py-[4%]">
+      <Image src={zGlossy} alt="" aria-hidden sizes="(min-width: 640px) 24vw, 30vw" className="absolute top-[3%] right-[3%] -z-10 w-[30%] opacity-60 sm:top-[5%] sm:w-[24%]" />
+      <div className="sm:w-[60%]">
         <Browser
           src={admin}
           url="admin.zen-z.site"
           priority
-          sizes="(min-width: 640px) 60vw, 90vw"
-          alt="Zen-Z admin dashboard: pending reports and payments to check, both at zero, with the students and reports tools below"
+          sizes="(min-width: 1408px) 790px, (min-width: 640px) 56vw, 92vw"
+          alt="Zen-Z admin dashboard: bookings this week by activity, groups formed, unmatched students, pending reports and payments to check, the students, reports, referrals and analytics tools, and the matching queue"
         />
       </div>
-      <Phone eager shots={[screens.plan]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[30%] bottom-[-14%] w-[40%] rotate-[-6deg] sm:right-[19%] sm:bottom-[-10%] sm:w-[19%]" />
-      <Phone eager shots={[screens.pay]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[5%] bottom-[-6%] w-[40%] rotate-[5deg] sm:right-[4%] sm:bottom-[-4%] sm:w-[19%]" />
+      <div className="relative -mt-[8%] flex items-end justify-center gap-[7%] sm:absolute sm:right-[4%] sm:bottom-[9%] sm:mt-0 sm:w-[40%] sm:gap-[3%]">
+        <Phone eager shots={[screens.plan]} sizes="(min-width: 1408px) 240px, (min-width: 640px) 18vw, 36vw" className="w-[36%] rotate-[-6deg] sm:w-[46%]" />
+        <Phone eager shots={[screens.pay]} sizes="(min-width: 1408px) 240px, (min-width: 640px) 18vw, 36vw" className="mb-[5%] w-[36%] rotate-[5deg] sm:mb-[9%] sm:w-[46%]" />
+      </div>
     </div>
   );
 }

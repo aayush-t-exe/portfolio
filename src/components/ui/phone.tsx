@@ -1,4 +1,5 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "@/components/ui/img";
 import type { CSSProperties } from "react";
 import { zenzDemo } from "@/lib/media";
 

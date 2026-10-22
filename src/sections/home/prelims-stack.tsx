@@ -109,16 +109,16 @@ export function PrelimsStack() {
             <li
               key={c.kicker}
               data-stack-card
-              className="stack-card on-paper grid origin-top overflow-hidden rounded-[28px] md:sticky md:mb-[14vh] md:last:mb-0 md:min-h-[min(36rem,74svh)] md:grid-cols-2 md:[top:calc(6rem+var(--i)*1.75rem)]"
+              className="stack-card on-paper grid origin-top overflow-hidden rounded-[28px] md:sticky md:mb-[14vh] md:last:mb-0 md:min-h-[min(32rem,70svh)] md:grid-cols-2 md:[top:calc(6rem+var(--i)*1.75rem)]"
               style={{ "--i": i } as CSSProperties}
             >
               <div className="flex flex-col p-6 sm:p-10 md:p-12">
                 <p className="label">{c.kicker}</p>
-                <p className="num mt-6 text-[clamp(3.5rem,8vw,7rem)] leading-[0.85] text-red">{c.big}</p>
+                <p className="num mt-6 md:mt-auto text-[clamp(3.5rem,8vw,7rem)] leading-[0.85] text-red">{c.big}</p>
                 <h3 className="display mt-5 text-[clamp(1.6rem,2.6vw,2.4rem)] leading-[1.02] tracking-[-0.035em]">{c.title}</h3>
-                <p className="mt-4 max-w-[46ch] text-[1rem] leading-relaxed text-paper-muted">{c.body}</p>
+                <p className="mt-4 max-w-[46ch] text-[1rem] leading-relaxed text-paper-muted md:mb-auto">{c.body}</p>
               </div>
-              <div className="relative flex items-center justify-center bg-paper-2 px-6 py-10 md:py-12">{c.phones}</div>
+              <div className="relative flex items-center justify-center bg-paper-2 px-6 py-10 md:py-10">{c.phones}</div>
             </li>
           ))}
         </ol>

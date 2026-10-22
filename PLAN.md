@@ -57,7 +57,7 @@ Tested Archivo (wdth 112, wght 800), Syne (800) and Clash Display (variable, 600
 ### Homepage (top → bottom)
 | # | Section | Ground | Motion (desktop) | Mobile / reduced motion |
 | --- | --- | --- | --- | --- |
-| 00 | Intro: नमस्ते → Hello → red Z, then the overlay lifts with a curved edge. ≤ 1.5 s, once per session, home only, skippable | ink | CSS keyframes from first paint (hero is painted underneath, so LCP isn't blocked) | Same on mobile; skipped under reduced motion |
+| 00 | Intro: नमस्ते → Hello → red Z, then the overlay lifts with a curved edge. ≤ 1.5 s, once per session, home only, skippable | ink | CSS keyframes from first paint (hero is painted underneath, so LCP isn't blocked) | Shorter on phones (≤ 1.3 s); skipped under reduced motion |
 | 01 | Hero: pill (open to internships · Jaipur · live IST clock), H1, sub-line, Magnetic "See my work" / "Resume", tilted phone over a glowing glossy Z with hand-drawn stickers, giant "AAYUSH THAKUR" marquee behind, count-up stat row | ink | Word rise on first paint (CSS), marquee reacts to scroll velocity, stickers parallax, phone tilts toward the cursor | Phone static below the copy; marquee loops slowly via CSS; stats are final values |
 | — | Tech marquee: two tilted bands (red, cream) in opposite directions, logo + name | ink | Speeds up with scroll velocity | CSS loop; static under reduced motion |
 | 02 | Zen-Z showcase: the hero phone flies in and pins; the left list steps through Pick an activity → Choose a slot → Set a budget → Pick your group → Pay → Get matched, a red highlight bar moves and the phone screen swaps; activity icons float; then Google Play + case-study links | ink | One master ScrollTrigger: hero pose → pinned stage → flat | No pin: each step is a phone + caption card in a snap row |
@@ -104,34 +104,37 @@ pages (React `<ViewTransition>`: the new page wipes in under a curved edge, ≤ 
 - **Demo video slot:** `public/media/zenz-demo.mp4` (+ `.webm`, poster). Turned on in one place
   (`src/lib/media.ts`). Until then the phone crossfades the real screenshots.
 
-### [CONFIRM] for Aayush
-1. **Commit history:** this repo's history contains "Co-Authored-By: Claude" trailers, which show
-   on GitHub. Squash into one fresh initial commit before the first push? (Not done without a yes.)
-2. **Linked repos show AI tooling:** the "Source" (Zen-Z) and "Read the code" (PrelimsDaily) buttons
-   open repos that contain Co-Authored-By: Claude trailers, a CLAUDE.md, a commit titled "WIP
-   checkpoint before Claude account switch" and one titled "Keep local assistant notes out of the
-   repo". They sit next to "solo" / "built all of it myself". Keep the links, clean those repos, or
-   drop the links?
-3. **Commit count:** the Zen-Z repo has 183 commits on HEAD (186 across refs); the resume says 179.
-   The case page shows 183. Update the resume, or tell me which number to show.
-4. **Screens:** the repo has 20 real app routes; the resume says "~25 screens". The site says 20.
-   The resume is the one that overclaims.
-5. **Launch date:** the timeline says "Sep 2026: launched on Google Play". Repo evidence (Play Store
-   prep 4–6 Sep, launch-day data wipe and JNU launch poster 22–23 Sep) suggests ~23 Sep. Confirm.
-6. **"Started Zen-Z, Jul 2026":** site.ts and the resume say July; the first commit is 11 Aug (the
-   timeline shows both: "Jul: started", "Aug: first commit").
-7. **CGPA 8.5/10** (resume) is shown in About. Remove if you'd rather not show it.
-8. **PrelimsDaily on iOS:** only an Android build is distributed, so the site now says "Android and
-   web". If you ran it on iOS, say so and I'll add it back.
-9. **Portrait:** the current photo gets a red duotone + halftone treatment. Send a better photo
-   (4:5) to swap in at `src/assets/about/portrait.jpg`.
-10. **Demo recording:** `public/media/zenz-demo.mp4` / `.webm` / poster when ready (see Assets).
-11. **zen-z.site role:** listed as "Marketing site · design & build · 2026" (`apps/marketing` in the
-   Zen-Z repo).
-12. **Intro on phones:** the नमस्ते → Hello intro plays on desktop only; on phones the content
-   shows at once (better for mobile LCP). Say if you want it on phones too.
+### Decided (2026-10-22, Aayush)
+1. **Commit history:** kept as it is (no squash).
+2. **Source / "Read the code" links:** kept as they are.
+3. **Facts as on the site:** 183 commits, 20 app screens, launched Sep 2026, "Jul: started" and
+   "Aug: first commit", CGPA 8.5/10 shown, PrelimsDaily "Android and web", zen-z.site "Marketing
+   site · design & build · 2026". The resume (`public/Aayush_Thakur_Resume.pdf`) now matches
+   (183 commits, 20 app screens).
+4. **Intro on phones:** yes, shorter (≤1.3 s), skippable, once per session, skipped under reduced
+   motion.
 
-### Results (2026-10-22, local production build, Lighthouse 13.5 with Edge)
+### Still open
+- **Portrait:** send a better photo (4:5) to swap in at `src/assets/about/portrait.jpg`.
+- **Demo recording:** `public/media/zenz-demo.mp4` / `.webm` / poster when ready (see Assets).
+
+### Results (2026-10-22, review fixes; local production build, Lighthouse 12.8 with Edge)
+Same machine and noise caveat as below. "Before" is the build at d380ac1 with a warm image cache
+(a first, cold run scored mobile `/` 76, LCP 4.3 s). During the last runs the laptop sat at ~70%
+CPU from other apps; `/stack` (whose code barely changed) paid for it in TBT.
+
+| Route | Mobile perf before → after | Desktop perf before → after | A11y / BP / SEO |
+| --- | --- | --- | --- |
+| `/` | 89 → 89–90 (LCP 3.7 → 3.6 s) | 97 → 97 | 100 / 100 / 100 |
+| `/work/zen-z` | 94 → 93 | 99 → 99 | 100 / 100 / 100 |
+| `/work/prelimsdaily` | 93 → 94 | 99 → 99 | 100 / 100 / 100 |
+| `/stack` | 93 → 85–87 (TBT 90 → 300–350 ms) | 99 → 100 | 100 / 100 / 100 |
+
+Home on mobile: image savings flagged 67 → 12 KiB, transfer 496 → 450 KiB, DOM 1022 → 895
+nodes, HTML 355 → 288 kB. Speed Index is up (2.0 → 2.9 s) because the intro now plays on phones
+and Lighthouse always loads a fresh session.
+
+### Results (2026-10-22, v4, local production build, Lighthouse 13.5 with Edge)
 This laptop is noisy: identical back-to-back runs swing by up to 40 points from background CPU
 load (TBT jumps from ~50 ms to 1–2.9 s on pages that load no motion code). Numbers below are the
 clean runs (TBT ≤ 150 ms); every run is in the session log.
@@ -175,10 +178,26 @@ cached image optimisation are faster than `next start` on a laptop).
   match the repo, the incident is told fix-first and exactly, AA contrast everywhere (small red
   text on cream uses #A80400), keyboard access to the static flow steps and the rail, inert page
   behind the mobile menu.
+- 2026-10-22 (review fixes): `.phone*` rules moved into `@layer components`, so utilities on a
+  phone (`absolute`) win; unlayered they silently broke the Zen-Z lead. The lead now shows the full
+  admin dashboard (new 1900×1585 screenshot, `src/assets/zenz/admin-dashboard.webp`) in a frame
+  sized by the image, phones over its right margin (desktop) or lower edge (phones).
+- 2026-10-22 (review fixes): the travelling phone runs the hero's screen loop (a CSS layer cloned
+  from the hidden hero phone, so no extra HTML) until the first scroll, then wipes to the flow.
+- 2026-10-22 (review fixes): the work preview's hide runs once per show (restarting it on every
+  scroll event left a half-faded card stuck over later sections); it hides when the pointer leaves
+  the list or the list leaves the screen. Its strip is cloned from the phone cards in the desktop
+  chunk instead of being in the HTML twice.
+- 2026-10-22 (review fixes): case-page chapter bar 24 px under the header, cream over cream
+  chapters (SiteBehavior, an IntersectionObserver on a 1 px line), stops at the last chapter;
+  anchors sit on each chapter's label + heading and land the chapter edge at the top.
+- 2026-10-22 (review fixes): payload: unused `blurDataURL`s dropped from the RSC payload
+  (`components/ui/img.tsx`), 11 image widths instead of 15, accurate `sizes`, marquee items once
+  per copy. Home HTML 355 → 288 kB (gzip 49.6 → 42.9 kB).
+- 2026-10-22 (review fixes): the intro plays on phones too (decided), with shorter timings.
 
 ### Deploy (GitHub + Vercel)
-1. Decide [CONFIRM] 1 first. To start with a clean history (optional): `git checkout --orphan
-   fresh`, `git add -A`, `git commit -m "Portfolio v4"`, `git branch -D main`, `git branch -m main`.
+1. The git history is kept as it is (decided 2026-10-22), so push `main` as it stands.
 2. GitHub → New repository → name it (e.g. `portfolio`), Public, **no** README/.gitignore/license →
    Create. Then in `S:\portfolio`: `git remote add origin https://github.com/aayush-t-exe/portfolio.git`
    and `git push -u origin main`.

@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type Cleanup = () => void;
 
@@ -77,6 +78,31 @@ export function setupJourney(): Cleanup | void {
   gsap.set(shots, { autoAlpha: 1, clipPath: (i: number) => (i === 0 ? "inset(0% 0% 0% 0%)" : "inset(100% 0% 0% 0%)") });
   if (finale) gsap.set(finale, { autoAlpha: 0, y: 30, scale: 0.85 });
 
+  // At rest in the hero, the travelling phone runs the hero's screen loop (CSS, cloned from the
+  // hidden hero phone). The first scroll wipes the loop away to the flow's first screen;
+  // back at the top, it plays again.
+  const heroScreen = heroSlot.querySelector<HTMLElement>(".phone-screen");
+  const screen = shots[0]?.parentElement;
+  let loop: HTMLElement | null = null;
+  let loopTrigger: ScrollTrigger | undefined;
+  if (heroScreen && screen && !heroScreen.querySelector("video")) {
+    loop = document.createElement("div");
+    loop.className = "phone-loop screen-cycle";
+    loop.style.cssText = heroScreen.style.cssText;
+    heroScreen.querySelectorAll(".phone-shot").forEach((img) => {
+      const copy = img.cloneNode() as HTMLElement;
+      copy.removeAttribute("data-shot"); // the stage's [data-shot] rules are for the flow screens
+      copy.setAttribute("alt", "");
+      loop!.append(copy);
+    });
+    screen.append(loop);
+    const wipe = (on: boolean) =>
+      gsap.to(loop, { clipPath: on ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", duration: on ? 0.5 : 0.6, ease: "power3.inOut", overwrite: true });
+    gsap.set(loop, { clipPath: "inset(0% 0% 0% 0%)" });
+    loopTrigger = ScrollTrigger.create({ start: 0, end: 24, onLeave: () => wipe(false), onEnterBack: () => wipe(true) });
+    if (scrollY > 24) gsap.set(loop, { clipPath: "inset(0% 0% 100% 0%)" });
+  }
+
   let active = 0;
   const flow = gsap.timeline({
     defaults: { ease: "power2.inOut" },
@@ -109,6 +135,8 @@ export function setupJourney(): Cleanup | void {
   });
 
   return () => {
+    loopTrigger?.kill();
+    loop?.remove();
     root.classList.remove("traveller");
     delete zz.dataset.active;
     items.forEach((el) => delete el.dataset.on);
@@ -149,18 +177,51 @@ export function setupWorkPreview(): Cleanup | void {
   const strip = card?.querySelector<HTMLElement>("[data-work-strip]");
   if (!list || !card || !strip) return;
   const rows = [...list.querySelectorAll<HTMLElement>("[data-work-row]")];
+  // One panel per row, copied from the row's phone card (hidden at this width).
+  strip.replaceChildren(
+    ...rows.map((row) => {
+      const visual = row.querySelector<HTMLElement>("[data-work-visual]");
+      const panel = document.createElement("div");
+      panel.className = "h-full";
+      if (visual) {
+        panel.style.background = visual.style.background;
+        panel.append(...[...visual.childNodes].map((n) => n.cloneNode(true)));
+      }
+      return panel;
+    }),
+  );
   gsap.set(card, { xPercent: -50, yPercent: -50, scale: 0.4, autoAlpha: 0 });
   const xTo = gsap.quickTo(card, "x", { duration: 0.7, ease: "power3" });
   const yTo = gsap.quickTo(card, "y", { duration: 0.7, ease: "power3" });
+  // Hide runs once per show: restarting it on every scroll event left it stuck half-faded.
+  let visible = false;
   const show = (i: number) => {
+    visible = true;
     gsap.to(card, { scale: 1, autoAlpha: 1, duration: 0.45, ease: "power3.out", overwrite: "auto" });
     gsap.to(strip, { yPercent: -100 * i, duration: 0.7, ease: "power3.inOut", overwrite: "auto" });
   };
-  const hide = () => gsap.to(card, { scale: 0.4, autoAlpha: 0, duration: 0.35, ease: "power3.in", overwrite: "auto" });
+  const hide = () => {
+    if (!visible) return;
+    visible = false;
+    gsap.to(card, { scale: 0.4, autoAlpha: 0, duration: 0.35, ease: "power3.in", overwrite: "auto" });
+  };
+  const pointer = { x: -1, y: -1 };
   const move = (e: PointerEvent) => {
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
     xTo(e.clientX);
     yTo(e.clientY);
   };
+  // Scrolling moves the list out from under a still pointer (no pointerleave fires then).
+  const onScroll = () => {
+    if (!visible || document.activeElement?.closest("[data-work-row]")) return;
+    const r = list.getBoundingClientRect();
+    if (pointer.x < r.left || pointer.x > r.right || pointer.y < r.top || pointer.y > r.bottom) hide();
+  };
+  const io = new IntersectionObserver(([en]) => {
+    if (!en.isIntersecting) hide();
+  });
+  io.observe(list);
   const offs = rows.map((row, i) => {
     const enter = () => show(i);
     const focus = () => {
@@ -180,13 +241,15 @@ export function setupWorkPreview(): Cleanup | void {
   });
   list.addEventListener("pointerleave", hide);
   window.addEventListener("pointermove", move, { passive: true });
-  window.addEventListener("scroll", hide, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
   return () => {
     offs.forEach((o) => o());
+    io.disconnect();
     list.removeEventListener("pointerleave", hide);
     window.removeEventListener("pointermove", move);
-    window.removeEventListener("scroll", hide);
+    window.removeEventListener("scroll", onScroll);
     gsap.set([card, strip], { clearProps: "transform,opacity,visibility" });
+    strip.replaceChildren();
   };
 }
 

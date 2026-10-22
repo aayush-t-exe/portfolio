@@ -1,11 +1,12 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "@/components/ui/img";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { Phone } from "@/components/ui/phone";
 import { projects, routes } from "@/lib/site";
 import { screens } from "@/sections/home/zenz-data";
-import admin from "@/assets/zenz/admin-band.png";
+import admin from "@/assets/zenz/admin-dashboard.webp";
 import zenzSite from "@/assets/v4/brand/zen-z-site.webp";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
 import today from "@/assets/prelims/today.jpg";
@@ -47,8 +48,8 @@ const rows: Row[] = [
     bg: "#e9e3d5",
     thumb: { src: admin, fit: "cover" },
     visual: (
-      <div className="grid size-full place-items-center p-[8%]">
-        <Image src={admin} alt="" sizes="360px" className="w-full rounded-lg shadow-[0_20px_40px_-16px_rgb(0_0_0/0.45)]" />
+      <div className="grid size-full grid-cols-[minmax(0,1fr)] grid-rows-[minmax(0,1fr)] place-items-center p-[7%]">
+        <Image src={admin} alt="" sizes="320px" className="max-h-full w-auto max-w-full rounded-lg shadow-[0_20px_40px_-16px_rgb(0_0_0/0.45)]" />
       </div>
     ),
   },
@@ -84,8 +85,8 @@ const rows: Row[] = [
 
 /**
  * 04 Selected work (Dennis-style). Desktop: big rows; a preview card follows the cursor and its
- * strip slides to the hovered row (motion chunk; focus mirrors hover). Phones: stacked image
- * cards. Rows are real links either way.
+ * strip (copies of the phone cards) slides to the hovered row (motion chunk; focus mirrors
+ * hover). Phones: stacked image cards. Rows are real links either way.
  */
 export function WorkIndex() {
   return (
@@ -112,8 +113,8 @@ export function WorkIndex() {
                 data-work-row={i}
                 data-cursor="View"
               >
-                {/* Phones: the image card */}
-                <div className="mb-5 aspect-[4/3] overflow-hidden rounded-[20px] md:hidden" style={{ background: r.bg }} aria-hidden>
+                {/* Phones: the image card (the desktop preview clones it) */}
+                <div className="mb-5 aspect-[4/3] overflow-hidden rounded-[20px] md:hidden" style={{ background: r.bg }} aria-hidden data-work-visual>
                   {r.visual}
                 </div>
                 <span className="display block text-[clamp(2rem,5.6vw,5.25rem)] leading-[0.95] tracking-[-0.04em] transition-[transform,color] duration-500 ease-[var(--ease-expo)] md:col-span-7 md:group-hover:translate-x-4">
@@ -149,15 +150,10 @@ export function WorkIndex() {
         </ul>
       </div>
 
-      {/* The floating preview (desktop, fine pointer, motion allowed). */}
+      {/* The floating preview (desktop, fine pointer, motion allowed). The motion chunk fills the
+          strip with copies of the phone cards above, so the visuals aren't in the HTML twice. */}
       <div aria-hidden data-work-preview className="work-preview pointer-events-none fixed top-0 left-0 z-40 hidden h-[17rem] w-[22rem] overflow-hidden rounded-[18px] md:block">
-        <div data-work-strip className="h-full">
-          {rows.map((r) => (
-            <div key={r.name} className="h-full" style={{ background: r.bg }}>
-              {r.visual}
-            </div>
-          ))}
-        </div>
+        <div data-work-strip className="h-full" />
       </div>
     </section>
   );

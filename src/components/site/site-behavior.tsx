@@ -13,6 +13,7 @@ import { useEffect } from "react";
  * 4. Count-ups for [data-count] stats as they enter (the final value is already in the HTML,
  *    and stays put under reduced motion or when the stat is already on screen).
  * 5. Links inside the mobile menu sheet close it.
+ * 6. The case pages' sticky chapter bar turns cream over cream chapters.
  * It lives in the root layout and re-scans whenever the path changes.
  */
 export function SiteBehavior() {
@@ -138,6 +139,41 @@ export function SiteBehavior() {
       cleanups.push(() => {
         spy.disconnect();
         navs.forEach((a) => a.removeAttribute("aria-current"));
+      });
+    }
+
+    // 6. Case pages: the sticky chapter bar takes the cream tone while a cream chapter is under it.
+    const toc = document.querySelector<HTMLElement>(".case-toc");
+    const papers = [...document.querySelectorAll<HTMLElement>(".chapter.on-paper")];
+    if (toc && papers.length) {
+      let tone: IntersectionObserver | undefined;
+      const watch = () => {
+        tone?.disconnect();
+        delete toc.dataset.tone;
+        const cs = getComputedStyle(toc);
+        if (cs.position !== "sticky") return;
+        // A 1px band across the bar's middle.
+        const line = Math.round(parseFloat(cs.top) + toc.offsetHeight / 2);
+        const under = new Set<Element>();
+        tone = new IntersectionObserver(
+          (entries) => {
+            for (const en of entries) {
+              if (en.isIntersecting) under.add(en.target);
+              else under.delete(en.target);
+            }
+            if (under.size) toc.dataset.tone = "paper";
+            else delete toc.dataset.tone;
+          },
+          { rootMargin: `${-line}px 0px ${line + 1 - innerHeight}px 0px` },
+        );
+        papers.forEach((el) => tone!.observe(el));
+      };
+      watch();
+      window.addEventListener("resize", watch);
+      cleanups.push(() => {
+        tone?.disconnect();
+        window.removeEventListener("resize", watch);
+        delete toc.dataset.tone;
       });
     }
 

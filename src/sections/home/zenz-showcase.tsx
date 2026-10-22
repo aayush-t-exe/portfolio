@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/img";
 import Link from "next/link";
 import { ArrowRight } from "@/components/icons";
 import { Phone } from "@/components/ui/phone";
@@ -29,7 +29,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
 export function ZenzShowcase() {
   return (
     <section id="zen-z" data-section="02 — Zen-Z" aria-labelledby="zenz-title" className="zz relative z-10">
-      <div data-zz-pin className="container-page grid gap-y-10 pt-24 pb-20 md:min-h-svh md:grid-cols-12 md:items-center md:gap-x-8 md:pt-24 md:pb-10">
+      <div data-zz-pin className="container-page grid gap-y-10 pt-8 pb-20 md:min-h-svh md:grid-cols-12 md:items-center md:gap-x-8 md:pt-24 md:pb-10">
         <div className="md:col-span-6 lg:col-span-5">
           <p className="label">
             <span className="text-red-text">02</span> — Zen-Z · live on Google Play
@@ -112,7 +112,7 @@ export function ZenzShowcase() {
       <ol className="scroller -mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[var(--gutter)] pb-20 md:hidden" aria-label="The Zen-Z booking flow">
         {steps.map((s, i) => (
           <li key={s.title} className="w-[74vw] max-w-[18rem] shrink-0 snap-center" data-fade>
-            <Phone shots={[s.shot]} sizes="74vw" />
+            <Phone shots={[s.shot]} sizes="min(74vw, 288px)" />
             <p className="label mt-5 text-red-text">{n(i)}</p>
             <h3 className="display mt-1 text-2xl tracking-[-0.03em]">{s.title}</h3>
             <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-muted">{s.body}</p>

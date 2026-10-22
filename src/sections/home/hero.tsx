@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/img";
 import type { CSSProperties } from "react";
 import { ArrowRight, ArrowUpRight } from "@/components/icons";
 import { Phone } from "@/components/ui/phone";
@@ -81,7 +81,7 @@ export function Hero() {
 
         {/* The phone stage. [data-hero-slot] is where the travelling phone starts. */}
         <div className="relative mx-auto w-full max-w-[22rem] md:col-span-5 md:mr-0 md:max-w-none lg:col-span-6">
-          <div className="relative mx-auto w-[min(68vw,19rem)] md:w-[clamp(15rem,21vw,19.5rem)]">
+          <div className="relative mx-auto w-[min(50vw,13.5rem,26svh)] md:w-[clamp(15rem,21vw,19.5rem)]">
             <div
               aria-hidden
               className="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[150%] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.55),rgb(225_6_0/0.12)_55%,transparent)]"
@@ -101,17 +101,17 @@ export function Hero() {
             <div data-hero-slot className="relative">
               <div className="hero-phone rise-fade" style={{ "--d": "200ms" } as CSSProperties}>
                 <div className="[transform:perspective(1400px)_rotate(5deg)_rotateY(-22deg)_rotateX(10deg)]">
-                  <Phone shots={heroShots} cycle video eager sizes="(min-width: 768px) 20vw, 68vw" />
+                  <Phone shots={heroShots} cycle video eager sizes="(min-width: 768px) 20vw, 216px" />
                 </div>
               </div>
             </div>
 
             {/* Stickers: the app's own hand-drawn art. */}
-            <span aria-hidden className="absolute bottom-[4%] -left-[62%] z-20 w-[80%] max-w-[16rem] -rotate-[8deg]" data-sticker="0.6">
+            <span aria-hidden className="absolute bottom-[3%] -left-[40%] z-20 w-[70%] max-w-[16rem] -rotate-[8deg] md:bottom-[2%] md:-left-[88%] md:w-[70%]" data-sticker="0.6">
               <Image
                 src={readyToMeet}
                 alt=""
-                sizes="260px"
+                sizes="(min-width: 768px) 220px, 150px"
                 className="rise-fade block w-full rounded-2xl shadow-[0_24px_50px_-18px_rgb(0_0_0/0.8)]"
                 style={{ "--d": "520ms" } as CSSProperties}
               />
@@ -142,18 +142,15 @@ export function Hero() {
       <div
         aria-hidden
         data-marquee
-        data-speed="38"
+        data-speed="19"
         className="marquee pointer-events-none absolute inset-x-0 bottom-[0.06em] -z-10 text-[clamp(4.5rem,14vw,15rem)]"
+        style={{ "--dur": "20s" } as CSSProperties}
       >
         <div className="marquee-track display-caps text-fg/95 select-none">
           {[0, 1].map((k) => (
-            <span key={k} className="flex shrink-0 items-center">
-              {[0, 1].map((j) => (
-                <span key={j} className="flex items-center pr-[0.25em]">
-                  {NAME}
-                  <span className="ml-[0.25em] inline-block h-[0.09em] w-[0.6em] bg-red" />
-                </span>
-              ))}
+            <span key={k} className="flex shrink-0 items-center pr-[0.25em]">
+              {NAME}
+              <span className="ml-[0.25em] inline-block h-[0.09em] w-[0.6em] bg-red" />
             </span>
           ))}
         </div>
