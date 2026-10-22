@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ArrowLeft } from "@/components/icons";
+import { RiseText } from "@/components/ui/rise-text";
 import { stackIcons, type StackIcon } from "@/components/stack-icons";
 import { coursework, projectNames, stack, stackLayers, type Project } from "@/lib/site";
 
@@ -19,7 +20,7 @@ const filters: Array<{ id: "all" | Project; label: string; short?: string }> = [
 export function Stack() {
   const count = (id: "all" | Project) => (id === "all" ? stack.length : stack.filter((t) => t.usedIn.includes(id)).length);
   return (
-    <section aria-labelledby="stack-title" className="stack pt-8 pb-20 md:pt-12 md:pb-28">
+    <section aria-labelledby="stack-title" className="stack pt-24 pb-24 md:pt-28 md:pb-32">
       <div className="container-page">
         <Link
           href="/#work"
@@ -28,11 +29,13 @@ export function Stack() {
           <ArrowLeft size={15} />
           All work
         </Link>
-        <div className="mt-8 grid gap-6 md:mt-12 md:grid-cols-12 md:gap-8">
-          <p className="text-sm text-muted md:col-span-3 md:pt-3">What I reach for</p>
+        <div className="mt-8 grid gap-6 md:mt-10 md:grid-cols-12 md:gap-8">
+          <p className="label md:col-span-3 md:pt-4">
+            <span className="text-red-text">Stack</span> — what I reach for
+          </p>
           <div className="md:col-span-9">
-            <h1 id="stack-title" className="max-w-[18ch] text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.98] font-semibold tracking-[-0.045em]">
-              The stack, and where it shipped.
+            <h1 id="stack-title" className="display max-w-[16ch] text-[clamp(2.75rem,7vw,6rem)] leading-[0.92] tracking-[-0.045em]">
+              <RiseText text="The stack, and where it shipped." />
             </h1>
             <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-muted">
               Every tool here shipped in Zen-Z, PrelimsDaily or this site. Pick one to see which.
@@ -45,9 +48,9 @@ export function Stack() {
             <div
               role="radiogroup"
               aria-label="Highlight tools used in"
-              className="stack-filter relative grid grid-cols-4 rounded-full border border-line bg-surface p-1"
+              className="stack-filter relative grid grid-cols-4 rounded-full border border-line bg-ink-2 p-1"
             >
-              <span aria-hidden className="stack-pill absolute inset-y-1 left-1 rounded-full bg-fg" />
+              <span aria-hidden className="stack-pill absolute inset-y-1 left-1 rounded-full bg-red" />
               {filters.map((f) => (
                 <label
                   key={f.id}

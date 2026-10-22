@@ -16,8 +16,8 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#161512",
-          color: "#f4f2ed",
+          background: "#0a0908",
+          color: "#efe9dc",
           fontFamily: "Geist Mono",
           fontSize: 72,
           letterSpacing: "-0.04em",
@@ -25,7 +25,7 @@ export default function AppleIcon() {
         }}
       >
         AT
-        <div style={{ position: "absolute", top: 30, right: 30, width: 16, height: 16, borderRadius: 999, background: "#ff6a3d" }} />
+        <div style={{ position: "absolute", top: 30, right: 30, width: 16, height: 16, borderRadius: 999, background: "#e10600" }} />
       </div>
     ),
     { ...size, fonts: [{ name: "Geist Mono", data: mono, weight: 400, style: "normal" }] },

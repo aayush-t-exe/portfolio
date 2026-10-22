@@ -24,13 +24,14 @@ const person = {
   email: `mailto:${site.email}`,
   image: `${site.url}${site.image}`,
   jobTitle: "Founder & CTO",
+  seeks: { "@type": "Demand", description: site.lookingFor },
   description: site.description,
   worksFor: { "@id": ids.org },
   affiliation: { "@type": "CollegeOrUniversity", name: site.education.school, url: site.education.schoolUrl },
   address: { "@type": "PostalAddress", addressLocality: "Jaipur", addressRegion: "Rajasthan", addressCountry: "IN" },
   sameAs: [site.github, site.linkedin],
   // Single source: the stack list in site.ts.
-  knowsAbout: [...stack.map((t) => t.name), "Row-level security", "Payment webhooks", "AI-assisted software development"],
+  knowsAbout: [...stack.filter((t) => t.layer !== "Tools").map((t) => t.name), "Row-level security", "Payment webhooks"],
   award: [`${facts.sih}, Smart India Hackathon internal round`],
 };
 

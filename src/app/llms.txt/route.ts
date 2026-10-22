@@ -10,6 +10,7 @@ const z = facts.zenz;
 const p = facts.prelims;
 
 const stackLines = stackLayers
+  .filter((layer) => layer !== "Tools")
   .map((layer) => {
     const tools = stack.filter((t) => t.layer === layer);
     return `- ${layer}: ${tools.map((t) => `${t.name} (${t.note}; ${t.usedIn.map((u) => projectNames[u]).join(", ")})`).join("; ")}`;
@@ -18,13 +19,13 @@ const stackLines = stackLayers
 
 const body = `# ${site.name}
 
-> ${site.name} is an AI-native founder-engineer from ${site.location}: Founder & CTO of [Zen-Z](${projects.zenz.url}), a live campus social app with paying users that ${site.shortName} built solo, and a third-year student (${site.education.line}).
+> ${site.name} is a full-stack and mobile engineer from ${site.location}: Founder & CTO of [Zen-Z](${projects.zenz.url}), a campus social app live on Google Play with ${z.users} users ${z.usersWindow} and ${z.revenue} revenue, which ${site.shortName} built solo. Third-year student (${site.education.line}).
 
 Everything below is factual and matches the portfolio at ${site.url} and the resume linked below.
 
 ## Links
 
-- [Portfolio](${site.url}): who ${site.shortName} is, the work, how ${site.shortName} builds with AI, and contact
+- [Portfolio](${site.url}): who ${site.shortName} is, the work, and contact
 - [Zen-Z case study](${site.url}${routes.zenz}): problem, what was built, architecture, the payment incident, results
 - [PrelimsDaily case study](${site.url}${routes.prelims}): the one-day build, its decisions and tests
 - [Stack](${site.url}${routes.stack}): every tool, by layer, and which product it shipped in
@@ -52,7 +53,7 @@ Full case study: ${site.url}${routes.zenz}
 - Results: ${z.users} users ${z.usersWindow}; ${z.revenue} total revenue; ${z.waitlist} students on the waitlist before launch; [Instagram ${projects.zenz.instagramHandle}](${projects.zenz.instagram}) with ${z.igFollowers} followers and ${z.igViews} views. Pitched at Jaipur National University's Shark Tank (${z.sharkTank}).
 - Built solo: the student app in React Native (Expo) + TypeScript (${z.appScreens} app screens), a Next.js admin panel with a drag-and-drop matching board, and a Supabase backend: ${z.tables} tables with row-level security on every one, ${z.migrations} migrations, ${z.dbFunctions} Postgres functions, ${z.edgeFunctions} Edge Functions and ${z.cronJobs} pg_cron jobs. PayU payments with server-side orders and SHA-512 verified webhooks.
 - Quality: a GitHub Actions pipeline of ${z.ciJobs} jobs with ${z.testSuites} test suites (Vitest, Jest, pgTAP), including ${z.pgtapAssertions} pgTAP assertions run against a real hosted Postgres. Writing them found and fixed ${z.rlsBugsFound} RLS/authorization bugs.
-- Payment incident (${z.incidentDate}): a student's real UPI payment succeeded, but PayU's webhook never arrived and nothing recorded whether it had. The same-day fix (${z.incidentFiles} files) logs every webhook call with its outcome in payment_webhook_events, adds an admin "Needs your attention" queue (unpaid 10+ minutes, or paid but the slot passed), an admin-only admin_mark_booking_paid() RPC covered by a pgTAP test, a WhatsApp support link on the payment screen and a "Payments to check" dashboard count. Earlier (${z.hashFixDay}) Aayush worked out PayU's real webhook hash for Payment Links (all ten udf fields, constant-time compare) from a live ₹1 transaction, because the public docs are wrong for that case.
+- Same-day payment fix (${z.incidentDate}): when a student's real UPI payment went missing (it succeeded, but PayU's webhook never arrived and nothing recorded it), Aayush fixed it the same day. The fix (${z.incidentFiles} files) logs every webhook call with its outcome in payment_webhook_events, adds an admin "Needs your attention" queue (unpaid 10+ minutes, or paid but the slot passed), an admin-only admin_mark_booking_paid() RPC covered by a pgTAP test, a WhatsApp support link on the payment screen and a "Payments to check" dashboard count. Earlier (${z.hashFixDay}) Aayush worked out PayU's real webhook hash for Payment Links (all ten udf fields, constant-time compare) from a live ₹1 transaction, because the public docs are wrong for that case.
 
 ## PrelimsDaily (case study 2)
 

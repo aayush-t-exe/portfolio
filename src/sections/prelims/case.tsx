@@ -1,13 +1,13 @@
-import { Body, CaseHeader, CasePage, CaseToc, Chapter, Lead, NextLinks, type TocItem } from "@/components/case";
-import { Caption, PhoneFrame } from "@/components/frames";
+import { Body, CaseHero, CasePage, CaseToc, Chapter, NextLinks, type TocItem } from "@/components/case";
+import { PrelimsLead } from "@/components/case-media";
 import { ArrowUpRight, GitHub } from "@/components/icons";
-import { PrelimsMedia } from "@/components/stage";
+import { Phone } from "@/components/ui/phone";
 import { facts, projects, routes } from "@/lib/site";
-import { stagger } from "@/lib/stagger";
 import profile from "@/assets/prelims/profile.jpg";
 import reminders from "@/assets/prelims/reminders.jpg";
 
 const prelims = projects.prelims;
+const p = facts.prelims;
 
 const toc: TocItem[] = [
   { id: "brief", label: "Brief" },
@@ -15,19 +15,16 @@ const toc: TocItem[] = [
   { id: "quality", label: "Quality" },
 ];
 
-/** The two screens the lead stage doesn't show (it has Today, Quiz and Result). */
 const screens = [
   {
-    image: profile,
+    shot: { src: profile, alt: "PrelimsDaily profile screen: 25 answered, 56% accuracy, best streak 1, level 3, and accuracy bars by subject" },
     title: "Profile",
     caption: "Accuracy, best streak, level and per-subject stats.",
-    alt: "PrelimsDaily profile screen: 25 answered, 56% accuracy, best streak 1, level 3, and accuracy bars by subject",
   },
   {
-    image: reminders,
+    shot: { src: reminders, alt: "PrelimsDaily settings: daily target selector, daily reminder toggle and a note that today's reminder is skipped because the set is done" },
     title: "Smart reminders",
     caption: "Reminders that skip the days you've already finished.",
-    alt: "PrelimsDaily settings: daily target selector, daily reminder toggle and a note that today's reminder is skipped because the set is done",
   },
 ];
 
@@ -44,7 +41,7 @@ const decisions = [
   },
   {
     title: "Reminders that know you're done",
-    body: "A repeating trigger can't skip today or change its copy. So I re-schedule seven one-off reminders on every relevant change. It works offline, with no server.",
+    body: "A repeating trigger can't skip today or change its copy, so the app re-schedules seven one-off reminders on every relevant change. Offline, no server.",
     tradeoff: "The app has to be opened at least once a week to top up the queue.",
   },
   {
@@ -57,119 +54,100 @@ const decisions = [
 export function PrelimsCase() {
   return (
     <CasePage toc={toc}>
-      <CaseHeader
-        eyebrow={`Case study · Built in ${facts.prelims.buildTime}`}
+      <CaseHero
+        label={`Case study · Built in ${p.buildTime}`}
         name="PrelimsDaily"
         tagline="A 10-minute daily habit for UPSC Prelims, from empty repo to tested app in a day."
-        tldr={[
-          { term: "Problem", value: "UPSC aspirants don't fail for lack of material, but for lack of consistency." },
-          { term: "Built", value: "An offline daily-practice app with streaks, XP and reminders that adapt, in one day." },
-          {
-            term: "Result",
-            value: `${facts.prelims.tests} passing tests, every trade-off written down, and an installable Android build.`,
-          },
-        ]}
+        actions={
+          <a href={prelims.url} target="_blank" rel="noopener" className="btn btn-red press" data-magnetic>
+            <span data-magnetic-label>
+              <GitHub size={16} /> Read the code <ArrowUpRight size={16} />
+              <span className="sr-only"> (opens in new tab)</span>
+            </span>
+          </a>
+        }
         meta={[
           { term: "Role", value: "Solo: product, design, code" },
-          { term: "Timeline", value: `${facts.prelims.buildTime} · ${facts.prelims.built}` },
+          { term: "Timeline", value: `${p.buildTime} · ${p.built}` },
           { term: "Platforms", value: "Android, iOS, web (Expo)" },
           { term: "Stack", value: "Expo, TypeScript, Zustand, Reanimated" },
         ]}
-        actions={
-          <a href={prelims.url} target="_blank" rel="noopener" className="btn btn-primary press">
-            <GitHub size={16} />
-            Read the code
-            <ArrowUpRight size={16} />
-            <span className="sr-only"> (opens in new tab)</span>
-          </a>
-        }
-        media={
-          <figure>
-            <PrelimsMedia eager sizes="(min-width: 1280px) 300px, 26vw" />
-            <Caption>Today (streak, daily target ring, weak areas), a statement-style quiz question with its explanation, and the result ring.</Caption>
-          </figure>
-        }
+        media={<PrelimsLead />}
+        tldr={[
+          { term: "Problem", value: "UPSC aspirants don't fail for lack of material, but for lack of consistency." },
+          { term: "Built", value: "An offline daily-practice app with streaks, XP and reminders that adapt, in one day." },
+          { term: "Result", value: `${p.tests} passing tests, every trade-off written down, and an installable Android build.` },
+        ]}
       />
 
       <CaseToc items={toc} />
 
-      <div className="container-page mt-14 space-y-16 md:mt-20 md:space-y-24">
-        <Chapter
-          id="brief"
-          title="The brief"
-          wide={
-            <ul className="grid max-w-[34rem] grid-cols-2 gap-4 sm:gap-6 md:ml-[25%]">
-              {screens.map((s) => (
-                <li key={s.title} data-reveal>
-                  <figure>
-                    <PhoneFrame shot={s} tone="light" sizes="(min-width: 640px) 260px, 44vw" />
-                    <figcaption className="mt-4">
-                      <span className="block text-sm font-medium">{s.title}</span>
-                      <span className="mt-0.5 block text-[0.8125rem] leading-snug text-muted">{s.caption}</span>
-                    </figcaption>
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          }
-        >
-          <Lead>
-            &ldquo;Most aspirants don&rsquo;t fail for lack of material. They fail for lack of consistency.&rdquo;
-          </Lead>
-          <Body>
+      <Chapter
+        id="brief"
+        n={1}
+        label="The brief"
+        title="Consistency, not material."
+        lead="“Most aspirants don't fail for lack of material. They fail for lack of consistency.”"
+      >
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Body className="lg:col-span-7">
             <p>
-              I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set
-              a day, <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and{" "}
-              <strong>reminders that adapt to your streak</strong>. It runs fully offline on Android, iOS and the web.
+              I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set a day,{" "}
+              <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and <strong>reminders that adapt to your
+              streak</strong>. It runs fully offline on Android, iOS and the web.
             </p>
             <p>
-              Fast didn&rsquo;t mean sloppy. The rules live in pure, unit-tested functions, state is persisted with a versioned
-              schema that falls back safely if anything is malformed, and a root error boundary means a render crash shows a
-              Retry screen, never a white screen.
+              Fast didn&rsquo;t mean sloppy. The rules live in pure, unit-tested functions, state is persisted with a versioned schema
+              that falls back safely if anything is malformed, and a root error boundary means a render crash shows a Retry screen, never
+              a white screen.
             </p>
           </Body>
-        </Chapter>
+          <ul className="grid grid-cols-2 gap-5 lg:col-span-5">
+            {screens.map((s) => (
+              <li key={s.title} data-fade>
+                <Phone shots={[s.shot]} sizes="(min-width: 1024px) 200px, 44vw" />
+                <p className="mt-4 text-sm font-medium">{s.title}</p>
+                <p className="mt-0.5 text-[0.8125rem] leading-snug text-muted">{s.caption}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Chapter>
 
-        <Chapter
-          id="decisions"
-          title="Decisions"
-          wide={
-            <ol className="grid gap-4 sm:grid-cols-2">
-              {decisions.map((d, i) => (
-                <li key={d.title} data-reveal style={stagger(i % 2)} className="card flex flex-col p-5 sm:p-7">
-                  <h3 className="text-xl font-medium tracking-[-0.02em]">{d.title}</h3>
-                  <p className="mt-2 leading-relaxed text-muted">{d.body}</p>
-                  <p className="mt-auto pt-5 text-sm leading-relaxed">
-                    <span className="font-medium text-accent">Trade-off: </span>
-                    <span className="text-muted">{d.tradeoff}</span>
-                  </p>
-                </li>
-              ))}
-            </ol>
-          }
-        >
-          <Lead>Small app, real engineering. Every trade-off is written down in the README.</Lead>
-        </Chapter>
+      <Chapter id="decisions" n={2} label="Decisions" tone="paper" title="Small app, real engineering." lead="Every trade-off is written down in the README.">
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2" data-fade-group>
+          {decisions.map((d, i) => (
+            <li key={d.title} className="flex flex-col rounded-[22px] bg-[#f3eee3] p-6 ring-1 ring-paper-line sm:p-8">
+              <span className="font-mono text-xs text-red">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="display mt-3 text-[1.6rem] leading-[1.05] tracking-[-0.03em]">{d.title}</h3>
+              <p className="mt-3 leading-relaxed text-paper-muted">{d.body}</p>
+              <p className="mt-auto pt-6 text-sm leading-relaxed">
+                <span className="font-medium text-red">Trade-off: </span>
+                <span className="text-paper-muted">{d.tradeoff}</span>
+              </p>
+            </li>
+          ))}
+        </ol>
+      </Chapter>
 
-        <Chapter id="quality" title="Quality">
-          <div className="grid gap-8 sm:grid-cols-[auto_1fr] sm:items-end sm:gap-12">
-            <p className="num text-[clamp(4rem,10vw,7.5rem)] leading-[0.85]">
-              {facts.prelims.tests}
-              <span className="ml-3 font-sans text-[0.3em] font-medium tracking-normal text-muted">tests</span>
-            </p>
-            <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
-              Unit tests in {facts.prelims.suites} suites, covering local-date maths, streak transitions (continue, freeze,
-              reset, earning freezes), XP and level curves, the daily set&rsquo;s determinism, weak-subject weighting and
-              recency rules, and loading saved state safely. Strict TypeScript and lint on top.
-            </p>
-          </div>
-        </Chapter>
-      </div>
+      <Chapter id="quality" n={3} label="Quality" title="Tested like it would ship.">
+        <div className="mt-12 grid gap-8 md:grid-cols-[auto_1fr] md:items-end md:gap-14">
+          <p className="num text-[clamp(6rem,16vw,13rem)] leading-[0.8] text-red-text">
+            {p.tests}
+            <span className="ml-3 font-sans text-[0.22em] font-medium tracking-normal text-muted">tests</span>
+          </p>
+          <p className="max-w-[46ch] pb-2 text-[1.0625rem] leading-relaxed text-muted">
+            Unit tests in {p.suites} suites, covering local-date maths, streak transitions (continue, freeze, reset, earning freezes), XP and
+            level curves, the daily set&rsquo;s determinism, weak-subject weighting and recency rules, and loading saved state safely. Strict
+            TypeScript and lint on top.
+          </p>
+        </div>
+      </Chapter>
 
       <NextLinks
         links={[
           { href: routes.zenz, label: "Zen-Z", note: "Previous case study" },
-          { href: routes.stack, label: "The stack, and where it shipped", note: "Tools" },
+          { href: routes.stack, label: "The stack", note: "Every tool, and where it shipped" },
         ]}
       />
     </CasePage>

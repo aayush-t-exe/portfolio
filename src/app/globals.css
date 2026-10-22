@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./legacy.css";
 
 /* ───────────────────────────── Tokens ─────────────────────────────
    "Zen-Z red on black". Dark-first; cream (Zen-Z paper) for the light sections.
@@ -25,7 +24,7 @@
   --paper-muted: #5c564c;
   --paper-line: rgb(10 9 8 / 0.14);
 
-  /* v3 names, mapped onto v4 (the case pages still use them until phase 6). */
+  /* Short aliases used by a few shared components. */
   --bg: var(--ink);
   --surface: var(--ink-2);
   --surface-2: var(--ink-3);
@@ -1189,4 +1188,117 @@ html.intro {
 }
 @keyframes tl-fill-x {
   from { transform: scaleX(0); }
+}
+
+/* ───────────────────────────── Case pages ───────────────────────────── */
+.toc-fill {
+  display: none;
+  background: var(--red);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .toc-fill {
+      display: block;
+      animation: toc-fill linear both;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+@keyframes toc-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+.incident-line::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 5px;
+  width: 2px;
+  background: var(--line-strong);
+}
+@media (min-width: 640px) {
+  .incident-line::before {
+    top: 5px;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    height: 2px;
+  }
+}
+/* Rails: pinned and moved sideways by the desktop chunk ([data-rail-on]). */
+[data-rail-on] [data-rail-track] {
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+/* Code sketch tokens (dark panel). */
+.tk-comment { color: #958f84; }
+.tk-string { color: #c8d48c; }
+.tk-keyword { color: #ff8d66; }
+.tk-number { color: #e9b46a; }
+.tk-fn { color: #f3f0e9; }
+.tk-plain { color: #cfcac0; }
+
+/* Copy-email icon swap. */
+.ce-check,
+[data-copied] .ce-copy {
+  opacity: 0;
+  transform: scale(0.75);
+  filter: blur(2px);
+}
+[data-copied] .ce-check {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ───────────────────────────── /stack ledger ─────────────────────────────
+   The filter is radio inputs; everything below is driven by :has(), so no JS. */
+.stack-pill {
+  width: calc((100% - 0.5rem) / 4);
+  transform: translateX(calc(var(--n, 0) * 100%));
+  transition: transform 220ms var(--ease-out);
+}
+.stack:has([data-filter="Z"]:checked) { --n: 1; }
+.stack:has([data-filter="P"]:checked) { --n: 2; }
+.stack:has([data-filter="S"]:checked) { --n: 3; }
+.stack-filter label:has(input:checked) {
+  color: #fff;
+}
+.stack-filter label:has(input:focus-visible) {
+  outline: 2px solid var(--red-text);
+  outline-offset: 2px;
+}
+.tool {
+  transition: opacity 200ms ease, filter 200ms ease, background-color 160ms ease;
+}
+.stack:has([data-filter="Z"]:checked) .tool:not([data-z]),
+.stack:has([data-filter="P"]:checked) .tool:not([data-p]),
+.stack:has([data-filter="S"]:checked) .tool:not([data-s]) {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+.tool-glyph {
+  background: var(--muted);
+  mask: var(--glyph) center / contain no-repeat;
+  transition: background-color 160ms ease;
+}
+.tool-chip {
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tool:hover {
+    background: var(--ink-2);
+  }
+  .tool:hover .tool-glyph {
+    background: var(--brand, var(--fg));
+  }
+  .tool:hover .tool-chip {
+    color: #fff;
+    border-color: var(--red);
+    background: var(--red);
+  }
 }

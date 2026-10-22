@@ -1,3 +1,4 @@
+import { setupRails } from "@/motion/case";
 import { setupHeroPointer, setupJourney, setupStack, setupWorkPreview } from "@/motion/home";
 
 type Opts = { fine: boolean; pathname: string };
@@ -9,6 +10,8 @@ export function setupPages({ fine, pathname }: Opts): Cleanup {
   if (pathname === "/") {
     cleanups.push(setupJourney(), setupStack());
     if (fine) cleanups.push(setupHeroPointer(), setupWorkPreview());
+  } else if (pathname.startsWith("/work/")) {
+    cleanups.push(setupRails());
   }
   return () => cleanups.forEach((c) => c?.());
 }

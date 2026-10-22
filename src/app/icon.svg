@@ -1,15 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    rect { fill: #161512 }
-    text { fill: #f4f2ed }
-    circle { fill: #b3320d }
-    @media (prefers-color-scheme: dark) {
-      rect { fill: #eeece6 }
-      text { fill: #0e0e0c }
-      circle { fill: #ff6a3d }
-    }
-  </style>
-  <rect width="64" height="64" rx="16"/>
-  <text x="31" y="41.5" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="25" font-weight="700" letter-spacing="-1">AT</text>
-  <circle cx="51" cy="13" r="4.5"/>
+  <rect width="64" height="64" rx="16" fill="#0a0908"/>
+  <text x="30" y="42" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="25" font-weight="900" letter-spacing="-1.5" fill="#efe9dc">AT</text>
+  <circle cx="51" cy="13" r="5" fill="#e10600"/>
 </svg>

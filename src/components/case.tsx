@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
+import { RiseText } from "@/components/ui/rise-text";
 
 export type TocItem = { id: string; label: string };
 
@@ -8,9 +9,8 @@ export type TocItem = { id: string; label: string };
 const timeline = (id: string) => `--ch-${id}`;
 
 /**
- * A case page: header, lead media, sticky table of contents, chapters, next link.
- * `timeline-scope` on the wrapper lets the TOC (outside the chapters) read each chapter's
- * view timeline, so the progress lines are pure CSS.
+ * A case page. `timeline-scope` lets the sticky TOC (outside the chapters) read each chapter's
+ * scroll progress, so its underlines fill in pure CSS.
  */
 export function CasePage({ toc, children }: { toc: TocItem[]; children: ReactNode }) {
   return (
@@ -20,161 +20,189 @@ export function CasePage({ toc, children }: { toc: TocItem[]; children: ReactNod
   );
 }
 
-export function CaseHeader({
-  eyebrow,
+/** Case hero: the name as giant display type rising on first paint, the one-line pitch, facts, actions, then the lead media. */
+export function CaseHero({
+  label,
   name,
   tagline,
-  tldr,
   meta,
   actions,
   media,
+  tldr,
 }: {
-  eyebrow: string;
+  label: string;
   name: string;
-  tagline: ReactNode;
-  /** Problem / Built / Result, for skimmers. */
-  tldr: Array<{ term: string; value: ReactNode }>;
+  tagline: string;
   meta: Array<{ term: string; value: ReactNode }>;
   actions?: ReactNode;
-  /** The lead image: the same component as the home page's work card (it morphs). */
   media: ReactNode;
+  /** Problem / Built / Result, for skimmers. */
+  tldr: Array<{ term: string; value: ReactNode }>;
 }) {
   return (
-    <header className="container-page pt-8 md:pt-12">
-      <Link
-        href="/#work"
-        className="press -ml-2 inline-flex h-9 items-center gap-1.5 rounded-full px-2 text-sm text-muted hover:text-fg"
-      >
-        <ArrowLeft size={15} />
-        All work
-      </Link>
-      <div className="mt-8 grid gap-10 md:mt-12 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-7">
-          <p className="text-sm text-muted">{eyebrow}</p>
-          <h1 className="mt-3 text-[clamp(3rem,8vw,5.75rem)] leading-[0.92] font-semibold tracking-[-0.05em]">{name}</h1>
-          <p className="mt-5 max-w-[30ch] text-[clamp(1.375rem,2.6vw,1.875rem)] leading-[1.2] font-medium tracking-[-0.025em] text-muted">
+    <header className="relative isolate overflow-clip pt-24 md:pt-28" data-section="Case study">
+      <div aria-hidden className="pointer-events-none absolute -top-[20%] right-[-10%] -z-10 size-[60vw] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.22),transparent)]" />
+      <div className="container-page">
+        <Link
+          href="/#work"
+          transitionTypes={["nav-back"]}
+          className="press -ml-2 inline-flex h-9 items-center gap-1.5 rounded-full px-2 text-sm text-muted hover:text-fg"
+        >
+          <ArrowLeft size={15} />
+          All work
+        </Link>
+        <p className="label mt-8 md:mt-10">{label}</p>
+        <h1 className="display-caps mt-4 text-[clamp(3.6rem,13.5vw,13rem)] leading-[0.84]">
+          <RiseText text={name} />
+        </h1>
+        <div className="mt-8 grid gap-8 md:mt-10 lg:grid-cols-12 lg:items-end">
+          <p className="rise-fade max-w-[30ch] text-[clamp(1.4rem,2.5vw,2.1rem)] leading-[1.2] tracking-[-0.02em] lg:col-span-7" style={{ "--d": "200ms" } as CSSProperties}>
             {tagline}
           </p>
-          {actions ? <div className="mt-8 flex flex-wrap gap-3">{actions}</div> : null}
+          {actions ? (
+            <div className="rise-fade flex flex-wrap gap-3 lg:col-span-5 lg:justify-end" style={{ "--d": "280ms" } as CSSProperties}>
+              {actions}
+            </div>
+          ) : null}
         </div>
-        <div className="lg:col-span-5 lg:pt-2">
-          <dl className="space-y-3 text-[0.9375rem] leading-relaxed">
-            {tldr.map((t) => (
-              <div key={t.term} className="grid grid-cols-[4.5rem_1fr] gap-3">
-                <dt className="font-medium">{t.term}</dt>
-                <dd className="text-muted">{t.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-5">
-            {meta.map((m) => (
-              <div key={m.term}>
-                <dt className="text-sm text-muted">{m.term}</dt>
-                <dd className="mt-0.5 text-[0.9375rem] leading-snug">{m.value}</dd>
-              </div>
-            ))}
-          </dl>
+        <dl className="rise-fade mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 md:grid-cols-4" style={{ "--d": "340ms" } as CSSProperties}>
+          {meta.map((m) => (
+            <div key={m.term}>
+              <dt className="label">{m.term}</dt>
+              <dd className="mt-1.5 text-[0.9375rem] leading-snug">{m.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="rise-fade mt-10 md:mt-14" style={{ "--d": "400ms" } as CSSProperties}>
+          {media}
         </div>
+        <dl className="mt-14 grid gap-8 md:mt-20 md:grid-cols-3 md:gap-6">
+          {tldr.map((t) => (
+            <div key={t.term} className="border-t-2 border-red pt-4" data-fade>
+              <dt className="label text-red-text">{t.term}</dt>
+              <dd className="mt-3 text-[1.1875rem] leading-snug">{t.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-      <div className="mt-10 md:mt-14">{media}</div>
     </header>
   );
 }
 
-/**
- * Table of contents: a static row on mobile, sticky under the site header from md. Each item's
- * underline fills as its chapter scrolls past (scroll-driven, CSS only; hidden where unsupported
- * or with reduced motion). Numbered, because order matters here.
- */
+/** Sticky chapter nav. Each item's underline fills as its chapter scrolls past (CSS only). */
 export function CaseToc({ items }: { items: TocItem[] }) {
   return (
-    <nav aria-label="On this page" className="case-toc mt-12 border-y border-line md:sticky md:top-16 md:z-40 md:mt-16">
-      <ol className="toc-scroll container-page flex gap-6 overflow-x-auto md:gap-8">
-        {items.map((t, i) => (
-          <li key={t.id} className="shrink-0">
-            <a
-              href={`#${t.id}`}
-              className="relative flex h-11 items-center gap-2 text-sm whitespace-nowrap text-muted transition-colors hover:text-fg"
-            >
-              <span className="font-mono text-xs tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-              {t.label}
-              <span aria-hidden className="absolute inset-x-0 -bottom-px h-px">
-                <span className="toc-fill absolute inset-0 origin-left" style={{ animationTimeline: timeline(t.id) } as CSSProperties} />
-              </span>
-            </a>
-          </li>
-        ))}
-      </ol>
+    <nav aria-label="On this page" className="case-toc z-40 mt-16 md:sticky md:top-[4.5rem] md:mt-24">
+      <div className="container-page">
+        <ol className="scroller nav-pill flex w-max max-w-full gap-1 overflow-x-auto rounded-full p-1">
+          {items.map((t, i) => (
+            <li key={t.id} className="shrink-0">
+              <a href={`#${t.id}`} className="relative flex h-9 items-center gap-2 overflow-hidden rounded-full px-3.5 text-sm whitespace-nowrap text-muted transition-colors hover:text-fg">
+                <span className="font-mono text-xs text-red-text tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                {t.label}
+                <span aria-hidden className="absolute inset-x-3 bottom-1 h-px">
+                  <span className="toc-fill absolute inset-0 origin-left" style={{ animationTimeline: timeline(t.id) } as CSSProperties} />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
     </nav>
   );
 }
 
-/** A chapter of a case study: its title on the left, the story on the right, then wide content. */
+/** A chapter: full-bleed band (ink or cream), numbered label, big heading, lead, then content. */
 export function Chapter({
   id,
+  n,
+  label,
   title,
+  lead,
+  tone = "ink",
   children,
-  wide,
+  bleed,
 }: {
   id: string;
+  n: number;
+  label: string;
   title: string;
-  children: ReactNode;
-  /** Full-width content under the chapter (diagrams, galleries). */
-  wide?: ReactNode;
+  lead?: ReactNode;
+  tone?: "ink" | "paper";
+  children?: ReactNode;
+  /** Full-bleed content after the text column (rails). */
+  bleed?: ReactNode;
 }) {
+  const paper = tone === "paper";
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className="chapter grid gap-6 border-t border-line pt-10 first:border-t-0 first:pt-0 md:grid-cols-12 md:gap-8 md:pt-14 md:first:pt-0"
+      className={`chapter relative scroll-mt-28 py-20 md:py-32 ${paper ? "on-paper" : ""}`}
       style={{ viewTimelineName: timeline(id) } as CSSProperties}
+      data-section={`${String(n).padStart(2, "0")} — ${label}`}
     >
-      <div className="md:col-span-3">
-        <h2 id={`${id}-title`} className="text-sm font-medium">
+      <div className="container-page">
+        <p className="label">
+          <span className={paper ? "text-red" : "text-red-text"}>{String(n).padStart(2, "0")}</span> — {label}
+        </p>
+        <h2 id={`${id}-title`} className="h2 mt-5 max-w-[20ch]" data-split>
           {title}
         </h2>
+        {lead ? (
+          <p className={`mt-6 max-w-[46ch] text-[clamp(1.2rem,1.9vw,1.6rem)] leading-[1.3] tracking-[-0.015em] ${paper ? "text-paper-ink" : "text-fg"}`}>{lead}</p>
+        ) : null}
+        {children}
       </div>
-      <div className="min-w-0 md:col-span-9">{children}</div>
-      {wide ? <div className="min-w-0 md:col-span-12 md:mt-4">{wide}</div> : null}
+      {bleed}
     </section>
-  );
-}
-
-export function Lead({ children }: { children: ReactNode }) {
-  return (
-    <p className="max-w-[40ch] text-[clamp(1.375rem,2.6vw,1.875rem)] leading-[1.25] font-medium tracking-[-0.025em]">
-      {children}
-    </p>
   );
 }
 
 export function Body({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={`mt-5 max-w-[62ch] space-y-4 text-[1.0625rem] leading-relaxed text-muted [&_strong]:font-medium [&_strong]:text-fg ${className}`}
-    >
+    <div className={`mt-6 max-w-[62ch] space-y-4 text-[1.0625rem] leading-relaxed text-muted [.on-paper_&]:text-paper-muted [&_strong]:font-medium [&_strong]:text-fg [.on-paper_&_strong]:text-paper-ink ${className}`}>
       {children}
     </div>
   );
 }
 
-/** End of a case page: where to go next. */
+/** End of a case page: where to go next, as big rows. */
 export function NextLinks({ links }: { links: Array<{ href: string; label: string; note: string }> }) {
   return (
-    <nav aria-label="More" className="container-page mt-24 mb-16 grid gap-4 sm:grid-cols-2 md:mt-32 md:mb-24">
-      {links.map((l) => (
-        <Link
-          key={l.href}
-          href={l.href}
-          className="card-link press group flex items-center justify-between gap-4 rounded-[16px] border border-line p-5 sm:p-6"
-        >
-          <span>
-            <span className="block text-sm text-muted">{l.note}</span>
-            <span className="mt-1 block text-xl font-medium tracking-[-0.02em]">{l.label}</span>
-          </span>
-          <ArrowRight size={18} className="shrink-0 text-muted transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
-        </Link>
-      ))}
+    <nav aria-label="More" className="container-page py-20 md:py-28">
+      <p className="label">Keep going</p>
+      <ul className="mt-6 border-t border-line">
+        {links.map((l) => (
+          <li key={l.href} className="border-b border-line">
+            <Link href={l.href} className="group flex items-center justify-between gap-6 py-7 md:py-9" data-cursor="Open">
+              <span>
+                <span className="label block">{l.note}</span>
+                <span className="display mt-2 block text-[clamp(2rem,5vw,4.5rem)] leading-none tracking-[-0.04em] transition-transform duration-500 ease-[var(--ease-expo)] group-hover:translate-x-3">
+                  {l.label}
+                </span>
+              </span>
+              <span className="grid size-14 shrink-0 place-items-center rounded-full border border-line-strong transition-colors group-hover:border-red group-hover:bg-red md:size-20">
+                <ArrowRight size={22} />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
+  );
+}
+
+/**
+ * A horizontal rail (Masab-style). Desktop with motion: pinned, and vertical scroll moves it
+ * sideways. Otherwise: a native scroll-snap row.
+ */
+export function Rail({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div data-rail className="rail relative mt-12 overflow-x-clip md:mt-16">
+      <ol data-rail-track aria-label={label} className="scroller flex snap-x snap-mandatory gap-5 overflow-x-auto px-[var(--gutter)] pb-4 md:gap-8">
+        {children}
+      </ol>
+    </div>
   );
 }
