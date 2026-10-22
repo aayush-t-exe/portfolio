@@ -73,7 +73,8 @@ export function setupJourney(): Cleanup | void {
     captions.forEach((el, i) => (i === a ? (el.dataset.on = "") : delete el.dataset.on));
   };
   setActive(0);
-  gsap.set(shots, { autoAlpha: (i: number) => (i === 0 ? 1 : 0) });
+  // Screens wipe up over each other (a crossfade would show two screens at once mid-scrub).
+  gsap.set(shots, { autoAlpha: 1, clipPath: (i: number) => (i === 0 ? "inset(0% 0% 0% 0%)" : "inset(100% 0% 0% 0%)") });
   if (finale) gsap.set(finale, { autoAlpha: 0, y: 30, scale: 0.85 });
 
   let active = 0;
@@ -96,7 +97,7 @@ export function setupJourney(): Cleanup | void {
   for (let i = 1; i < N; i++) {
     const at = i - 1;
     if (bar) flow.to(bar, { y: () => items[i].offsetTop, duration: 1 }, at);
-    flow.fromTo(shots[i], { autoAlpha: 0, yPercent: 5, scale: 1.04 }, { autoAlpha: 1, yPercent: 0, scale: 1, duration: 0.5 }, at + 0.35);
+    flow.fromTo(shots[i], { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.inOut" }, at + 0.3);
   }
   // Settle flat over the last step; the "Ready to meet" art lands with it.
   flow.to(pose, { rotation: 0, rotationY: 0, rotationX: 0, duration: 1 }, N - 2);
@@ -112,7 +113,7 @@ export function setupJourney(): Cleanup | void {
     delete zz.dataset.active;
     items.forEach((el) => delete el.dataset.on);
     captions.forEach((el) => delete el.dataset.on);
-    gsap.set([traveller, pose, ...shots, ...floats, bar, finale].filter(Boolean), { clearProps: "transform,opacity,visibility" });
+    gsap.set([traveller, pose, ...shots, ...floats, bar, finale].filter(Boolean), { clearProps: "transform,opacity,visibility,clipPath" });
   };
 }
 
@@ -195,10 +196,10 @@ export function setupStack(): Cleanup | void {
   if (cards.length < 2 || getComputedStyle(cards[0]).position !== "sticky") return;
   cards.slice(0, -1).forEach((card, i) => {
     gsap.to(card, {
-      scale: 0.92,
-      filter: "brightness(0.78) saturate(0.85)",
+      scale: 0.94,
+      filter: "brightness(0.72)",
       ease: "none",
-      scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top 20%", scrub: true },
+      scrollTrigger: { trigger: cards[i + 1], start: "top 55%", end: "top 15%", scrub: true },
     });
   });
   return () => gsap.set(cards, { clearProps: "transform,filter" });

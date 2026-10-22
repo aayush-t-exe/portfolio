@@ -129,7 +129,7 @@ export function setupGlobal({ fine }: Opts): Cleanup {
     gsap.fromTo(
       el,
       { scaleY: 1 },
-      { scaleY: 0, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom 30%", scrub: true } },
+      { scaleY: 0, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "top 8%", scrub: true } },
     );
   });
 

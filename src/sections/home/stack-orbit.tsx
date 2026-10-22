@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ArrowRight } from "@/components/icons";
+import { stackIcons } from "@/components/stack-icons";
 import { Glyph } from "@/components/ui/glyph";
 import { projectNames, routes, stack } from "@/lib/site";
 import zGlossy from "@/assets/v4/brand/z-glossy.webp";
 
 const inner = ["TypeScript", "React Native + Expo", "Next.js", "Supabase", "Postgres + RLS", "PayU"];
-const outer = ["Tailwind CSS", "TanStack Query", "Reanimated", "Zustand", "Edge Functions (Deno)", "Vercel", "Sentry", "GitHub Actions", "Vitest", "pgTAP"];
+const outer = ["Tailwind CSS", "TanStack Query", "Edge Functions (Deno)", "Vercel", "GitHub Actions", "Sentry"];
 const shown = new Set([...inner, ...outer]);
 const rest = stack.filter((t) => !shown.has(t.name) && t.layer !== "Tools").map((t) => t.name);
 
@@ -20,10 +21,10 @@ function Ring({ names, ring }: { names: string[]; ring: "inner" | "outer" }) {
         const t = byName(name);
         const id = `tool-${ring}-${i}`;
         return (
-          <li key={name} className="orbit-item" style={{ "--a": `${(360 / names.length) * i + (ring === "outer" ? 18 : 0)}deg` } as CSSProperties}>
+          <li key={name} className="orbit-item" style={{ "--a": `${(360 / names.length) * i + (ring === "outer" ? 30 : 0)}deg` } as CSSProperties}>
             <span className="orbit-upright">
               <span tabIndex={0} aria-describedby={id} className="orbit-pill">
-                {t.icon ? <Glyph icon={t.icon} className="text-[1.05em]" /> : <span aria-hidden className="font-mono text-[0.7em] text-red-text">{t.mono ?? "₹"}</span>}
+                {t.icon ? <Glyph icon={t.icon} className="orbit-glyph text-[1.05em]" style={stackIcons[t.icon].hex ? ({ "--brand": stackIcons[t.icon].hex } as CSSProperties) : undefined} /> : <span aria-hidden className="font-mono text-[0.7em] text-red-text">{t.mono ?? "₹"}</span>}
                 {t.name}
               </span>
               <span id={id} role="tooltip" className="orbit-tip">

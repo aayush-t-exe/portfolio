@@ -5,12 +5,10 @@ import { Phone } from "@/components/ui/phone";
 import { projects, routes } from "@/lib/site";
 import { steps } from "@/sections/home/zenz-data";
 import readyToMeet from "@/assets/v4/art/home-match-banner.webp";
-import cafes from "@/assets/v4/icons/cafes.webp";
 import cricket from "@/assets/v4/icons/cricket.webp";
 import football from "@/assets/v4/icons/football.webp";
 import pool from "@/assets/v4/icons/pool.webp";
 import pickleball from "@/assets/v4/icons/pickleball.webp";
-import movies from "@/assets/v4/icons/movies.webp";
 
 /** The activity icons floating around the phone (the app's own 3D icons). */
 const floats = [
@@ -18,8 +16,6 @@ const floats = [
   { src: football, cls: "top-[14%] right-[6%] w-[14%]", depth: 0.9 },
   { src: pool, cls: "bottom-[16%] left-[2%] w-[13%]", depth: 0.7 },
   { src: pickleball, cls: "bottom-[6%] right-[12%] w-[15%] rotate-12", depth: 1.1 },
-  { src: cafes, cls: "top-[46%] right-[0%] w-[12%]", depth: 0.4 },
-  { src: movies, cls: "top-[40%] left-[0%] w-[13%] -rotate-6", depth: 0.8 },
 ];
 
 const n = (i: number) => String(i + 1).padStart(2, "0");
@@ -107,7 +103,7 @@ export function ZenzShowcase() {
             alt=""
             sizes="300px"
             data-zz-final
-            className="zz-final absolute bottom-[10%] left-[4%] z-10 w-[38%] max-w-[18rem] -rotate-[7deg] rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.9)]"
+            className="zz-final absolute bottom-[3%] left-[-2%] z-10 w-[30%] max-w-[15rem] -rotate-[7deg] rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.9)]"
           />
         </div>
       </div>

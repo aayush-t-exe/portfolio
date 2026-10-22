@@ -26,7 +26,7 @@ export function Browser({ src, alt, url, sizes, priority }: { src: StaticImageDa
 export function ZenzLead() {
   return (
     <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-[radial-gradient(120%_90%_at_70%_20%,#3a0605,#0f0b0a_60%)] ring-1 ring-line sm:aspect-[16/9]">
-      <Image src={zGlossy} alt="" aria-hidden sizes="40vw" className="absolute top-[-12%] right-[-6%] w-[48%] opacity-40 blur-[2px]" />
+      <Image src={zGlossy} alt="" aria-hidden sizes="40vw" className="absolute top-[5%] right-[4%] w-[26%] opacity-60" />
       <div className="absolute top-[8%] left-[5%] w-[90%] sm:top-1/2 sm:w-[64%] sm:-translate-y-1/2">
         <Browser
           src={admin}

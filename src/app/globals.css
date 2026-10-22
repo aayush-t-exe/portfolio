@@ -734,10 +734,9 @@ html.intro {
   }
 }
 @keyframes screen-cycle {
-  0% { opacity: 0; transform: translateY(6%) scale(1.02); }
-  6%, 100% { transform: none; }
-  6%, 26% { opacity: 1; }
-  32%, 100% { opacity: 0; }
+  0% { clip-path: inset(100% 0 0 0); }
+  5%, 26% { clip-path: inset(0 0 0 0); }
+  31%, 100% { clip-path: inset(0 0 100% 0); }
 }
 
 /* ───────────────────────────── Phone-only CSS reveals ─────────────────────────────
@@ -838,7 +837,7 @@ html.intro {
   opacity: 1;
 }
 .zz-screen [data-shot] {
-  transition: opacity 400ms ease;
+  transition: opacity 300ms ease;
 }
 .zz-screen [data-shot]:not([data-shot="0"]),
 .zz-caption:not([data-caption="0"]) {
@@ -1031,7 +1030,7 @@ html.intro {
     container-type: inline-size;
     aspect-ratio: 1;
     width: 100%;
-    max-width: 44rem;
+    max-width: min(40rem, 78svh);
     margin-left: auto;
   }
   .orbit-core {
@@ -1056,8 +1055,8 @@ html.intro {
     height: 60cqw;
   }
   .orbit-track-outer {
-    width: 94cqw;
-    height: 94cqw;
+    width: 86cqw;
+    height: 86cqw;
     border-style: solid;
     border-color: var(--line);
   }
@@ -1070,7 +1069,7 @@ html.intro {
     --t: 80s;
   }
   .orbit-outer {
-    --r: 47cqw;
+    --r: 43cqw;
     --t: 120s;
   }
   .orbit-item {
@@ -1091,6 +1090,9 @@ html.intro {
     background: none;
     translate: -50% -50%;
     white-space: nowrap;
+  }
+  .orbit-glyph {
+    background: var(--brand, var(--fg));
   }
   .orbit-pill {
     height: 2.5rem;

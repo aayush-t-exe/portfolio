@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "@/components/icons";
@@ -19,6 +19,8 @@ type Row = {
   external?: boolean;
   /** Preview card background (each project gets its own colour). */
   bg: string;
+  /** Small always-visible thumbnail on desktop rows. */
+  thumb: { src: StaticImageData; fit: "cover" | "contain" };
   visual: ReactNode;
 };
 
@@ -29,6 +31,7 @@ const rows: Row[] = [
     year: "2026",
     href: routes.zenz,
     bg: "#e10600",
+    thumb: { src: zGlossy, fit: "contain" },
     visual: (
       <div className="relative grid size-full place-items-center">
         <Image src={zGlossy} alt="" sizes="200px" className="absolute top-1/2 left-1/2 w-[62%] -translate-x-1/2 -translate-y-1/2 opacity-30 mix-blend-multiply" />
@@ -42,6 +45,7 @@ const rows: Row[] = [
     year: "2026",
     href: `${routes.zenz}#built`,
     bg: "#e9e3d5",
+    thumb: { src: admin, fit: "cover" },
     visual: (
       <div className="grid size-full place-items-center p-[8%]">
         <Image src={admin} alt="" sizes="360px" className="w-full rounded-lg shadow-[0_20px_40px_-16px_rgb(0_0_0/0.45)]" />
@@ -55,6 +59,7 @@ const rows: Row[] = [
     href: projects.zenz.url,
     external: true,
     bg: "#16132a",
+    thumb: { src: zenzSite, fit: "cover" },
     visual: (
       <div className="grid size-full place-items-center p-[8%]">
         <Image src={zenzSite} alt="" sizes="360px" className="w-full rounded-lg ring-1 ring-white/10" />
@@ -67,6 +72,7 @@ const rows: Row[] = [
     year: "2026",
     href: routes.prelims,
     bg: "#f3efe6",
+    thumb: { src: today, fit: "cover" },
     visual: (
       <div className="flex size-full items-center justify-center gap-[5%]">
         <Phone shots={[{ src: today, alt: "" }]} sizes="130px" className="w-[30%] -rotate-[5deg]" />
@@ -94,7 +100,6 @@ export function WorkIndex() {
               Selected work.
             </h2>
           </div>
-          <p className="label hidden md:block">Role · Year</p>
         </div>
 
         <ul className="work-list mt-12 md:mt-16" data-work-list>
@@ -111,7 +116,7 @@ export function WorkIndex() {
                 <div className="mb-5 aspect-[4/3] overflow-hidden rounded-[20px] md:hidden" style={{ background: r.bg }} aria-hidden>
                   {r.visual}
                 </div>
-                <span className="display block text-[clamp(2rem,5.6vw,5.25rem)] leading-[0.95] tracking-[-0.04em] transition-[transform,color] duration-500 ease-[var(--ease-expo)] md:col-span-8 md:group-hover:translate-x-4">
+                <span className="display block text-[clamp(2rem,5.6vw,5.25rem)] leading-[0.95] tracking-[-0.04em] transition-[transform,color] duration-500 ease-[var(--ease-expo)] md:col-span-7 md:group-hover:translate-x-4">
                   {r.name}
                   {r.external ? (
                     <>
@@ -120,9 +125,23 @@ export function WorkIndex() {
                     </>
                   ) : null}
                 </span>
-                <span className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-3 text-[1rem] text-fg/80 md:col-span-4 md:mt-0 md:border-0 md:pt-0">
-                  <span>{r.role}</span>
-                  <span className="font-mono text-sm tabular-nums">{r.year}</span>
+                <span className="mt-3 flex items-center gap-5 border-t border-line pt-3 md:col-span-5 md:mt-0 md:border-0 md:pt-0">
+                  <span
+                    aria-hidden
+                    className="hidden h-[4.5rem] w-28 shrink-0 overflow-hidden rounded-xl ring-1 ring-line transition-transform duration-500 ease-[var(--ease-expo)] group-hover:scale-110 md:block"
+                    style={{ background: r.bg }}
+                  >
+                    <Image
+                      src={r.thumb.src}
+                      alt=""
+                      sizes="112px"
+                      className={`size-full ${r.thumb.fit === "contain" ? "object-contain p-2" : "object-cover object-top"}`}
+                    />
+                  </span>
+                  <span className="flex flex-1 items-baseline justify-between gap-4 text-[1rem] text-fg/80">
+                    <span>{r.role}</span>
+                    <span className="font-mono text-sm tabular-nums">{r.year}</span>
+                  </span>
                 </span>
               </Link>
             </li>

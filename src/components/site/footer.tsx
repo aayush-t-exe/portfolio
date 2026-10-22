@@ -17,28 +17,31 @@ export function SiteFooter() {
         <p className="label">
           <span className="text-red-text">08</span> — Contact
         </p>
-        <div className="mt-6 flex items-center gap-4 md:gap-7">
-          <Portrait className="size-16 shrink-0 rounded-full md:size-28" sizes="112px" />
-          <h2 className="display-caps text-[clamp(3.6rem,14vw,13rem)]" data-split>
-            Let&rsquo;s talk
-          </h2>
+        <div className="mt-6 grid items-center gap-10 md:grid-cols-12">
+          <div className="md:col-span-8">
+            <div className="flex items-center gap-4 md:gap-7">
+              <Portrait className="size-16 shrink-0 rounded-full md:size-28" sizes="112px" />
+              <h2 className="display-caps text-[clamp(3.6rem,12.5vw,12rem)]" data-split>
+                Let&rsquo;s talk
+              </h2>
+            </div>
+            <p className="mt-8 max-w-[34ch] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-snug text-fg">{site.lookingFor}</p>
+          </div>
+          <div className="md:col-span-4 md:flex md:justify-end">
+            <a
+              href={`mailto:${site.email}`}
+              data-magnetic="0.4"
+              className="press grid size-36 place-items-center rounded-full bg-red text-center text-lg font-medium text-white shadow-[0_30px_80px_-20px_rgb(225_6_0/0.7)] hover:bg-[#f20a00] md:size-52 md:text-xl"
+            >
+              <span data-magnetic-label className="flex flex-col items-center gap-1">
+                Email me
+                <ArrowUpRight size={20} />
+              </span>
+            </a>
+          </div>
         </div>
-        <p className="mt-8 max-w-[34ch] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-snug text-fg">
-          {site.lookingFor}
-        </p>
 
-        <div className="relative mt-20 mb-24 h-px bg-line-strong md:mt-24 md:mb-28">
-          <a
-            href={`mailto:${site.email}`}
-            data-magnetic="0.4"
-            className="press absolute top-1/2 right-0 grid size-36 -translate-y-1/2 place-items-center rounded-full bg-red text-center text-lg font-medium text-white shadow-[0_30px_80px_-20px_rgb(225_6_0/0.7)] hover:bg-[#f20a00] sm:right-[6%] md:size-48 md:text-xl"
-          >
-            <span data-magnetic-label className="flex flex-col items-center gap-1">
-              Email me
-              <ArrowUpRight size={20} />
-            </span>
-          </a>
-        </div>
+        <div className="mt-14 mb-10 h-px bg-line-strong md:mt-16" />
 
         <ul className="flex flex-wrap gap-2.5">
           <li>
@@ -63,7 +66,7 @@ export function SiteFooter() {
           </li>
         </ul>
 
-        <dl className="mt-20 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-6 text-[0.9375rem] md:grid-cols-4">
+        <dl className="mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-6 text-[0.9375rem] md:grid-cols-4">
           <div>
             <dt className="label">Local time</dt>
             <dd className="mt-1.5">

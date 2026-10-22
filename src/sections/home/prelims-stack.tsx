@@ -81,8 +81,8 @@ export function PrelimsStack() {
   return (
     <section id="prelims" data-section="05 — PrelimsDaily" aria-labelledby="prelims-title" className="relative pb-20 md:pb-24">
       <div className="container-page">
-        <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-7">
+        <div className="grid gap-6">
+          <div>
             <p className="label">
               <span className="text-red-text">05</span> — PrelimsDaily
             </p>
@@ -90,7 +90,7 @@ export function PrelimsStack() {
               A tested app, built in a day.
             </h2>
           </div>
-          <div className="flex flex-wrap gap-3 md:col-span-5 md:justify-end">
+          <div className="flex flex-wrap gap-3">
             <Link href={routes.prelims} className="btn btn-cream press" data-magnetic>
               <span data-magnetic-label>
                 Case study <ArrowRight size={17} />

@@ -138,12 +138,13 @@ clean runs (TBT ≤ 150 ms); every run is in the session log.
 
 | Route | Mobile perf | Desktop perf | A11y | Best practices | SEO |
 | --- | --- | --- | --- | --- | --- |
-| `/` | 88–89 | 97–98 | 100 | 100 | 100 |
+| `/` | 89 | 98 | 100 | 100 | 100 |
 | `/work/zen-z` | 94 | 99 | 100 | 100 | 100 |
 | `/work/prelimsdaily` | 94–95 | 98–99 | 100 | 100 | 100 |
 | `/stack` | 94 | 99 | 100 | 100 | 100 |
 
-Mobile LCP is the H1 (simulated ~3.8 s on `/`, ~3.1 s elsewhere). The floor on every route is
+Final check after the design rounds: `/` scored 89/89/89 mobile and 98/98 desktop on three and two
+consecutive runs. Mobile LCP is the H1 (simulated ~3.7 s on `/`, ~3.1 s elsewhere). The floor on every route is
 Next/React's own JS being requested before first paint; `/` adds a longer document and more
 images. CLS is 0 everywhere. Check again on PageSpeed Insights after deploying (Vercel's CDN and
 cached image optimisation are faster than `next start` on a laptop).
@@ -165,6 +166,11 @@ cached image optimisation are faster than `next start` on a laptop).
   phone screenshots are lazy unless above the fold; no image preloads in the hero; decorative CSS
   loops start when the page is idle. `content-visibility` was tried and removed (small gain, and it
   made Lighthouse's contrast check misread backgrounds).
+- 2026-10-22: Design critique (two rounds against the references): proof line in the first screen,
+  wipes instead of crossfades between phone screens, always-visible work thumbnails, later and
+  lighter dim on the stacked cards, 12 brand-coloured orbit pills, varied achievement stickers
+  without repeating hero stats, email circle beside LET'S TALK. Kept the floating nav pills (no
+  backdrop band) and the name marquee at the bottom of the first screen.
 - 2026-10-22: Copy and a11y reviews (two independent passes) applied: CI and Edge Function claims
   match the repo, the incident is told fix-first and exactly, AA contrast everywhere (small red
   text on cream uses #A80400), keyboard access to the static flow steps and the rail, inert page

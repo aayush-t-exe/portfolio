@@ -43,7 +43,7 @@ export function Hero() {
             </span>
           </p>
 
-          <h1 id="hero-title" className="display mt-6 text-[clamp(2.6rem,4.9vw,4.9rem)] leading-[0.98] tracking-[-0.04em]">
+          <h1 id="hero-title" className="display mt-6 text-[clamp(2.3rem,4.9vw,4.9rem)] leading-[0.98] tracking-[-0.04em]">
             <RiseText text="I built Zen-Z solo: a live campus app with real users and real revenue." marks={[2]} />
           </h1>
 
@@ -65,6 +65,18 @@ export function Hero() {
             </a>
           </div>
 
+          {/* Proof in the first screen; the big-number band follows just below. */}
+          <p className="rise-fade mt-8 flex flex-wrap items-baseline gap-x-5 gap-y-2 text-[0.9375rem] text-muted" style={{ "--d": "420ms" } as CSSProperties}>
+            <span>
+              <strong className="num mr-1.5 text-[1.375rem] text-fg">{z.users}</strong>users in {z.usersDays}
+            </span>
+            <span>
+              <strong className="num mr-1.5 text-[1.375rem] text-fg">{z.revenue}</strong>revenue
+            </span>
+            <span>
+              <strong className="num mr-1.5 text-[1.375rem] text-red-text">Live</strong>on Google Play
+            </span>
+          </p>
         </div>
 
         {/* The phone stage. [data-hero-slot] is where the travelling phone starts. */}

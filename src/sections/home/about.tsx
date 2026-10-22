@@ -7,17 +7,30 @@ import gathering from "@/assets/v4/art/onboarding-gathering.webp";
 
 const z = facts.zenz;
 
-/** True achievements only (site.ts and the resume). */
-const badges: Array<{ top: string; big: string; foot: ReactNode; tone: string; tilt: string }> = [
-  { top: "JNU Shark Tank", big: "Pitched", foot: `Zen-Z, to a judging panel · ${z.sharkTank}`, tone: "bg-red text-white", tilt: "-rotate-[3deg]" },
-  { top: "Smart India Hackathon", big: "5th", foot: "of ~75 teams, internal round", tone: "bg-ink text-fg", tilt: "rotate-[2deg]" },
-  { top: "Zen-Z launch", big: z.users, foot: `users ${z.usersWindow}`, tone: "bg-[#f6f1e6] text-paper-ink ring-1 ring-paper-line", tilt: "-rotate-[1.5deg]" },
+/** True achievements only (site.ts and the resume). Sizes vary on purpose (Cyd-style stickers). */
+const badges: Array<{ top: string; big: string; foot: ReactNode; tone: string; tilt: string; span: string }> = [
+  {
+    top: "JNU Shark Tank · " + z.sharkTank,
+    big: "Pitched Zen-Z",
+    foot: "to the judging panel at the university's Shark Tank",
+    tone: "bg-red text-white",
+    tilt: "-rotate-[1.5deg]",
+    span: "col-span-2",
+  },
+  {
+    top: "Smart India Hackathon",
+    big: "5th",
+    foot: "of ~75 teams in the internal round",
+    tone: "bg-ink text-fg",
+    tilt: "rotate-[2deg]",
+    span: "lg:row-span-2 lg:min-h-full",
+  },
   {
     top: "Instagram",
-    big: z.igViews,
+    big: z.igFollowers,
     foot: (
       <>
-        views · {z.igFollowers} followers on{" "}
+        followers and {z.igViews} views on{" "}
         <a href={projects.zenz.instagram} target="_blank" rel="noopener" className="link">
           {projects.zenz.instagramHandle}
           <span className="sr-only"> (opens in new tab)</span>
@@ -25,9 +38,17 @@ const badges: Array<{ top: string; big: string; foot: ReactNode; tone: string; t
       </>
     ),
     tone: "bg-paper-ink text-fg",
-    tilt: "rotate-[3deg]",
+    tilt: "-rotate-[2deg]",
+    span: "",
   },
-  { top: "Before launch", big: z.waitlist, foot: "students on the waitlist", tone: "bg-[#ffd8c9] text-paper-ink", tilt: "-rotate-[2deg]" },
+  {
+    top: "Before launch",
+    big: z.waitlist,
+    foot: "students joined the waitlist",
+    tone: "bg-paper-2 text-paper-ink ring-1 ring-paper-line",
+    tilt: "rotate-[1.5deg]",
+    span: "col-span-2 lg:col-span-1",
+  },
 ];
 
 const timeline = [
@@ -78,29 +99,30 @@ export function About() {
               </p>
             </div>
 
-            <ol className="tl relative mt-10 grid gap-5 sm:grid-cols-5 sm:gap-4">
-              <span aria-hidden className="tl-line" />
-              {timeline.map((t) => (
-                <li key={t.what} className="relative pl-7 sm:pt-7 sm:pl-0">
-                  <span aria-hidden className="absolute top-1.5 left-0 size-3 rounded-full bg-red ring-4 ring-paper sm:top-0" />
-                  <p className="font-mono text-xs tracking-[0.06em] text-paper-ink uppercase">{t.when}</p>
-                  <p className="mt-1 text-[0.9375rem] leading-snug text-paper-muted">{t.what}</p>
-                </li>
-              ))}
-            </ol>
           </div>
         </div>
 
-        <div className="mt-20 md:mt-28">
+        <ol className="tl relative mt-16 grid gap-5 sm:grid-cols-5 sm:gap-6 md:mt-20">
+          <span aria-hidden className="tl-line" />
+          {timeline.map((t) => (
+            <li key={t.what} className="relative pl-7 sm:pt-7 sm:pl-0">
+              <span aria-hidden className="absolute top-1.5 left-0 size-3 rounded-full bg-red ring-4 ring-paper sm:top-0" />
+              <p className="font-mono text-xs tracking-[0.06em] text-paper-ink uppercase">{t.when}</p>
+              <p className="mt-1 text-[0.9375rem] leading-snug text-paper-muted">{t.what}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div className="mt-16 md:mt-20">
           <div className="flex items-end justify-between gap-6">
             <h3 className="display text-[clamp(1.75rem,3vw,2.75rem)] tracking-[-0.035em]">Along the way</h3>
             <Image src={gathering} alt="" aria-hidden sizes="140px" className="hidden w-32 -rotate-6 md:block" />
           </div>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5" data-fade-group>
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3" data-fade-group>
             {badges.map((b) => (
-              <li key={b.top} className={`flex min-h-44 flex-col rounded-[22px] p-5 shadow-[0_18px_40px_-24px_rgb(10_9_8/0.5)] ${b.tone} ${b.tilt}`}>
+              <li key={b.top} className={`flex min-h-44 flex-col rounded-[22px] p-6 shadow-[0_18px_40px_-24px_rgb(10_9_8/0.5)] md:min-h-52 ${b.tone} ${b.tilt} ${b.span}`}>
                 <span className="font-mono text-[0.6875rem] tracking-[0.06em] uppercase">{b.top}</span>
-                <span className="num mt-auto min-w-0 pt-6 text-[clamp(1.75rem,2.6vw,3rem)] leading-[0.9]">{b.big}</span>
+                <span className="num mt-auto min-w-0 pt-6 text-[clamp(2rem,4vw,4rem)] leading-[0.9]">{b.big}</span>
                 <span className="mt-2 text-[0.875rem] leading-snug">{b.foot}</span>
               </li>
             ))}
