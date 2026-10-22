@@ -896,3 +896,70 @@ html.intro {
 .scroller::-webkit-scrollbar {
   display: none;
 }
+
+/* ───────────────────────────── 03 Under the hood ───────────────────────────── */
+/* The payment loop: out to PayU along "create order", back along "signed webhook". */
+.pay-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 999px;
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgb(225 6 0 / 0.2);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pay-dot {
+    animation: pay-v 3.2s var(--ease-in-out) infinite;
+  }
+  @media (min-width: 1024px) {
+    .pay-dot {
+      animation-name: pay-h;
+    }
+  }
+}
+@keyframes pay-h {
+  0% { left: 0%; opacity: 0; background: var(--red); }
+  8% { opacity: 1; }
+  45% { left: 100%; opacity: 1; background: var(--red); }
+  55% { left: 100%; background: var(--ink); }
+  92% { opacity: 1; }
+  100% { left: 0%; opacity: 0; background: var(--ink); }
+}
+@keyframes pay-v {
+  0% { top: 0%; opacity: 0; background: var(--red); }
+  8% { opacity: 1; }
+  45% { top: 100%; opacity: 1; background: var(--red); }
+  55% { top: 100%; background: var(--ink); }
+  92% { opacity: 1; }
+  100% { top: 0%; opacity: 0; background: var(--ink); }
+}
+
+/* The incident card's line draws itself as it scrolls through (CSS scroll timeline). */
+.fix-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fix-beats {
+      view-timeline: --fix block;
+    }
+    .fix-draw {
+      animation: draw linear both;
+      animation-timeline: --fix;
+      animation-range: entry 30% cover 60%;
+    }
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

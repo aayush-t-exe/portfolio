@@ -152,7 +152,7 @@ export function Hero() {
       <div className="container-page relative pb-6">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 md:grid-cols-4 md:pt-10">
           {stats.map((s) => (
-            <div key={s.label} className="flex flex-col-reverse gap-2" data-fade>
+            <div key={s.label} className="flex flex-col-reverse justify-end gap-2" data-fade>
               <dt className="text-[0.9375rem] leading-snug text-muted">{s.label}</dt>
               <dd className="num text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.9]">
                 <span aria-hidden data-count={s.count}>{s.value}</span>
@@ -160,7 +160,7 @@ export function Hero() {
               </dd>
             </div>
           ))}
-          <div className="flex flex-col-reverse gap-2" data-fade>
+          <div className="flex flex-col-reverse justify-end gap-2" data-fade>
             <dt className="sr-only">Store</dt>
             <dd>
               <a href={projects.zenz.playStoreUrl} target="_blank" rel="noopener" className="press group flex flex-col gap-2">
