@@ -41,7 +41,7 @@ const cards: Array<{ kicker: string; big: string; title: string; body: ReactNode
   {
     kicker: "02 · Quality",
     big: `${p.tests} tests`,
-    title: "Fast didn't mean sloppy.",
+    title: "Tested like it would ship.",
     body: (
       <>
         {p.tests} unit tests in {p.suites} suites: local-date maths (never UTC, so a 5 AM session can&rsquo;t land on
@@ -56,8 +56,8 @@ const cards: Array<{ kicker: string; big: string; title: string; body: ReactNode
     ),
   },
   {
-    kicker: "03 · Detail",
-    big: "Offline",
+    kicker: "03 · Reminders",
+    big: "7",
     title: "Reminders that know you're done.",
     body: (
       <>

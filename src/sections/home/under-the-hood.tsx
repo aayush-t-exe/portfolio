@@ -8,16 +8,16 @@ const z = facts.zenz;
 const counters = [
   { n: z.tables, l: "Postgres tables, row-level security on every one" },
   { n: z.migrations, l: "SQL migrations" },
-  { n: z.edgeFunctions, l: "Edge Functions (payments, webhooks)" },
+  { n: z.edgeFunctions, l: "Edge Functions (payments, push, account deletion)" },
   { n: z.testSuites, l: "test suites in CI" },
   { n: z.pgtapAssertions, l: "pgTAP assertions against a real database" },
-  { n: z.ciJobs, l: "CI jobs on every push" },
+  { n: z.ciJobs, l: "CI jobs on every pull request" },
 ];
 
 const beats = [
-  { t: "Traced it", d: "A student's UPI payment had gone through, but PayU's webhook never arrived, so the booking still said unpaid." },
-  { t: "Fixed it the same day", d: "Every webhook call is now logged with its outcome, admins get a “Needs attention” queue, and a tested, admin-only mark-paid tool." },
-  { t: "Closed for good", d: "A payment can't go missing silently any more: anything stuck shows up in the queue within minutes." },
+  { t: "Traced it", d: "A student's UPI payment had gone through, but PayU's webhook never landed and webhook calls weren't logged yet, so the booking still said unpaid." },
+  { t: "Fixed it the same day", d: "Every webhook call is now logged with its outcome, admins get a “Needs your attention” queue, and a tested, admin-only mark-paid tool." },
+  { t: "Visible from now on", d: "Anything unpaid for 10+ minutes, or paid with the slot passed, lands in the admin queue. Every webhook call is on record." },
 ];
 
 /**
@@ -34,10 +34,10 @@ export function UnderTheHood() {
         <div className="grid gap-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <p className="label">
-              <span className="text-red">03</span> — Under the hood
+              <span className="text-red-deep">03</span> — Under the hood
             </p>
             <h2 id="build-title" className="h2 mt-5" data-split>
-              Three products. One engineer.
+              App, admin, backend. One engineer.
             </h2>
           </div>
           <p className="max-w-[44ch] text-[1.0625rem] leading-relaxed text-paper-muted md:col-span-5">
@@ -65,9 +65,9 @@ export function UnderTheHood() {
           <div aria-hidden className="pointer-events-none absolute -top-1/2 -right-1/4 size-[70%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.28),transparent)]" />
           <div className="relative grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <p className="label text-red-text">Real money, real fixes · {z.incidentDate}</p>
+              <p className="label text-red-text">Owning it · {z.incidentDate}</p>
               <h3 id="fix-title" className="display mt-4 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1] tracking-[-0.035em]">
-                When a real payment went missing, I fixed it the same day.
+                A paid booking never confirmed. I fixed it the same day.
               </h3>
               <Link href={`${routes.zenz}#incident`} className="btn btn-cream press mt-8" data-magnetic>
                 <span data-magnetic-label>

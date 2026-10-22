@@ -88,7 +88,7 @@ export function SiteFooter() {
       </div>
       <p
         aria-hidden
-        className="display-caps mt-14 -mb-[1.6vw] text-center text-[12.4vw] whitespace-nowrap text-fg select-none [font-stretch:88%] md:mt-20"
+        className="display-caps mt-14 -mb-[1.6vw] text-center text-[11.9vw] whitespace-nowrap text-fg select-none [font-stretch:88%] md:mt-20"
       >
         Aayush Thakur
       </p>

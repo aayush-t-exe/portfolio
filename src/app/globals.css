@@ -3,8 +3,8 @@
 /* ───────────────────────────── Tokens ─────────────────────────────
    "Zen-Z red on black". Dark-first; cream (Zen-Z paper) for the light sections.
    Text contrast: fg 15.6:1, muted 7.4:1 on ink; paper-muted 5.6:1 on paper;
-   red-text 5.6:1 on ink; red 5.0:1 on paper. #E10600 on ink (3.1:1) is for fills,
-   glows, icons and large type only. */
+   red-text 5.6:1 on ink; red-deep 6.1:1 on paper. #E10600 (3.1:1 on ink, 3.9:1 on paper) is
+   for fills, glows, icons and large type only; white on it is 5.0:1. */
 
 :root {
   --ink: #0a0908;
@@ -115,6 +115,9 @@
   }
   .on-paper :focus-visible {
     outline-color: var(--red-deep);
+  }
+  .on-paper :is(.bg-ink, .bg-paper-ink, .bg-red) :focus-visible {
+    outline-color: var(--red-text);
   }
   [tabindex="-1"]:focus {
     outline: none;
@@ -371,7 +374,7 @@
   pointer-events: auto;
 }
 .nav-pill {
-  background: rgb(10 9 8 / 0.62);
+  background: rgb(10 9 8 / 0.86);
   backdrop-filter: blur(14px) saturate(1.4);
   border: 1px solid var(--line);
 }
@@ -613,11 +616,14 @@ html.intro {
 .mask-word > span {
   display: inline-block;
 }
-@media (prefers-reduced-motion: no-preference) {
+/* Words rise on wide screens only: on phones the H1 is the LCP element, so it paints at once. */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
   .rise > .mask-word > span {
     animation: word-rise 1.05s var(--ease-expo) both;
     animation-delay: calc(var(--hero-delay) + var(--i, 0) * 38ms);
   }
+}
+@media (prefers-reduced-motion: no-preference) {
   .rise-fade {
     animation: rise-fade 0.9s var(--ease-expo) both;
     animation-delay: calc(var(--hero-delay) + var(--d, 0ms));
@@ -854,30 +860,30 @@ html.intro {
     color: var(--fg);
   }
 }
-.zz:not([data-active]):has(.zz-step[data-step="1"]:hover) [data-shot="1"],
-.zz:not([data-active]):has(.zz-step[data-step="1"]:hover) [data-caption="1"] {
+.zz:not([data-active]):has(.zz-step[data-step="1"]:is(:hover, :focus-visible)) [data-shot="1"],
+.zz:not([data-active]):has(.zz-step[data-step="1"]:is(:hover, :focus-visible)) [data-caption="1"] {
   opacity: 1;
 }
-.zz:not([data-active]):has(.zz-step[data-step="2"]:hover) [data-shot="2"],
-.zz:not([data-active]):has(.zz-step[data-step="2"]:hover) [data-caption="2"] {
+.zz:not([data-active]):has(.zz-step[data-step="2"]:is(:hover, :focus-visible)) [data-shot="2"],
+.zz:not([data-active]):has(.zz-step[data-step="2"]:is(:hover, :focus-visible)) [data-caption="2"] {
   opacity: 1;
 }
-.zz:not([data-active]):has(.zz-step[data-step="3"]:hover) [data-shot="3"],
-.zz:not([data-active]):has(.zz-step[data-step="3"]:hover) [data-caption="3"] {
+.zz:not([data-active]):has(.zz-step[data-step="3"]:is(:hover, :focus-visible)) [data-shot="3"],
+.zz:not([data-active]):has(.zz-step[data-step="3"]:is(:hover, :focus-visible)) [data-caption="3"] {
   opacity: 1;
 }
-.zz:not([data-active]):has(.zz-step[data-step="4"]:hover) [data-shot="4"],
-.zz:not([data-active]):has(.zz-step[data-step="4"]:hover) [data-caption="4"] {
+.zz:not([data-active]):has(.zz-step[data-step="4"]:is(:hover, :focus-visible)) [data-shot="4"],
+.zz:not([data-active]):has(.zz-step[data-step="4"]:is(:hover, :focus-visible)) [data-caption="4"] {
   opacity: 1;
 }
-.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) [data-shot="5"],
-.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) [data-caption="5"] {
+.zz:not([data-active]):has(.zz-step[data-step="5"]:is(:hover, :focus-visible)) [data-shot="5"],
+.zz:not([data-active]):has(.zz-step[data-step="5"]:is(:hover, :focus-visible)) [data-caption="5"] {
   opacity: 1;
 }
-.zz:not([data-active]):has(.zz-step:not([data-step="0"]):hover) :is([data-shot="0"], [data-caption="0"]) {
+.zz:not([data-active]):has(.zz-step:not([data-step="0"]):is(:hover, :focus-visible)) :is([data-shot="0"], [data-caption="0"]) {
   opacity: 0;
 }
-.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) .zz-final {
+.zz:not([data-active]):has(.zz-step[data-step="5"]:is(:hover, :focus-visible)) .zz-final {
   opacity: 1;
   transform: none;
   transition: opacity 400ms ease, transform 500ms var(--ease-expo);
@@ -890,10 +896,16 @@ html.intro {
   }
 }
 .scroller {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
-.scroller::-webkit-scrollbar {
-  display: none;
+@media (pointer: coarse) {
+  .scroller {
+    scrollbar-width: none;
+  }
+  .scroller::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ───────────────────────────── 03 Under the hood ───────────────────────────── */
@@ -1278,7 +1290,7 @@ html.intro {
 .stack:has([data-filter="Z"]:checked) .tool:not([data-z]),
 .stack:has([data-filter="P"]:checked) .tool:not([data-p]),
 .stack:has([data-filter="S"]:checked) .tool:not([data-s]) {
-  opacity: 0.3;
+  opacity: 0.45;
   filter: grayscale(1);
 }
 .tool-glyph {
@@ -1301,4 +1313,11 @@ html.intro {
     border-color: var(--red);
     background: var(--red);
   }
+}
+
+/* ───────────────────────────── Load cost ─────────────────────────────
+   Decorative loops wait until the page is idle (SiteBehavior sets html.idle), so they don't
+   compete with the first paint. */
+html:not(.idle) :is(.grain, .marquee-track, .orbit-ring, .orbit-upright, .screen-cycle > .phone-shot, .pay-dot) {
+  animation-play-state: paused;
 }

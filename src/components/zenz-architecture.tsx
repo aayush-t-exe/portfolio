@@ -20,7 +20,7 @@ export function Architecture({ className = "mt-14 md:mt-20" }: { className?: str
         <Link2 labels={["auth", "RLS queries", "realtime"]} />
 
         <div className="rounded-[22px] bg-ink p-5 text-fg sm:p-6">
-          <p className="label">Backend</p>
+          <p className="label text-muted">Backend</p>
           <p className="display mt-2 text-[1.75rem] tracking-[-0.03em]">Supabase</p>
           <ul className="mt-4 grid grid-cols-2 gap-2 text-[0.875rem] leading-snug">
             <Chip wide strong="Postgres">{z.tables} tables, RLS on every one</Chip>
@@ -35,17 +35,17 @@ export function Architecture({ className = "mt-14 md:mt-20" }: { className?: str
 
         <div className="flex flex-col justify-between rounded-[22px] bg-red p-5 text-white sm:p-6">
           <div>
-            <p className="label text-white/80">Payments</p>
+            <p className="label text-white">Payments</p>
             <p className="display mt-2 text-[1.75rem] tracking-[-0.03em]">PayU</p>
           </div>
-          <p className="mt-4 text-[0.875rem] leading-snug text-white/90">
+          <p className="mt-4 text-[0.875rem] leading-snug text-white">
             Orders created on the server. SHA-512 signed webhooks, verified in constant time, confirm the seat.
           </p>
         </div>
       </div>
       <figcaption id="arch-cap" className="mt-4 font-mono text-xs leading-relaxed text-paper-muted">
-        Zen-Z, end to end. Everything except the third-party services was designed and built by one person. Ships through
-        GitHub Actions to Google Play and Vercel.
+        Zen-Z, end to end. Everything except the third-party services was designed and built by one person. Tested in
+        GitHub Actions; ships to Google Play (EAS) and Vercel.
       </figcaption>
     </figure>
   );

@@ -105,7 +105,7 @@ const variants = {
     line: "Every tool, by layer, and the product it shipped in.",
     stats: [
       [String(stack.length), "tools"],
-      ["3", "products"],
+      ["3", "projects"],
       [String(stackLayers.length), "layers"],
     ],
     phones: [],

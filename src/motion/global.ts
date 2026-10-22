@@ -26,9 +26,14 @@ export const onScreen = (el: Element) => {
 export function setupGlobal({ fine }: Opts): Cleanup {
   const cleanups: Cleanup[] = [];
 
+  // Read pass first (what's on screen right now), then the writes: no layout thrash.
+  const below = (sel: string) => [...document.querySelectorAll<HTMLElement>(sel)].filter((el) => !onScreen(el));
+  const splits = below("[data-split]");
+  const fades = below("[data-fade]");
+  const groups = below("[data-fade-group]");
+
   // Split-line reveals
-  document.querySelectorAll<HTMLElement>("[data-split]").forEach((el) => {
-    if (onScreen(el)) return;
+  splits.forEach((el) => {
     SplitText.create(el, {
       type: "lines",
       mask: "lines",
@@ -46,27 +51,32 @@ export function setupGlobal({ fine }: Opts): Cleanup {
   });
 
   // Fades
-  document.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
-    if (onScreen(el)) return;
-    gsap.from(el, {
+  const pending = new Map<Element, gsap.core.Tween>();
+  fades.forEach((el) => {
+    pending.set(el, gsap.from(el, {
       y: 48,
-      autoAlpha: 0,
+      opacity: 0,
       duration: 1,
       ease: "expo.out",
       scrollTrigger: { trigger: el, start: "top 90%", once: true },
-    });
+    }));
   });
-  document.querySelectorAll<HTMLElement>("[data-fade-group]").forEach((el) => {
-    if (onScreen(el)) return;
-    gsap.from(el.children, {
+  groups.forEach((el) => {
+    pending.set(el, gsap.from(el.children, {
       y: 40,
-      autoAlpha: 0,
+      opacity: 0,
       duration: 0.9,
       ease: "expo.out",
       stagger: 0.07,
       scrollTrigger: { trigger: el, start: "top 88%", once: true },
-    });
+    }));
   });
+  // Keyboard focus landing inside something not revealed yet: finish its reveal at once.
+  const onFocus = (e: FocusEvent) => {
+    for (const [el, tween] of pending) if (el.contains(e.target as Node)) tween.progress(1);
+  };
+  document.addEventListener("focusin", onFocus);
+  cleanups.push(() => document.removeEventListener("focusin", onFocus));
 
   // Velocity marquees: a ticker moves each track; scroll velocity multiplies the speed and the
   // scroll direction flips it, then it eases back to the base speed.
@@ -91,7 +101,8 @@ export function setupGlobal({ fine }: Opts): Cleanup {
         boost = Math.max(boost, 1 + Math.min(Math.abs(self.getVelocity()) / 600, 5));
       },
     });
-    const tick = (_t: number, dt: number) => {
+    const tick = (_t: number, rawDt: number) => {
+      const dt = Math.min(rawDt, 100);
       boost += (1 - boost) * Math.min(1, dt / 400);
       for (const s of state) {
         if (!s.visible.on) continue;

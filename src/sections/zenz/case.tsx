@@ -20,12 +20,12 @@ const toc: TocItem[] = [
 
 /** The booking flow as it ships: five choices, then payment. */
 const flow = [
-  { title: "Pick a game", caption: "Whatever you're in the mood for.", shot: screens.game },
+  { title: "Pick an activity", caption: "Box cricket, football, pool or pickleball.", shot: screens.game },
   { title: "Pick a slot", caption: "One weekly time, so groups form.", shot: screens.slot },
-  { title: "Set a budget", caption: "Used to match similar budgets.", shot: screens.budget },
+  { title: "Set a budget", caption: "So groups spend alike.", shot: screens.budget },
   { title: "Choose the group", caption: "Mixed, women only or men only.", shot: screens.group },
-  { title: "Confirm the plan", caption: "Every choice, one screen.", shot: screens.plan },
-  { title: "Pay to hold the seat", caption: "The venue is revealed before the event.", shot: screens.pay },
+  { title: "Confirm the plan", caption: "Review every choice before paying.", shot: screens.plan },
+  { title: "Pay to hold the seat", caption: "PayU checkout; only a verified webhook confirms it.", shot: screens.pay },
 ];
 
 const external = { target: "_blank", rel: "noopener" } as const;
@@ -97,7 +97,7 @@ export function ZenZCase() {
         id="built"
         n={2}
         label="What I built"
-        title="Three products, one engineer."
+        title="App, admin, backend. One engineer."
         lead="Product decisions, data model, app, internal tools, payments, CI and releases."
         bleed={
           <>
@@ -148,11 +148,11 @@ export function ZenZCase() {
         <Architecture className="mt-12 md:mt-16" />
       </Chapter>
 
-      <Chapter id="incident" n={4} label="Incident" title="When a real payment went missing, I fixed it the same day.">
+      <Chapter id="incident" n={4} label="Incident" title="A paid booking never confirmed. I fixed it the same day.">
         <Incident />
       </Chapter>
 
-      <Chapter id="results" n={5} label="Results" tone="paper" title="Real students, real money." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
+      <Chapter id="results" n={5} label="Results" tone="paper" title="Paying students, live on Play." lead={`Live on Google Play, and pitched to the judging panel at JNU's Shark Tank (${z.sharkTank}).`}>
         <Results />
       </Chapter>
 
@@ -191,7 +191,7 @@ function Results() {
   ];
   return (
     <div className="mt-12 space-y-4 md:mt-16">
-      <dl className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4" data-fade-group>
+      <dl className="grid gap-3 min-[400px]:grid-cols-2 sm:gap-4 lg:grid-cols-4" data-fade-group>
         {metrics.map((m) => (
           <div key={m.v} className="flex flex-col-reverse justify-end gap-3 rounded-[22px] bg-ink p-6 text-fg">
             <dt className="text-sm leading-snug text-muted">{m.l}</dt>

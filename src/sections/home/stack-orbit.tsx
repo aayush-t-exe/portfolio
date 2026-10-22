@@ -68,8 +68,8 @@ export function StackOrbit() {
 
         <div className="orbit relative lg:col-span-7">
           <div aria-hidden className="orbit-core">
-            <span className="absolute inset-[-30%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.45),transparent)] blur-xl" />
-            <Image src={zGlossy} alt="" sizes="220px" className="relative w-full drop-shadow-[0_0_40px_rgb(225_6_0/0.6)]" />
+            <span className="absolute inset-[-30%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.45),transparent)]" />
+            <Image src={zGlossy} alt="" sizes="220px" className="relative w-full" />
           </div>
           <span aria-hidden className="orbit-track orbit-track-inner" />
           <span aria-hidden className="orbit-track orbit-track-outer" />

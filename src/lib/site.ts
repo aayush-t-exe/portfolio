@@ -162,7 +162,7 @@ type Tool = {
 export const stack: Tool[] = [
   { name: "TypeScript", layer: "Client", icon: "typescript", note: "every project, end to end", usedIn: ["Z", "P", "S"] },
   { name: "React Native + Expo", layer: "Client", icon: "expo", note: "Zen-Z app and PrelimsDaily", usedIn: ["Z", "P"] },
-  { name: "Next.js", layer: "Client", icon: "nextdotjs", note: "admin panel + this site", usedIn: ["Z", "S"] },
+  { name: "Next.js", layer: "Client", icon: "nextdotjs", note: "admin dashboard + this site", usedIn: ["Z", "S"] },
   { name: "Tailwind CSS", layer: "Client", icon: "tailwindcss", note: "this site's design tokens", usedIn: ["S"] },
   { name: "TanStack Query", layer: "Client", icon: "reactquery", note: "server state in the app and admin", usedIn: ["Z"] },
   { name: "Reanimated", layer: "Client", mono: "Re", note: "60fps ring + XP bar", usedIn: ["P"] },

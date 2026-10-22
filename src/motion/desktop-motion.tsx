@@ -12,7 +12,6 @@ import { setupGlobal } from "@/motion/global";
 import { setupPages } from "@/motion/pages";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, ScrambleTextPlugin);
-if (process.env.NODE_ENV !== "production") Object.assign(window, { __ST: ScrollTrigger });
 
 /**
  * Desktop motion, loaded lazily by MotionGate (≥768px, motion allowed). One Lenis instance
@@ -24,7 +23,7 @@ export default function DesktopMotion() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.1, autoRaf: false, anchors: { offset: -88 } });
+    const lenis = new Lenis({ lerp: 0.1, autoRaf: false, anchors: true });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (t: number) => lenis.raf(t * 1000);
@@ -39,28 +38,41 @@ export default function DesktopMotion() {
 
   useGSAP(
     () => {
-      const mm = gsap.matchMedia();
-      mm.add(
-        {
-          isDesktop: "(min-width: 768px)",
-          reduce: "(prefers-reduced-motion: reduce)",
-          fine: "(hover: hover) and (pointer: fine)",
-        },
-        (ctx) => {
-          const { isDesktop, reduce, fine } = ctx.conditions as Record<string, boolean>;
-          if (reduce || !isDesktop) return;
-          const cleanups = [setupGlobal({ fine }), setupPages({ fine, pathname })];
-          return () => cleanups.forEach((c) => c?.());
-        },
-      );
-      // Fonts and late images change layout: measure again once they settle.
-      const refresh = () => ScrollTrigger.refresh();
-      document.fonts?.ready.then(refresh);
-      window.addEventListener("load", refresh, { once: true });
-      window.__lenis?.resize();
+      // Set up once the page has loaded and gone idle: layout has settled, so the many reads
+      // ScrollTrigger and the setups make are cheap, and nothing competes with the first paint.
+      // Until then the page is complete and static (the hero phone stays in place, etc.).
+      let mm: gsap.MatchMedia | undefined;
+      let cancelled = false;
+      let handle = 0;
+      const run = () => {
+        if (cancelled) return;
+        mm = gsap.matchMedia();
+        mm.add(
+          {
+            isDesktop: "(min-width: 768px)",
+            reduce: "(prefers-reduced-motion: reduce)",
+            fine: "(hover: hover) and (pointer: fine)",
+          },
+          (ctx) => {
+            const { isDesktop, reduce, fine } = ctx.conditions as Record<string, boolean>;
+            if (reduce || !isDesktop) return;
+            const cleanups = [setupGlobal({ fine }), setupPages({ fine, pathname })];
+            return () => cleanups.forEach((c) => c?.());
+          },
+        );
+        window.__lenis?.resize();
+      };
+      const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 120));
+      const schedule = () => (handle = idle(run, { timeout: 1200 }));
+      if (document.readyState === "complete") schedule();
+      else window.addEventListener("load", schedule, { once: true });
+      // Late font swaps change line breaks and heights: measure again.
+      document.fonts?.ready.then(() => mm && ScrollTrigger.refresh());
       return () => {
-        mm.revert();
-        window.removeEventListener("load", refresh);
+        cancelled = true;
+        (window.cancelIdleCallback ?? window.clearTimeout)(handle);
+        window.removeEventListener("load", schedule);
+        mm?.revert();
       };
     },
     { dependencies: [pathname], revertOnUpdate: true },

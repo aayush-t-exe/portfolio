@@ -45,14 +45,17 @@ export function CaseHero({
       <div className="container-page">
         <Link
           href="/#work"
-          transitionTypes={["nav-back"]}
           className="press -ml-2 inline-flex h-9 items-center gap-1.5 rounded-full px-2 text-sm text-muted hover:text-fg"
         >
           <ArrowLeft size={15} />
           All work
         </Link>
         <p className="label mt-8 md:mt-10">{label}</p>
-        <h1 className="display-caps mt-4 text-[clamp(3.6rem,13.5vw,13rem)] leading-[0.84]">
+        <h1
+          className="display-caps mt-4 leading-[0.84]"
+          // Sized by length so the name always fits: ~0.76em per character at this width.
+          style={{ fontSize: `min(13rem, calc((100vw - 2 * var(--gutter)) / ${Math.max(5, name.length * 0.76 + 0.3).toFixed(2)}))` }}
+        >
           <RiseText text={name} />
         </h1>
         <div className="mt-8 grid gap-8 md:mt-10 lg:grid-cols-12 lg:items-end">
@@ -144,7 +147,7 @@ export function Chapter({
     >
       <div className="container-page">
         <p className="label">
-          <span className={paper ? "text-red" : "text-red-text"}>{String(n).padStart(2, "0")}</span> — {label}
+          <span className={paper ? "text-red-deep" : "text-red-text"}>{String(n).padStart(2, "0")}</span> — {label}
         </p>
         <h2 id={`${id}-title`} className="h2 mt-5 max-w-[20ch]" data-split>
           {title}
@@ -200,7 +203,7 @@ export function NextLinks({ links }: { links: Array<{ href: string; label: strin
 export function Rail({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div data-rail className="rail relative mt-12 overflow-x-clip md:mt-16">
-      <ol data-rail-track aria-label={label} className="scroller flex snap-x snap-mandatory gap-5 overflow-x-auto px-[var(--gutter)] pb-4 md:gap-8">
+      <ol data-rail-track aria-label={label} tabIndex={0} className="scroller flex snap-x snap-mandatory gap-5 overflow-x-auto px-[var(--gutter)] pb-4 md:gap-8">
         {children}
       </ol>
     </div>

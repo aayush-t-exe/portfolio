@@ -54,9 +54,9 @@ const shipped = [
 
 const timeline = [
   { t: "Paid", d: "A student's real UPI payment succeeds." },
-  { t: "No webhook", d: "PayU never calls back, and nothing records it." },
-  { t: "Traced", d: "The same day: found where the trail stopped." },
-  { t: `Fixed · ${z.incidentFiles} files`, d: `Shipped on ${z.incidentDay}.` },
+  { t: "No webhook", d: "PayU never calls back, and webhook calls aren't logged yet." },
+  { t: "Traced", d: "Same day: confirmed the payment in PayU; no webhook had been logged." },
+  { t: `Fixed · ${z.incidentFiles} files`, d: "Shipped the fix the same afternoon." },
 ];
 
 export function Incident() {
@@ -69,12 +69,12 @@ export function Incident() {
 
       <div className="mt-10 grid gap-4 lg:grid-cols-12">
         <div className="rounded-[22px] bg-red p-6 text-white sm:p-8 lg:col-span-7" data-fade>
-          <p className="label text-white/85">What shipped that day</p>
-          <ul className="mt-5 space-y-4 text-[1.0625rem] leading-relaxed [&_code]:text-white [&_span]:text-white">
+          <p className="label text-white">What shipped that day</p>
+          <ul className="mt-5 space-y-4 text-[1.0625rem] leading-relaxed [overflow-wrap:anywhere] [&_code]:text-white [&_span]:text-white">
             {shipped.map((a, i) => (
               <li key={i} className="flex gap-3">
                 <span aria-hidden className="mt-[0.55em] size-2 shrink-0 rounded-full bg-white" />
-                <span className="text-white/95">{a}</span>
+                <span className="text-white">{a}</span>
               </li>
             ))}
           </ul>
@@ -82,7 +82,7 @@ export function Incident() {
         <div className="flex flex-col justify-between rounded-[22px] border border-line p-6 sm:p-8 lg:col-span-5" data-fade>
           <p className="label">The guarantee now</p>
           <p className="display mt-5 text-[clamp(1.5rem,2.4vw,2.1rem)] leading-[1.05] tracking-[-0.03em]">
-            No booking is confirmed without a verified payment, and every payment question can be answered from the logs.
+            No booking is confirmed without a verified payment, every webhook call is on record, and anything stuck reaches the admin queue.
           </p>
         </div>
       </div>
@@ -91,8 +91,8 @@ export function Incident() {
       <ol className="incident-line relative mt-8 grid gap-6 sm:grid-cols-4 sm:gap-4">
         {timeline.map((n, i) => (
           <li key={n.t} className="relative pl-6 sm:pt-7 sm:pl-0">
-            <span aria-hidden className={`absolute top-1.5 left-0 size-3 rounded-full ring-4 ring-ink sm:top-0 ${i === 1 ? "bg-red" : "bg-fg"}`} />
-            <p className={`font-medium ${i === 1 ? "text-red-text" : ""}`}>{n.t}</p>
+            <span aria-hidden className={`absolute top-1.5 left-0 size-3 rounded-full ring-4 ring-ink sm:top-0 ${i === 3 ? "bg-red" : "bg-fg"}`} />
+            <p className={`font-medium ${i === 3 ? "text-red-text" : ""}`}>{n.t}</p>
             <p className="mt-1 text-sm leading-relaxed text-muted">{n.d}</p>
           </li>
         ))}
@@ -100,10 +100,10 @@ export function Incident() {
 
       <Body className="mt-10">
         <p>
-          The groundwork was already careful: PayU&rsquo;s docs give the wrong webhook hash for Payment Links, so on {z.hashFixDay} I worked out
+          The verification was already in place: PayU&rsquo;s docs give the wrong webhook hash for Payment Links, so on {z.hashFixDay} I worked out
           the real one from a live ₹1 transaction, and only a signed, server-verified webhook could confirm a booking. On {z.incidentDay},
-          a student&rsquo;s UPI payment went through but <strong>the webhook never arrived, and nothing recorded whether it had</strong>, so
-          the booking still showed unpaid.
+          a student&rsquo;s UPI payment went through but <strong>PayU&rsquo;s webhook never landed, and webhook calls weren&rsquo;t logged
+          yet</strong>, so there was no trail and the booking still showed unpaid.
         </p>
         <p>
           <strong>A week later</strong>, checkout moved to its own tab and the booking re-checks itself when the student returns (Payment Links

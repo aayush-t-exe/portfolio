@@ -39,7 +39,7 @@ export function ZenzShowcase() {
             <span className="text-red-text">02</span> — Zen-Z · live on Google Play
           </p>
           <h2 id="zenz-title" className="h2 mt-5 text-[clamp(2.4rem,3.9vw,3.75rem)]" data-split>
-            A night out with strangers, in six steps.
+            Meet new people in six steps.
           </h2>
           <p className="mt-5 max-w-[44ch] text-[1.0625rem] leading-relaxed text-muted md:hidden">
             Zen-Z puts college students into small groups and gives each group a plan. This is the booking flow, exactly as it
@@ -51,7 +51,7 @@ export function ZenzShowcase() {
             <span data-zz-bar aria-hidden className="zz-bar absolute inset-x-0 top-0 h-12 rounded-[14px] bg-red" />
             <ol className="relative">
               {steps.map((s, i) => (
-                <li key={s.title} className="zz-step" data-step={i}>
+                <li key={s.title} className="zz-step" data-step={i} tabIndex={0}>
                   <span className="label w-8 shrink-0 text-inherit tabular-nums">{n(i)}</span>
                   <span className="display text-[clamp(1.25rem,1.8vw,1.625rem)] leading-none tracking-[-0.03em]">{s.title}</span>
                 </li>
@@ -83,7 +83,7 @@ export function ZenzShowcase() {
         {/* Desktop stage: the travelling phone lands here. */}
         <div className="relative hidden h-[min(82svh,48rem)] md:col-span-6 md:block lg:col-span-7" aria-hidden>
           <div
-            className="pointer-events-none absolute top-1/2 left-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.35),transparent)] blur-2xl"
+            className="pointer-events-none absolute top-1/2 left-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.35),transparent)]"
           />
           {floats.map((f, i) => (
             <Image

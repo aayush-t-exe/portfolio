@@ -24,8 +24,8 @@ export const heroShots: Shot[] = [screens.home, screens.game, screens.slot, scre
 export const steps: Array<{ title: string; body: string; shot: Shot }> = [
   { title: "Pick an activity", body: "A café, a dinner, a movie, or a game: box cricket, football, 8-ball pool, pickleball.", shot: screens.game },
   { title: "Choose a slot", body: "One fixed weekly time, so groups actually fill up.", shot: screens.slot },
-  { title: "Set a budget", body: "Under ₹200, ₹200–400 or ₹400+, used to match people who spend alike.", shot: screens.budget },
+  { title: "Set a budget", body: "Under ₹200, ₹200–400 or ₹400+, so groups spend alike.", shot: screens.budget },
   { title: "Pick your group", body: "Mixed, women only or men only.", shot: screens.group },
-  { title: "Pay", body: "Movies and games are paid through PayU. A seat is confirmed only by a signed, server-verified webhook.", shot: screens.pay },
-  { title: "Get matched", body: "A small group of students who haven't met yet. The venue is revealed before the event.", shot: screens.home },
+  { title: "Confirm the plan", body: "Every choice on one screen before paying. Cafés and dinners are free to book.", shot: screens.plan },
+  { title: "Pay, then meet", body: "PayU checkout; only a signed, server-verified webhook confirms the seat. Then you're matched with a small group, and the venue is revealed before the event.", shot: screens.pay },
 ];

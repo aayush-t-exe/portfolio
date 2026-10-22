@@ -15,6 +15,7 @@ export function Phone({
   cycle = false,
   video = false,
   priority = false,
+  eager = false,
   className = "",
   screenClassName = "",
 }: {
@@ -23,6 +24,8 @@ export function Phone({
   cycle?: boolean;
   video?: boolean;
   priority?: boolean;
+  /** Load the first screen eagerly (above the fold). Everything else is lazy. */
+  eager?: boolean;
   className?: string;
   screenClassName?: string;
 }) {
@@ -56,7 +59,7 @@ export function Phone({
               aria-hidden={i > 0 || undefined}
               sizes={sizes}
               priority={priority && i === 0}
-              loading={priority && i === 0 ? undefined : i === 0 ? "eager" : "lazy"}
+              loading={priority && i === 0 ? undefined : eager && i === 0 ? "eager" : "lazy"}
               className="phone-shot"
               data-shot={i}
               style={{ "--i": i } as CSSProperties}

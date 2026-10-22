@@ -32,9 +32,10 @@ const badges: Array<{ top: string; big: string; foot: ReactNode; tone: string; t
 
 const timeline = [
   { when: z.since, what: "Started Zen-Z" },
-  { when: z.launched, what: `Launched on Google Play: ${z.users} users in ${z.usersDays}, then the Shark Tank pitch` },
+  { when: z.firstCommit, what: "First commit: schema, app and admin" },
+  { when: z.launched, what: `Launched on Google Play (${z.users} users in ${z.usersDays}); pitched at Shark Tank` },
   { when: facts.prelims.built, what: `Built PrelimsDaily in ${facts.prelims.buildTime}` },
-  { when: "Now", what: "Open to internships" },
+  { when: "Now", what: "Running Zen-Z; looking for an internship" },
 ];
 
 /**
@@ -59,7 +60,7 @@ export function About() {
 
           <div className="md:col-span-7 lg:col-span-7 lg:col-start-6">
             <p className="label">
-              <span className="text-red">07</span> — About
+              <span className="text-red-deep">07</span> — About
             </p>
             <h2 id="about-title" className="h2 mt-5" data-split>
               Hi, I&rsquo;m Aayush.
@@ -68,16 +69,16 @@ export function About() {
               <p>
                 I&rsquo;m a third-year <strong>B.Tech CSE student at Jaipur National University</strong> (graduating{" "}
                 {site.education.grad}, CGPA {site.education.cgpa}), and the{" "}
-                <strong>founder of Zen-Z</strong>. I built all of it myself: the Android and web app, the admin dashboard the
+                <strong>founder of Zen-Z</strong>. I built all of it myself: the Android, iOS and web app, the admin dashboard the
                 team uses to match every group, and the Supabase backend with payments.
               </p>
               <p>
-                I like owning a problem end to end, from the data model to the message I get when something breaks. Now I&rsquo;m
+                I like owning a problem end to end, from the data model to fixing it in production. Now I&rsquo;m
                 looking for an internship where I can do that with a team.
               </p>
             </div>
 
-            <ol className="tl relative mt-10 grid gap-5 sm:grid-cols-4 sm:gap-4">
+            <ol className="tl relative mt-10 grid gap-5 sm:grid-cols-5 sm:gap-4">
               <span aria-hidden className="tl-line" />
               {timeline.map((t) => (
                 <li key={t.what} className="relative pl-7 sm:pt-7 sm:pl-0">
@@ -98,9 +99,9 @@ export function About() {
           <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5" data-fade-group>
             {badges.map((b) => (
               <li key={b.top} className={`flex min-h-44 flex-col rounded-[22px] p-5 shadow-[0_18px_40px_-24px_rgb(10_9_8/0.5)] ${b.tone} ${b.tilt}`}>
-                <span className="font-mono text-[0.6875rem] tracking-[0.06em] uppercase opacity-80">{b.top}</span>
-                <span className="num mt-auto pt-6 text-[clamp(2.25rem,3.6vw,3.25rem)] leading-[0.9]">{b.big}</span>
-                <span className="mt-2 text-[0.875rem] leading-snug opacity-85">{b.foot}</span>
+                <span className="font-mono text-[0.6875rem] tracking-[0.06em] uppercase">{b.top}</span>
+                <span className="num mt-auto min-w-0 pt-6 text-[clamp(1.75rem,2.6vw,3rem)] leading-[0.9]">{b.big}</span>
+                <span className="mt-2 text-[0.875rem] leading-snug">{b.foot}</span>
               </li>
             ))}
           </ul>

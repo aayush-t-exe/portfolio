@@ -22,11 +22,13 @@ export function Header() {
       <div className="flex items-center justify-between gap-3 px-[var(--gutter)] pt-3 md:pt-4">
         <Link
           href="/"
-          className="nav-pill press flex h-11 items-center gap-2.5 rounded-full pr-4 pl-1.5 text-[0.9375rem] font-medium"
+          className="nav-pill press flex h-11 min-w-0 items-center gap-2.5 rounded-full pr-4 pl-1.5 text-[0.9375rem] font-medium"
           aria-label={`${site.name}, home`}
         >
           <Image src={zIcon} alt="" width={32} height={32} className="size-8 rounded-full" priority={false} />
-          <span className="font-display font-extrabold tracking-[-0.02em] [font-stretch:108%]">{site.name}</span>
+          <span className="font-display font-extrabold tracking-[-0.02em] [font-stretch:108%]">
+            Aayush<span className="max-[399px]:hidden"> Thakur</span>
+          </span>
         </Link>
 
         <p
@@ -51,7 +53,7 @@ export function Header() {
           </ul>
           <a
             href={site.resume}
-            className="press flex h-11 items-center gap-1.5 rounded-full bg-fg px-4 text-[0.9375rem] font-medium text-ink hover:bg-white"
+            className="press flex h-11 items-center gap-1.5 rounded-full bg-fg px-3.5 text-[0.9375rem] font-medium text-ink hover:bg-white sm:px-4"
             data-magnetic
           >
             Resume
@@ -91,7 +93,7 @@ export function Header() {
           <ul className="mt-14 space-y-1">
             {navLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="display-caps flex items-baseline gap-4 py-2 text-[clamp(2.75rem,14vw,4.5rem)]" data-close-menu>
+                <Link href={l.href} className="display-caps flex items-baseline gap-4 py-2 text-[clamp(2.25rem,11vw,4.5rem)]" data-close-menu>
                   <span className="label text-red-text">{l.n}</span>
                   {l.label}
                 </Link>
@@ -103,8 +105,12 @@ export function Header() {
               <span className="live-dot" aria-hidden /> {site.status}
             </p>
             <p className="flex gap-5">
-              <a href={site.linkedin} target="_blank" rel="noopener" className="link">LinkedIn</a>
-              <a href={site.github} target="_blank" rel="noopener" className="link">GitHub</a>
+              <a href={site.linkedin} target="_blank" rel="noopener" className="link">
+                LinkedIn<span className="sr-only"> (opens in new tab)</span>
+              </a>
+              <a href={site.github} target="_blank" rel="noopener" className="link">
+                GitHub<span className="sr-only"> (opens in new tab)</span>
+              </a>
               <a href={`mailto:${site.email}`} className="link">Email</a>
             </p>
           </div>

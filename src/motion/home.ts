@@ -1,5 +1,4 @@
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type Cleanup = () => void;
 
@@ -50,12 +49,6 @@ export function setupJourney(): Cleanup | void {
     const pinTop = pinEl.getBoundingClientRect().top;
     return { x: h.x - s.x, y: h.y - secTop - (s.y - pinTop), scale: h.w / s.w };
   };
-  let d = delta();
-  const onRefreshInit = () => {
-    gsap.set(traveller, { clearProps: "transform" });
-    d = delta();
-  };
-  ScrollTrigger.addEventListener("refreshInit", onRefreshInit);
 
   // 1. Travel: from the hero pose to the stage, over the scroll up to the pin.
   gsap.set(pose, { transformPerspective: 1400, ...HERO_POSE });
@@ -65,7 +58,8 @@ export function setupJourney(): Cleanup | void {
   travel
     .fromTo(
       traveller,
-      { x: () => d.x, y: () => d.y, scale: () => d.scale },
+      // Function values run on every refresh, after pins are reverted, so the slots measure true.
+      { x: () => delta().x, y: () => delta().y, scale: () => delta().scale },
       { x: 0, y: 0, scale: 1, ease: "power1.inOut", immediateRender: true },
       0,
     )
@@ -114,12 +108,11 @@ export function setupJourney(): Cleanup | void {
   });
 
   return () => {
-    ScrollTrigger.removeEventListener("refreshInit", onRefreshInit);
     root.classList.remove("traveller");
     delete zz.dataset.active;
     items.forEach((el) => delete el.dataset.on);
     captions.forEach((el) => delete el.dataset.on);
-    gsap.set([traveller, pose, ...shots, ...floats, bar, finale].filter(Boolean), { clearProps: "all" });
+    gsap.set([traveller, pose, ...shots, ...floats, bar, finale].filter(Boolean), { clearProps: "transform,opacity,visibility" });
   };
 }
 
@@ -186,11 +179,13 @@ export function setupWorkPreview(): Cleanup | void {
   });
   list.addEventListener("pointerleave", hide);
   window.addEventListener("pointermove", move, { passive: true });
+  window.addEventListener("scroll", hide, { passive: true });
   return () => {
     offs.forEach((o) => o());
     list.removeEventListener("pointerleave", hide);
     window.removeEventListener("pointermove", move);
-    gsap.set([card, strip], { clearProps: "all" });
+    window.removeEventListener("scroll", hide);
+    gsap.set([card, strip], { clearProps: "transform,opacity,visibility" });
   };
 }
 

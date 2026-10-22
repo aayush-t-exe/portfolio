@@ -15,7 +15,7 @@ export function Browser({ src, alt, url, sizes, priority }: { src: StaticImageDa
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
-        <span className="ml-3 font-mono text-[0.6875rem] text-black/50">{url}</span>
+        <span className="ml-3 font-mono text-[0.6875rem] text-black/65">{url}</span>
       </div>
       <Image src={src} alt={alt} sizes={sizes} priority={priority} className="block w-full" />
     </figure>
@@ -36,8 +36,8 @@ export function ZenzLead() {
           alt="Zen-Z admin dashboard: pending reports and payments to check, both at zero, with the students and reports tools below"
         />
       </div>
-      <Phone shots={[screens.plan]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[30%] bottom-[-14%] w-[40%] rotate-[-6deg] sm:right-[19%] sm:bottom-[-10%] sm:w-[19%]" />
-      <Phone shots={[screens.pay]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[5%] bottom-[-6%] w-[40%] rotate-[5deg] sm:right-[4%] sm:bottom-[-4%] sm:w-[19%]" />
+      <Phone eager shots={[screens.plan]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[30%] bottom-[-14%] w-[40%] rotate-[-6deg] sm:right-[19%] sm:bottom-[-10%] sm:w-[19%]" />
+      <Phone eager shots={[screens.pay]} sizes="(min-width: 640px) 16vw, 40vw" className="absolute right-[5%] bottom-[-6%] w-[40%] rotate-[5deg] sm:right-[4%] sm:bottom-[-4%] sm:w-[19%]" />
     </div>
   );
 }
@@ -47,9 +47,9 @@ export function PrelimsLead() {
   return (
     <div className="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[28px] bg-paper-2 sm:aspect-[16/9]">
       <div className="flex w-[88%] max-w-[46rem] items-center justify-center">
-        <Phone shots={[{ src: today, alt: "PrelimsDaily Today screen: a one-day streak, a completed 5 of 5 target ring and week dots" }]} sizes="(min-width: 640px) 18vw, 30vw" className="z-0 w-[30%] translate-x-[14%] -rotate-[8deg]" />
+        <Phone shots={[{ src: today, alt: "PrelimsDaily Today screen: a one-day streak, a completed 5 of 5 target ring and week dots" }]} sizes="(min-width: 640px) 18vw, 30vw" eager className="z-0 w-[30%] translate-x-[14%] -rotate-[8deg]" />
         <Phone shots={[{ src: quiz, alt: "PrelimsDaily quiz: a statement-style question on the Financial Emergency, answered correctly, with its explanation" }]} sizes="(min-width: 640px) 20vw, 36vw" priority className="z-10 w-[36%]" />
-        <Phone shots={[{ src: result, alt: "PrelimsDaily result: a 60% ring, +40 XP and a one-day streak" }]} sizes="(min-width: 640px) 18vw, 30vw" className="z-0 w-[30%] -translate-x-[14%] rotate-[8deg]" />
+        <Phone shots={[{ src: result, alt: "PrelimsDaily result: a 60% ring, +40 XP and a one-day streak" }]} sizes="(min-width: 640px) 18vw, 30vw" eager className="z-0 w-[30%] -translate-x-[14%] rotate-[8deg]" />
       </div>
     </div>
   );

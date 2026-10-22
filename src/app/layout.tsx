@@ -82,10 +82,10 @@ export const viewport: Viewport = {
 
 /**
  * Runs before first paint. Marks that JS runs (`js`). On the home page, the first time in a
- * session and only when motion is allowed, it sets `intro`: CSS then plays the ≤1.5 s intro over
+ * session, on wide screens and only when motion is allowed, it sets `intro`: CSS then plays the ≤1.5 s intro over
  * the already-painted hero. Any key, click, wheel or touch skips it.
  */
-const prePaint = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('intro-seen')){sessionStorage.setItem('intro-seen','1');d.classList.add('intro');var ev=['keydown','pointerdown','wheel','touchstart'],off=function(){ev.forEach(function(e){removeEventListener(e,skip,true)})},skip=function(){d.classList.remove('intro');off()};ev.forEach(function(e){addEventListener(e,skip,{capture:true,passive:true})});setTimeout(off,1800)}}catch(e){}})()`;
+const prePaint = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches&&!sessionStorage.getItem('intro-seen')){sessionStorage.setItem('intro-seen','1');d.classList.add('intro');var ev=['keydown','pointerdown','wheel','touchstart'],off=function(){ev.forEach(function(e){removeEventListener(e,skip,true)})},skip=function(){d.classList.remove('intro');off()};ev.forEach(function(e){addEventListener(e,skip,{capture:true,passive:true})});setTimeout(off,1800);setTimeout(function(){d.classList.remove('intro')},3500)}}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

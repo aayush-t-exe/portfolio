@@ -48,8 +48,8 @@ export function Hero() {
           </h1>
 
           <p className="rise-fade mt-6 max-w-[42ch] text-[clamp(1.0625rem,1.35vw,1.25rem)] leading-relaxed text-muted" style={{ "--d": "260ms" } as CSSProperties}>
-            Founder and only engineer of Zen-Z: the app, the admin dashboard and the backend with payments. B.Tech CSE at
-            JNU Jaipur, class of 2028.
+            I&rsquo;m Zen-Z&rsquo;s founder and only engineer: I built the app, the admin dashboard and the payments backend.
+            B.Tech CSE at JNU Jaipur, class of 2028.
           </p>
 
           <div className="rise-fade mt-8 flex flex-wrap gap-3" style={{ "--d": "340ms" } as CSSProperties}>
@@ -72,16 +72,16 @@ export function Hero() {
           <div className="relative mx-auto w-[min(68vw,19rem)] md:w-[clamp(15rem,21vw,19.5rem)]">
             <div
               aria-hidden
-              className="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[150%] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.55),rgb(225_6_0/0.12)_55%,transparent)] blur-2xl"
+              className="pointer-events-none absolute top-1/2 left-1/2 -z-10 size-[150%] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(closest-side,rgb(225_6_0/0.55),rgb(225_6_0/0.12)_55%,transparent)]"
             />
             <div aria-hidden className="pointer-events-none absolute top-1/2 left-1/2 -z-10 w-[170%] -translate-x-[46%] -translate-y-[56%]">
               <div data-parallax="-0.15">
                 <Image
                   src={zGlossy}
                   alt=""
-                  priority
+                  loading="eager"
                   sizes="(min-width: 768px) 34vw, 90vw"
-                  className="rise-fade w-full opacity-90 drop-shadow-[0_0_60px_rgb(225_6_0/0.55)]"
+                  className="rise-fade w-full opacity-90"
                   style={{ "--d": "120ms" } as CSSProperties}
                 />
               </div>
@@ -89,7 +89,7 @@ export function Hero() {
             <div data-hero-slot className="relative">
               <div className="hero-phone rise-fade" style={{ "--d": "200ms" } as CSSProperties}>
                 <div className="[transform:perspective(1400px)_rotate(5deg)_rotateY(-22deg)_rotateX(10deg)]">
-                  <Phone shots={heroShots} cycle video priority sizes="(min-width: 768px) 20vw, 68vw" />
+                  <Phone shots={heroShots} cycle video eager sizes="(min-width: 768px) 20vw, 68vw" />
                 </div>
               </div>
             </div>

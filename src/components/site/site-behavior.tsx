@@ -18,6 +18,18 @@ import { useEffect } from "react";
 export function SiteBehavior() {
   const pathname = usePathname();
 
+  // Decorative CSS loops start once the page has loaded and gone quiet (see .idle in globals.css).
+  useEffect(() => {
+    const root = document.documentElement;
+    const go = () => {
+      const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
+      ric(() => root.classList.add("idle"), { timeout: 1500 });
+    };
+    if (document.readyState === "complete") go();
+    else window.addEventListener("load", go, { once: true });
+    return () => window.removeEventListener("load", go);
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -62,6 +74,32 @@ export function SiteBehavior() {
     };
     document.addEventListener("click", onClick);
     cleanups.push(() => document.removeEventListener("click", onClick));
+
+    // Escape dismisses a stack tooltip (it shows on focus).
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && (document.activeElement as HTMLElement | null)?.matches?.(".orbit-pill")) {
+        (document.activeElement as HTMLElement).blur();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    cleanups.push(() => document.removeEventListener("keydown", onKey));
+
+    // While the mobile menu sheet is open, the page behind it is inert (Tab stays in the sheet).
+    const menu = document.getElementById("menu");
+    const behind = [
+      document.querySelector<HTMLElement>("main"),
+      document.querySelector<HTMLElement>("footer"),
+      document.querySelector<HTMLElement>(".site-header-v4 > div"),
+    ];
+    const onToggle = (e: Event) => {
+      const open = (e as ToggleEvent).newState === "open";
+      behind.forEach((el) => el && (el.inert = open));
+    };
+    menu?.addEventListener("toggle", onToggle);
+    cleanups.push(() => {
+      menu?.removeEventListener("toggle", onToggle);
+      behind.forEach((el) => el && (el.inert = false));
+    });
 
     // 3. Section label + nav aria-current
     const label = document.querySelector<HTMLElement>("[data-section-label]");

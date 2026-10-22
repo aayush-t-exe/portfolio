@@ -36,7 +36,7 @@ const decisions = [
   },
   {
     title: "A deterministic daily set",
-    body: "The set is seeded by the local date (FNV-1a → mulberry32), so it's identical all day, even after a reinstall. About half the picks come from your two weakest subjects.",
+    body: "The set is seeded by the local date (FNV-1a → mulberry32), so it's identical all day, even after a reinstall. Once there's enough data, about half the picks come from your two weakest subjects.",
     tradeoff: "With a small bank, repeats come back eventually, in a predictable order.",
   },
   {
@@ -69,7 +69,7 @@ export function PrelimsCase() {
         meta={[
           { term: "Role", value: "Solo: product, design, code" },
           { term: "Timeline", value: `${p.buildTime} · ${p.built}` },
-          { term: "Platforms", value: "Android, iOS, web (Expo)" },
+          { term: "Platforms", value: "Android and web (Expo)" },
           { term: "Stack", value: "Expo, TypeScript, Zustand, Reanimated" },
         ]}
         media={<PrelimsLead />}
@@ -86,18 +86,18 @@ export function PrelimsCase() {
         id="brief"
         n={1}
         label="The brief"
-        title="Consistency, not material."
-        lead="“Most aspirants don't fail for lack of material. They fail for lack of consistency.”"
+        title="A habit, not a question bank."
+        lead="Most aspirants don't fail for lack of material. They fail for lack of consistency."
       >
         <div className="grid gap-12 lg:grid-cols-12">
           <Body className="lg:col-span-7">
             <p>
               I built PrelimsDaily in <strong>a single day</strong> as part of a startup application: one focused question set a day,{" "}
               <strong>streaks with freezes</strong>, a daily target ring, XP and levels, and <strong>reminders that adapt to your
-              streak</strong>. It runs fully offline on Android, iOS and the web.
+              streak</strong>. It runs fully offline on Android and the web.
             </p>
             <p>
-              Fast didn&rsquo;t mean sloppy. The rules live in pure, unit-tested functions, state is persisted with a versioned schema
+              The rules live in pure, unit-tested functions, state is persisted with a versioned schema
               that falls back safely if anything is malformed, and a root error boundary means a render crash shows a Retry screen, never
               a white screen.
             </p>
@@ -118,11 +118,11 @@ export function PrelimsCase() {
         <ol className="mt-12 grid gap-4 sm:grid-cols-2" data-fade-group>
           {decisions.map((d, i) => (
             <li key={d.title} className="flex flex-col rounded-[22px] bg-[#f3eee3] p-6 ring-1 ring-paper-line sm:p-8">
-              <span className="font-mono text-xs text-red">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-mono text-xs text-red-deep">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="display mt-3 text-[1.6rem] leading-[1.05] tracking-[-0.03em]">{d.title}</h3>
               <p className="mt-3 leading-relaxed text-paper-muted">{d.body}</p>
               <p className="mt-auto pt-6 text-sm leading-relaxed">
-                <span className="font-medium text-red">Trade-off: </span>
+                <span className="font-medium text-red-deep">Trade-off: </span>
                 <span className="text-paper-muted">{d.tradeoff}</span>
               </p>
             </li>
@@ -130,7 +130,7 @@ export function PrelimsCase() {
         </ol>
       </Chapter>
 
-      <Chapter id="quality" n={3} label="Quality" title="Tested like it would ship.">
+      <Chapter id="quality" n={3} label="Quality" title="72 tests in a one-day build.">
         <div className="mt-12 grid gap-8 md:grid-cols-[auto_1fr] md:items-end md:gap-14">
           <p className="num text-[clamp(6rem,16vw,13rem)] leading-[0.8] text-red-text">
             {p.tests}
