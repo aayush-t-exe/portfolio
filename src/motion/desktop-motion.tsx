@@ -12,6 +12,7 @@ import { setupGlobal } from "@/motion/global";
 import { setupPages } from "@/motion/pages";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, ScrambleTextPlugin);
+if (process.env.NODE_ENV !== "production") Object.assign(window, { __ST: ScrollTrigger });
 
 /**
  * Desktop motion, loaded lazily by MotionGate (≥768px, motion allowed). One Lenis instance

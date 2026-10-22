@@ -809,3 +809,90 @@ html.intro {
   opacity: 0.55;
   pointer-events: none;
 }
+
+/* ───────────────────────────── 02 Zen-Z showcase ─────────────────────────────
+   Static state (no JS / reduced motion): step 1 active; hovering a step swaps the screen.
+   With motion, the desktop chunk sets data-active on .zz and scrubs the bar and screens. */
+.zz-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  padding-inline: 1rem;
+  border-radius: 14px;
+  color: var(--muted);
+  transition: color 300ms ease;
+}
+.zz-pose {
+  transform: perspective(1400px) rotate(-2deg) rotateY(-14deg) rotateX(6deg);
+}
+.zz[data-active] .zz-caption {
+  opacity: 0;
+}
+.zz[data-active] .zz-caption[data-on] {
+  opacity: 1;
+}
+.zz-screen [data-shot] {
+  transition: opacity 400ms ease;
+}
+.zz-screen [data-shot]:not([data-shot="0"]),
+.zz-caption:not([data-caption="0"]) {
+  opacity: 0;
+}
+.zz-caption {
+  transition: opacity 300ms ease;
+}
+.zz:not([data-active]) .zz-step[data-step="0"],
+.zz[data-active] .zz-step[data-on] {
+  color: #fff;
+}
+.zz-final {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+}
+@media (hover: hover) {
+  .zz:not([data-active]) .zz-step:hover {
+    color: var(--fg);
+  }
+}
+.zz:not([data-active]):has(.zz-step[data-step="1"]:hover) [data-shot="1"],
+.zz:not([data-active]):has(.zz-step[data-step="1"]:hover) [data-caption="1"] {
+  opacity: 1;
+}
+.zz:not([data-active]):has(.zz-step[data-step="2"]:hover) [data-shot="2"],
+.zz:not([data-active]):has(.zz-step[data-step="2"]:hover) [data-caption="2"] {
+  opacity: 1;
+}
+.zz:not([data-active]):has(.zz-step[data-step="3"]:hover) [data-shot="3"],
+.zz:not([data-active]):has(.zz-step[data-step="3"]:hover) [data-caption="3"] {
+  opacity: 1;
+}
+.zz:not([data-active]):has(.zz-step[data-step="4"]:hover) [data-shot="4"],
+.zz:not([data-active]):has(.zz-step[data-step="4"]:hover) [data-caption="4"] {
+  opacity: 1;
+}
+.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) [data-shot="5"],
+.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) [data-caption="5"] {
+  opacity: 1;
+}
+.zz:not([data-active]):has(.zz-step:not([data-step="0"]):hover) :is([data-shot="0"], [data-caption="0"]) {
+  opacity: 0;
+}
+.zz:not([data-active]):has(.zz-step[data-step="5"]:hover) .zz-final {
+  opacity: 1;
+  transform: none;
+  transition: opacity 400ms ease, transform 500ms var(--ease-expo);
+}
+
+/* Desktop + motion: the travelling phone replaces the hero phone (same pose). */
+@media (min-width: 768px) {
+  html.traveller .hero-phone {
+    visibility: hidden;
+  }
+}
+.scroller {
+  scrollbar-width: none;
+}
+.scroller::-webkit-scrollbar {
+  display: none;
+}

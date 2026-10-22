@@ -4,6 +4,8 @@ import { JsonLd, graphs } from "@/lib/jsonld";
 import { openGraph } from "@/lib/metadata";
 import { About } from "@/sections/home/about";
 import { Hero } from "@/sections/home/hero";
+import { TechMarquee } from "@/sections/home/tech-marquee";
+import { ZenzShowcase } from "@/sections/home/zenz-showcase";
 import { Work } from "@/sections/home/work";
 
 export const metadata: Metadata = {
@@ -17,6 +19,8 @@ export default function Home() {
       <JsonLd graph={graphs.home} />
       <Intro />
       <Hero />
+      <TechMarquee />
+      <ZenzShowcase />
       <Work />
       <About />
     </>
