@@ -196,6 +196,39 @@ cached image optimisation are faster than `next start` on a laptop).
   per copy. Home HTML 355 → 288 kB (gzip 49.6 → 42.9 kB).
 - 2026-10-22 (review fixes): the intro plays on phones too (decided), with shorter timings.
 
+### zen-z.site update (2026-10-23)
+- **Screenshots** of the live, redesigned https://zen-z.site via Edge/CDP: desktop 1440×900 @2x
+  and phone 390×844 @3x, after the hanging Z settled, with the QR sticker and the sticky download
+  pill hidden. WebP: `src/assets/v4/brand/zen-z-site.webp` (2400w), `zen-z-site-phone.webp` and
+  `zen-z-site-phone-chat.webp` (900w, a cream status-bar strip on top, cut to the phone screen's
+  0.452 ratio so the bezel doesn't crop them).
+- **Work index:** the zen-z.site tile and its hover preview are cream (`#E9E3D5`) with the desktop
+  shot and the phone; the row opens `/work/zen-z#website`.
+- **`/work/zen-z`, new chapter 03 "The website"** (after "What I built"; the chapter bar is now
+  01–06): browser frame + two phones on a cream panel, three points (the pull-able Z with
+  hand-written rope physics and a server-rendered still Z; 27 contract checks; Lighthouse), and a
+  "Visit zen-z.site" button.
+- **Numbers, checked today:** `scripts/contract-test.mjs` against https://zen-z.site: 27/27 pass.
+  `lib/rope.ts`: 177 lines, 141 of code ("~150"). Lighthouse 12.8 on the live site, desktop:
+  98 / 98 / 72 (the 72 overlapped a lint run), median **98**; accessibility, best practices and
+  SEO 100 on all six runs. The PageSpeed Insights API was over its shared daily quota (and its web
+  page refuses headless browsers), so these are local Lighthouse runs. Mobile isn't quoted: local
+  runs swung 31–80 on this laptop.
+- **Facts:** campus-social `origin/master` has **190** commits (was 183). Since the fact check,
+  only `apps/marketing` and the lockfile changed on master, so tables (28), migrations (102), Postgres
+  functions, Edge Functions (7), cron jobs, CI jobs (one workflow) and test files (37) are unchanged.
+  The resume PDF was left alone (it still says 183).
+- **Copy/data:** llms.txt gained a "Website" line, the Zen-Z case JSON-LD a `WebSite` entity for
+  zen-z.site (creator: the Person), and the Zen-Z OG line mentions the website. `site.updated`
+  is 2026-10-23.
+- **Checks:** lint and build clean; screenshots at 1440×900 and 390×844 of the tile, the hover
+  preview and the chapter. Lighthouse on a local production build: the laptop sat at ~50% CPU from
+  other apps (another session was running Lighthouse too), so scores swung (`/` mobile 35–79);
+  the CPU-independent numbers match the phase 9 results: `/` mobile transfer 450 KiB (was 450),
+  image savings 12 KiB (12), DOM 894 nodes (895), LCP 3.7 s (3.6–3.7), CLS 0.
+- **Seen on zen-z.site (not fixed here, campus-social is out of scope):** on phones the Movies
+  plan card's "from ₹126" price is cut off at the card's edge.
+
 ### Deploy (GitHub + Vercel)
 1. The git history is kept as it is (decided 2026-10-22), so push `main` as it stands.
 2. GitHub → New repository → name it (e.g. `portfolio`), Public, **no** README/.gitignore/license →
