@@ -19,7 +19,10 @@ const archivo = localFont({
   variable: "--font-archivo",
   display: "swap",
   declarations: [{ prop: "font-stretch", value: "75% 125%" }],
-  adjustFontFallback: "Arial",
+  // The generated Arial fallback matches Archivo's default width, but the display styles are
+  // wider (112%, 800), so headlines re-wrapped on swap (CLS 0.16 on phones). globals.css has
+  // width-matched fallbacks instead ("Archivo Fallback").
+  adjustFontFallback: false,
 });
 const geist = localFont({
   src: "../assets/fonts/web/geist.woff2",
