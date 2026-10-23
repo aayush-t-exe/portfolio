@@ -229,20 +229,55 @@ cached image optimisation are faster than `next start` on a laptop).
 - **Seen on zen-z.site (not fixed here, campus-social is out of scope):** on phones the Movies
   plan card's "from ₹126" price is cut off at the card's edge.
 
-### Deploy (GitHub + Vercel)
-1. The git history is kept as it is (decided 2026-10-22), so push `main` as it stands.
-2. GitHub → New repository → name it (e.g. `portfolio`), Public, **no** README/.gitignore/license →
-   Create. Then in `S:\portfolio`: `git remote add origin https://github.com/aayush-t-exe/portfolio.git`
-   and `git push -u origin main`.
-3. vercel.com → Add New… → Project → Import the `portfolio` repo → Framework preset: Next.js (auto)
-   → leave Build/Output settings as they are → Deploy.
-4. Project → Settings → Environment Variables → add `NEXT_PUBLIC_SITE_URL` = your production URL
-   (e.g. `https://aayushthakur.vercel.app`, or your custom domain) for Production → Save →
-   Deployments → ⋯ on the latest → Redeploy.
-5. Optional domain: Settings → Domains → add it, follow the DNS records Vercel shows, then update
-   `NEXT_PUBLIC_SITE_URL` to it and redeploy.
-6. Check: open the site on a phone, run PageSpeed Insights on `/` and `/work/zen-z`, and paste the
-   URL into a LinkedIn post composer to see the OG card.
+### GitHub and deploy (2026-10-23)
+**Live:** https://aayushthakur.vercel.app · **Code:** https://github.com/aayush-t-exe/portfolio ·
+**Profile:** https://github.com/aayush-t-exe
+
+- **Before the first push:** no `.env*`, keys or tokens in the working tree or in any commit
+  (`git log -p` checked for AWS/Google/GitHub/OpenAI/Anthropic/Slack/JWT/private-key patterns and
+  key-like assignments). `.gitignore` covers `.env*`, `.next`, `node_modules`, `*.tsbuildinfo`;
+  `tsconfig.tsbuildinfo` was never tracked. History kept as it is.
+- **Repo:** `aayush-t-exe/portfolio`, public, topics portfolio, nextjs, react, typescript, gsap,
+  lenis, tailwindcss; homepage set. README is a showcase (screenshots in `docs/`).
+- **Vercel:** Git integration in the `zen-z1` team, project `portfolio`; every push to `main`
+  deploys. Domain `aayushthakur.vercel.app` (Production). Canonical, OG, sitemap and JSON-LD use it
+  (checked in the HTML). Vercel Authentication is off so the site is public.
+- **Live checks:** every route 200 (`/`, both case pages, `/stack`, `/llms.txt`, sitemap, robots,
+  manifest, all OG/Twitter images, the resume PDF, `/aayush.jpg`), unknown paths 404. The OG image
+  renders.
+- **Lighthouse on the live site** (12.8, run from this laptop because the PageSpeed Insights API
+  stayed over its shared daily quota all session; 3 runs each, medians):
+
+  | Route | Mobile perf | Desktop perf | A11y / BP / SEO |
+  | --- | --- | --- | --- |
+  | `/` | 95–96 (after the font fix; LCP 2.3–2.6 s) | 97–98 | 100 / 100 / 100 |
+  | `/work/zen-z` | 97 | 99 | 100 / 100 / 100 |
+
+- **Fixed on the live site: CLS 0.164 on phones.** The first live runs showed the home page
+  shifting when Archivo arrived: next/font's Arial fallback matches Archivo's default width, but
+  the headlines are set at wdth 112 / wght 800, so at 412px the H1 went from 3 to 4 lines on swap.
+  `globals.css` now has width-matched fallbacks (bold Arial/Liberation at size-adjust 115.4%,
+  Roboto Bold at 122% for Android; Archivo's own ascent/descent). Headings keep their line count
+  from 320 to 1440px with or without the web font, and live CLS is 0–0.002.
+- **GitHub profile:** bio, location (Jaipur, India), website, hireable, LinkedIn as a social
+  account. Profile README repo `aayush-t-exe/aayush-t-exe`: dark/light banner (`<picture>` +
+  `prefers-color-scheme`), 2×2 featured work, one row of static shields.io badges, contact. No stats
+  or visitor widgets. Images are rendered from HTML with the portfolio's fonts (`art/build.mjs`).
+  Checked on github.com logged out: 1440 and 390 wide, light and dark.
+- **Other repos:** Zen-Z (metadata only: description, homepage https://zen-z.site, 8 topics; no
+  commits to campus-social). prelims-daily: pushed `912726a`, README hero + "built in one day"
+  story + case-study link, homepage `/work/prelimsdaily`, 8 topics; 72/72 tests pass. Shadow:
+  reframed as a college study companion (README, ARCHITECTURE line, description); removed the
+  `cluely-alternative`, `interview-coder-alternative` and `overlay` topics (8 kept); no stealth
+  wording or feature; not to be pinned. Social previews (1280×640 JPG) for all four are in
+  `S:\Projectsayush-t-exe\previews\`.
+- **Commit identity:** every commit in portfolio, prelims-daily, Shadow, the profile repo and
+  campus-social is authored by aayushthakur8002@gmail.com (two GitHub merge commits have GitHub as
+  committer). `Co-Authored-By` trailers kept, so "claude" shows under Contributors on Shadow.
+- **Left for Aayush (no API):** upload the four social previews, pin Zen-Z, portfolio and
+  prelims-daily.
+- **Noticed:** Shadow's solve prompt (`src/main/ai/prompts.ts`) still lists "an online assessment"
+  among screenshot sources; code was left unchanged.
 
 ---
 

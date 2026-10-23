@@ -29,8 +29,9 @@ sections, and one CSS-3D phone running the real app that travels through the pag
   so phones never download them; their motion is CSS (scroll-driven fades, marquees, snap rows).
   All text is server-rendered and readable without JS, the hero entrance is CSS from first paint,
   and every route is static.
-- **Lighthouse** (local production build): `/` 89–90 mobile and 97 desktop performance, other
-  routes 93–99; 100 accessibility, best practices and SEO everywhere; CLS 0.
+- **Lighthouse on the live site:** `/` 95–96 mobile and 97–98 desktop performance,
+  `/work/zen-z` 97 and 99 (medians); 100 accessibility, best practices and SEO; CLS ~0. Width-matched
+  fallback fonts keep headings on the same lines while Archivo loads.
 - **Facts in one file.** Every number, link and tool comes from [`src/lib/site.ts`](src/lib/site.ts),
   and `llms.txt`, the JSON-LD and the OG images are generated from it.
 
